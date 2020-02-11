@@ -1,6 +1,10 @@
 # Project Scanner
 
+*  [Installation for Linux](#installation_for_linux)
+*  [Installation for MACOS](#installation_for_macos)
+
 ## Instalation for linux
+<a name="installation_for_linux"></a>
 
 ### 1. Install Git, Python3, pip3 and virtualenv
     sudo apt-get update
@@ -49,7 +53,8 @@
     python manage.py migrate --database=API_DB
     
     
-## Instalation for MACOS
+## Instalation for MACOS 
+<a name="installation_for_macos"></a>
 
 ### 1. Install Homebrew
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -106,5 +111,3 @@
 ### 7. Дальше все, как обычно
     За исключением того, что теперь, чтобы сделать миграции для базы API, нужно использовать команду:
     python manage.py migrate --database=API_DB
-
-    
