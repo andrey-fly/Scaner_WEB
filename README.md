@@ -3,8 +3,7 @@
 *  [Installation for Linux](#installation_for_linux)
 *  [Installation for MACOS](#installation_for_macos)
 
-## Instalation for linux
-<a name="installation_for_linux"></a>
+## Instalation for linux <a name="installation_for_linux"></a>
 
 ### 1. Install Git, Python3, pip3 and virtualenv
     sudo apt-get update
@@ -19,7 +18,7 @@
 ##### 2.2. EASY. By PyCharm
     1. Open PyCharm (without project)
     2. Choose "Get from Version Control"
-    3. Paste the url 2
+    3. Paste the url https://gitlab.informatics.ru/2019-2020/online/s101/scaner.git
 
 ### 3. Next needs for create and activate virtualenv
     3.1. choose location
@@ -53,8 +52,7 @@
     python manage.py migrate --database=API_DB
     
     
-## Instalation for MACOS 
-<a name="installation_for_macos"></a>
+## Instalation for MACOS <a name="installation_for_macos"></a>
 
 ### 1. Install Homebrew
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -72,7 +70,7 @@
 ##### 3.2. EASY. By PyCharm
     1. Open PyCharm (without project)
     2. Choose "Get from Version Control"
-    3. Paste the url 2
+    3. Paste the url https://gitlab.informatics.ru/2019-2020/online/s101/scaner.git
     
 ### 4. Next needs for create and activate virtualenv
     4.1. choose location
