@@ -11,7 +11,7 @@
 
 ### 2. Needs for clone the repository. Have 2 ways: 
     
-##### 2.1. HARD. Choose path, init git and clone the repository**
+##### 2.1. HARD. Choose path, init git and clone the repository
     git init
     git clone https://gitlab.informatics.ru/2019-2020/online/s101/scaner.git
 
@@ -63,7 +63,7 @@
     
 ### 3. Needs for clone the repository. Have 2 ways: 
     
-##### 3.1. HARD. Choose path, init git and clone the repository**
+##### 3.1. HARD. Choose path, init git and clone the repository
     git init
     git clone https://gitlab.informatics.ru/2019-2020/online/s101/scaner.git
 
