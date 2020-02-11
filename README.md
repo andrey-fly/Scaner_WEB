@@ -30,6 +30,17 @@
     
 ### 5. Migrate to PostgreSQL 
     sudo apt-get install postgresql
+    sudo service postgresql start
+    
+    sudo -u postgres psql
+    \password postgres
+    
+    -> Тут вам нужно будет дважды повторить пароль postgres <-
+    -> Важно, чтобы пароль был таким, иначе придется перенастраивать проект <-
+    -> Забавая штука, на макбуке все работает без пароля, а на линксе джанго наотрез отказывается подключаться к бд <-
+    
+    \q (чтобы выйти из psql)
+    
     sudo -u postgres createdb API_DB
     sudo -u postgres createdb WEB_DB
     
