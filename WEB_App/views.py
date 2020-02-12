@@ -12,7 +12,7 @@ from WEB_App.models import Recovery
 
 
 def index(request):
-    context = {'data': datetime.now(), 'username': request.user}
+    context = {'data': datetime.now()}
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -24,7 +24,7 @@ def index(request):
             return render(request, 'index.html', {'username': user_form.data['username']})
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'index.html', {'user_form': user_form})
+    return render(request, 'index.html', context)
 
 
 def signup(request):

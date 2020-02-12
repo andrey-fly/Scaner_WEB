@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block content %}
-<h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{username}}
+<h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}}
                                 {% endif %}</h1>
 <button class="btn btn-primary" type="button" id="modal-btn"
         data-toggle="modal" data-target="#signmodal"> Button
