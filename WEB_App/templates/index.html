@@ -3,12 +3,14 @@
 {% block content %}
 <h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}}
                                 {% endif %}</h1>
-<button class="btn btn-primary" type="button" id="modal-btn"
+<button class="btn btn-primary" type="button" id="modal_btn"
         data-toggle="modal" data-target="#signmodal"> Button
 </button>
+
 <div class="modal" id="signmodal">
     <div class="container" id="container">
         <div class="form-container sign-up-container">
+
             <form action="/" method="POST">
                 {% csrf_token %}
                 <h1>Create Account</h1>
@@ -17,54 +19,58 @@
                         class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
                         class="fab fa-linkedin-in"></i></a></div>
                 <span>or use your email for registration</span>
-                {% if user_form.errors %}
+
+                {% if reg_form.errors %}
                 <div class="row">
-                    {% if user_form.errors.password2 %}
-                    {{user_form.errors.password2}}
+                    {% if reg_form.errors.password2 %}
+                    {{reg_form.errors.password2}}
                     {%endif%}
-                    {% if user_form.errors.username %}
-                    {{user_form.errors.username}}
+                    {% if reg_form.errors.username %}
+                    {{reg_form.errors.username}}
                     {%endif%}
-                    {% if user_form.errors.email %}
-                    {{user_form.errors.email}}
+                    {% if reg_form.errors.email %}
+                    {{reg_form.errors.email}}
                     {%endif%}
                 </div>
                 {%endif%}
-                <div class="row">
-                    {{user_form.username}}
-                </div>
-                <div class="row">
-                    {{user_form.first_name}}
-                </div>
-                <div class="row">
-                    {{user_form.last_name}}
-                </div>
-                <div class="row">
-                    {{user_form.email}}
-                </div>
-                <div class="row">
-                    {{user_form.password}}
-                </div>
-                <div class="row">
-                    {{user_form.password2}}
-                </div>
+                
+                {{ reg_form.username }}
+                {{ reg_form.email }}
+                {{ reg_form.password }}
+                {{ reg_form.password2 }}
+                
+                <input type="hidden" value="SignUp" name="status">
                 <button type="submit">Sign Up</button>
             </form>
+
         </div>
+
         <div class="form-container sign-in-container">
-            <form action="#">
+            <form action="#" method="POST">
+                {% csrf_token %}
                 <h1>Sign in</h1>
                 <div class="social-container"><a href="#" class="social"><i
                         class="fab fa-facebook-f"></i></a><a href="#" class="social"><i
                         class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
                         class="fab fa-linkedin-in"></i></a></div>
-                <span>or use your account</span><input
-                    type="email" placeholder="Email"/><input type="password"
-                                                             placeholder="Password"/><a
-                    href="/recovery_password">Forgot your password?</a>
-                <button>Sign In</button>
+                <span>or use your account</span>
+
+                {% for error in login_errors %}
+                    <div class="row error">
+                        <p><b>{{error}}</b></p>
+                    </div>
+
+                {% endfor %}
+
+                <input type="text" placeholder="User or Email" name="identification" required autofocus>
+                <input type="password" placeholder="Password" name="password" required>
+
+                <input type="hidden" name="status" value="SignIn">
+                <a href="/recovery_password">Forgot your password?</a>
+                <button type="submit">Sign In</button>
             </form>
         </div>
+
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
@@ -81,9 +87,22 @@
             </div>
         </div>
     </div>
-</div>
-</div>
+</div>`
 {% endblock %}
 {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
+{% if login_errors %}
+<script>
+    window.setTimeout(function() {modal_btn.click()}, 10 );
+    container.classList.remove("right-panel-active")
+</script>
+{% endif %}
+
+{% if reg_form.errors %}
+<script>
+    window.setTimeout(function() {modal_btn.click()}, 10 );
+    container.classList.add("right-panel-active")
+</script>
+{% endif %}
+
 {% endblock %}

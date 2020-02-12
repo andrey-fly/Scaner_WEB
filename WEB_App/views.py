@@ -2,7 +2,7 @@ from datetime import datetime
 from random import randint
 
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, views
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render
@@ -13,17 +13,37 @@ from WEB_App.models import Recovery
 
 def index(request):
     context = {'data': datetime.now()}
+    reg_form = UserRegistrationForm()
+    errors = []
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password2'])
-            new_user.save()
-            login(request, new_user)
-            print(User.objects.get(username='Ender'))
-            return render(request, 'index.html', {'username': user_form.data['username']})
-    else:
-        user_form = UserRegistrationForm()
+        print(request.POST)
+        if request.POST.get('status') == 'SignUp':
+            reg_form = UserRegistrationForm(request.POST)
+            print(reg_form.data)
+            if reg_form.is_valid():
+                new_user = reg_form.save(commit=False)
+                new_user.set_password(reg_form.cleaned_data['password2'])
+                new_user.save()
+                login(request, new_user)
+        if request.POST.get('status') == 'SignIn':
+            identification = request.POST.get('identification')
+            password = request.POST.get('password')
+
+            user = None
+            if User.objects.filter(username=identification):
+                user = User.objects.get(username=identification)
+            elif User.objects.filter(email=identification):
+                user = User.objects.get(email=identification)
+            if user is None:
+                errors.append('Пользователь не найден!')
+            elif user.check_password(password) is False:
+                errors.append('Неправильный пароль!')
+            else:
+                login(request, user)
+
+    context['reg_form'] = reg_form
+    context['login_errors'] = errors
+
     return render(request, 'index.html', context)
 
 
