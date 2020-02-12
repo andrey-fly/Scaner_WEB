@@ -13,7 +13,6 @@ def index(request):
             new_user.set_password(user_form.cleaned_data['password2'])
             new_user.save()
             login(request, new_user)
-            print(User.objects.get(username='Ender'))
             return render(request, 'index.html', {'username': user_form.data['username']})
     else:
         user_form = UserRegistrationForm()
