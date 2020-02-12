@@ -4,17 +4,17 @@ from django.forms.widgets import Input
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}), min_length=8)
-    password2 = forms.CharField(label='Повторите', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}), min_length=8)
+    password2 = forms.CharField(label='Повторите', widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
         widgets = {
-            'username': Input(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя', 'autofocus': ''}),
-            'first_name': Input(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
-            'last_name': Input(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
-            'email': Input(attrs={'class': 'form-control', 'placeholder': 'Электронная почта'}),
+            'username': Input(attrs={'placeholder': 'Имя пользователя', 'autofocus': ''}),
+            'first_name': Input(attrs={'placeholder': 'Имя'}),
+            'last_name': Input(attrs={'placeholder': 'Фамилия'}),
+            'email': Input(attrs={'placeholder': 'Электронная почта'}),
         }
 
     def clean_password2(self):
