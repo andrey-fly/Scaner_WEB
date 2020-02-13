@@ -1,16 +1,6 @@
-{% extends 'main/base.html' %}
-{% load static %}
-{% block content %}
-<h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}}
-                                {% endif %}</h1>
-<button class="btn btn-primary" type="button" id="modal_btn"
-        data-toggle="modal" data-target="#signmodal"> Button
-</button>
-
-<div class="modal" id="signmodal">
+<div class="modal mt-5" id="signmodal">
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-
             <form action="/" method="POST">
                 {% csrf_token %}
                 <h1>Create Account</h1>
@@ -21,30 +11,32 @@
                 <span>or use your email for registration</span>
 
                 {% if reg_form.errors %}
-                <div class="row">
                     {% if reg_form.errors.password2 %}
-                    {{reg_form.errors.password2}}
+                    <div class="row error mb-1">
+                        <b>{{reg_form.errors.password2}}</b>
+                    </div>
                     {%endif%}
                     {% if reg_form.errors.username %}
-                    {{reg_form.errors.username}}
+                    <div class="row error mb-1">
+                        <b>{{reg_form.errors.username}}</b>
+                    </div>
                     {%endif%}
                     {% if reg_form.errors.email %}
-                    {{reg_form.errors.email}}
+                     <div class="row error mb-1">
+                         <b>{{reg_form.errors.email}}</b>
+                    </div>
                     {%endif%}
-                </div>
                 {%endif%}
-                
+
                 {{ reg_form.username }}
                 {{ reg_form.email }}
                 {{ reg_form.password }}
                 {{ reg_form.password2 }}
-                
+
                 <input type="hidden" value="SignUp" name="status">
-                <button type="submit">Sign Up</button>
+                <button class="mt-3" type="submit">Sign Up</button>
             </form>
-
         </div>
-
         <div class="form-container sign-in-container">
             <form action="#" method="POST">
                 {% csrf_token %}
@@ -62,15 +54,14 @@
 
                 {% endfor %}
 
-                <input type="text" placeholder="User or Email" name="identification" required autofocus>
-                <input type="password" placeholder="Password" name="password" required>
+                <input class="mb-2" type="text" placeholder="User or Email" name="identification" required autofocus>
+                <input class="mb-2" type="password" placeholder="Password" name="password" required>
 
                 <input type="hidden" name="status" value="SignIn">
                 <a href="/recovery_password">Forgot your password?</a>
                 <button type="submit">Sign In</button>
             </form>
         </div>
-
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
@@ -88,21 +79,3 @@
         </div>
     </div>
 </div>
-{% endblock %}
-{% block extra_js %}
-<script src="{% static 'js/button.js' %}"></script>
-{% if login_errors %}
-<script>
-    window.setTimeout(function() {modal_btn.click()}, 10 );
-    container.classList.remove("right-panel-active")
-</script>
-{% endif %}
-
-{% if reg_form.errors %}
-<script>
-    window.setTimeout(function() {modal_btn.click()}, 10 );
-    container.classList.add("right-panel-active")
-</script>
-{% endif %}
-
-{% endblock %}

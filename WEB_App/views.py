@@ -2,7 +2,7 @@ from datetime import datetime
 from random import randint
 
 from django.conf import settings
-from django.contrib.auth import login, views
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render
@@ -44,7 +44,7 @@ def index(request):
     context['reg_form'] = reg_form
     context['login_errors'] = errors
 
-    return render(request, 'index.html', context)
+    return render(request, 'main/index.html', context)
 
 
 def signup(request):
@@ -55,7 +55,7 @@ def signup(request):
             new_user.set_password(user_form.cleaned_data['password2'])
             new_user.save()
             login(request, new_user)
-            return render(request, 'index.html', {'username': user_form.data['username']})
+            return render(request, 'main/index.html', {'username': user_form.data['username']})
     else:
         user_form = UserRegistrationForm()
     return render(request, 'registration/registration.html', {'user_form': user_form})

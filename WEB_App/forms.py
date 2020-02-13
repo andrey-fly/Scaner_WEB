@@ -4,15 +4,17 @@ from django.forms.widgets import Input
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}), min_length=8)
-    password2 = forms.CharField(label='Повторите', widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Пароль'}),
+                               min_length=8)
+    password2 = forms.CharField(label='Повторите',
+                                widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = User
         fields = ('username', 'email')
         widgets = {
-            'username': Input(attrs={'placeholder': 'Username'}),
-            'email': Input(attrs={'placeholder': 'Email'}),
+            'username': Input(attrs={'class': 'mb-2', 'placeholder': 'Username'}),
+            'email': Input(attrs={'class': 'mb-2', 'placeholder': 'Email'}),
         }
 
     def clean_password2(self):
@@ -37,8 +39,10 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class RecoveryPass(forms.Form):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autofocus': ''}), min_length=8, required=True)
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Повторите пароль'}), required=True)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autofocus': ''}), min_length=8, required=True)
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}), required=True)
 
     def clean_password2(self):
         cd = self.data
