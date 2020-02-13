@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1>
+{% include 'main/modal_form.html' %}
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/button.js' %}"></script>
+{% if login_errors %}
+<script>
+    window.setTimeout(function() {modal_btn.click()}, 10 );
+    container.classList.remove("right-panel-active")
+</script>
+{% endif %}
+
+{% if reg_form.errors %}
+<script>
+    window.setTimeout(function() {modal_btn.click()}, 10 );
+    container.classList.add("right-panel-active")
+</script>
+{% endif %}
+
+{% endblock %}
