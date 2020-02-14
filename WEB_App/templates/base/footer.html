@@ -1,0 +1,44 @@
+<footer class="footer-dark" style="position: fixed; left: 0; bottom: 0; width: 100%; color: white; text-align: center;">
+    <div>
+        <div class="row">
+            <div class="col-sm-6 col-md-3 item">
+                <h3>Основные</h3>
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="#">Опросы</a></li>
+                    <li><a href="#">Жалоба</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-6 col-md-3 item">
+                <h3>Другое</h3>
+                <ul>
+                    {% if not user.is_authenticated %}
+                    <li><a href="/login">Авторизация</a></li>
+                    <li><a href="/registration">Регистрация</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="#">Профиль</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                    {% endif %}
+                    <li><a href="#">О нас</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6 item text">
+                <h3>BombIt Team</h3>
+                <p>Добро пожаловать:)</p>
+            </div>
+        </div>
+        <p class="copyright">BombIt Team © 2020</p>
+    </div>
+</footer>
+<style>
+    .footer {
+      position: fixed important!;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: red;
+      color: white;
+      text-align: center;
+    }
+</style>

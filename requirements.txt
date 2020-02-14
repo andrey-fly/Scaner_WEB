@@ -1,16 +1,3 @@
-# Needs to install:
-
-# django
-Django==3.0.3
-# for postgresql
-gunicorn==20.0.4
-psycopg2-binary==2.8.4
-# for autodoc
-Sphinx==2.4.0
-yummy-sphinx-theme==0.1.1
-
-
-# All list:
 alabaster==0.7.12
 asgiref==3.2.3
 Babel==2.8.0
@@ -24,6 +11,7 @@ imagesize==1.2.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 packaging==20.1
+pkg-resources==0.0.0
 psycopg2-binary==2.8.4
 Pygments==2.5.2
 pyparsing==2.4.6
@@ -31,7 +19,7 @@ pytz==2019.3
 requests==2.22.0
 six==1.14.0
 snowballstemmer==2.0.0
-Sphinx==2.4.0
+Sphinx==2.4.1
 sphinxcontrib-applehelp==1.0.1
 sphinxcontrib-devhelp==1.0.1
 sphinxcontrib-htmlhelp==1.0.2
@@ -40,3 +28,4 @@ sphinxcontrib-qthelp==1.0.2
 sphinxcontrib-serializinghtml==1.1.3
 sqlparse==0.3.0
 urllib3==1.25.8
+yummy-sphinx-theme==0.1.1
