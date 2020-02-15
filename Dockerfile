@@ -6,5 +6,6 @@ WORKDIR /web
 COPY requirements.txt /web/
 RUN pip install -r requirements.txt
 COPY . /web/
+RUN python3 manage.py migrate
 
 
