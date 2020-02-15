@@ -17,7 +17,7 @@ services:
       POSTGRES_DB: API_DB
   web:
     build: ./
-    command: python3 manage.py runserver 0.0.0.0:80
+    command: ./docker-entrypoint.sh
     volumes:
       - ./:/web
     ports:
