@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   web_db:
     image: postgres
     restart: always
@@ -16,14 +15,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: API_DB
-
   web:
     build: ./
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:80
     volumes:
       - ./:/web
     ports:
-      - "8000:8000"
+      - "80:80"
     depends_on:
       - web_db
       - api_db
