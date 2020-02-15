@@ -26,7 +26,7 @@ SECRET_KEY = 'nc#qztqrjv3h9h)tc09nh18(d*f1u!-h$8!odzvq6x)-(2$+&#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,16 +85,16 @@ DATABASES = {
         'NAME': 'WEB_DB',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'web_db',
+        'PORT': '5432',
     },
     'API_DB': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'API_DB',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'api_db',
+        'PORT': '5432',
     },
 }
 
