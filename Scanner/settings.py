@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from API_App.router import API_DB_Router
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,9 +37,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'API_App',
     'WEB_App',
+    'djoser',
+    # 'django-templated-mail',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -98,9 +114,12 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = [
-    'API_App.router.API_DB_Router',
-]
+# В общем, если использовать отдельную базу данных, то джанго в ней не будет видеть модели пользователей.
+# Поэтому я временно убираю разделение бд, пока не разберусь с этим.
+# Проблемы с авторизацией в интейрфейс апи
+# DATABASE_ROUTERS = [
+#     'API_App.router.API_DB_Router',
+# ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

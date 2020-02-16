@@ -16,4 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = []
+from API_App.views import GoodsCreateView, GoodsListView, GoodsDetailView
+
+urlpatterns = [
+    path('goods/create/', GoodsCreateView.as_view()),
+    path('goods/all/', GoodsListView.as_view()),
+    path('goods/detail/<int:pk>/', GoodsDetailView.as_view())
+]
