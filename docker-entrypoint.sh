@@ -13,7 +13,9 @@ done
 echo "Таки дождались..........."
 
 echo "======Накатываем миграции======"
+python manage.py makemigrations
 python manage.py migrate
+python manage.py migrate --database=API_DB
 
 echo "======Стартуем сервер======"
 python manage.py runserver 0.0.0.0:80
