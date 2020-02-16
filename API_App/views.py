@@ -25,3 +25,14 @@ class GoodsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Goods.objects.all()
     authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
     permission_classes = (IsOwnerOrReadOnly, IsAdminUser)
+
+
+class GetByBarCode(generics.ListAPIView):
+    serializer_class = GoodsListSerializer
+    queryset = Goods.objects.none()
+    permission_classes = ()
+
+    def get(self, request, barcode):
+        queryset = Goods.objects.filter(barcode=barcode)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
