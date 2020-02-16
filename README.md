@@ -32,25 +32,13 @@
     pip3 install --upgrade pip
     pip3 install -r requirements.txt
     
-### 5. Migrate to PostgreSQL 
-    sudo apt-get install postgresql
-    sudo service postgresql start
+### 5. Install Docker
+    Install Docker from [https://www.docker.com](docker.com)
+    (Don't forget about the registration)
+    In application "Docker" needs to authorize
     
-    sudo -u postgres psql
-    \password postgres
-    
-    -> Тут вам нужно будет дважды повторить пароль postgres <-
-    -> Важно, чтобы пароль был таким, иначе придется перенастраивать проект <-
-    -> Забавая штука, на макбуке все работает без пароля, а на линксе джанго наотрез отказывается подключаться к бд <-
-    
-    \q (чтобы выйти из psql)
-    
-    sudo -u postgres createdb API_DB
-    sudo -u postgres createdb WEB_DB
-    
-### 6. Дальше все, как обычно
-    За исключением того, что теперь, чтобы сделать миграции для базы API, нужно использовать команду:
-    python manage.py migrate --database=API_DB
+### 6. Up the project
+    [In Terminal]: docker-compose up
     
     
 ## Installation for MACOS <a name="installation_for_macos"></a>
@@ -79,37 +67,18 @@
     4.3.1. [In terminal]: source location/name_venv/bin/activate
     4.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
     -> Add -> choose "Existing environment" -> "..." -> choose location/name_venv/bin/python3
-    
+
 ### 5. Upgrade pip3 and install requirements 
     pip3 install --upgrade pip
     pip3 install -r requirements.txt
     
-### 6. Migrate to PostgreSQL 
-###### 6.1. Install PostgreSQL
-    brew install postgresql
-###### 6.2. Choose location and create database (choosen folder must be clean)
-    initdb path 
-###### 6.3. Create superuser, start postgresql and set password
-    createuser --superuser postgres
-    pg_ctl -D db_path -l logfile start 
-    psql -U postgres
-    \password postgres
+### 6. Install Docker
+    Install Docker from [https://www.docker.com](docker.com)
+    (Don't forget about the registration)
+    In application "Docker" needs to authorize
     
-    -> Тут вам нужно будет дважды повторить пароль postgres <-
-    -> Важно, чтобы пароль был таким, иначе придется перенастраивать проект <-
-    
-    \q (чтобы выйти из psql)
-    
-###### 6.4. Create databases for project: API_DB and WEB_DB
-    createdb --owner=postgres API_DB
-    createdb --owner=postgres WEB_DB
-    
-###### 6.5. Stop postgresql
-    pg_ctl -D db_path stop
-    
-### 7. Дальше все, как обычно
-    За исключением того, что теперь, чтобы сделать миграции для базы API, нужно использовать команду:
-    python manage.py migrate --database=API_DB
+### 7. Up the project
+    [In Terminal]: docker-compose up
     
 ## Installation for windows <a name="installation_for_windows"></a>
 
