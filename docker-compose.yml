@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  web_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: WEB_DB
+  api_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: API_DB
+  web:
+    build: ./
+    command: ./docker-entrypoint.sh
+    volumes:
+      - ./:/web
+    ports:
+      - "80:80"
+    depends_on:
+      - web_db
+      - api_db
+

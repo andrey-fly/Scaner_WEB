@@ -496,4 +496,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+collectedstatic/*
 # End of https://www.gitignore.io/api/venv,linux,macos,django,python,images,android,windows,database,pycharm+all
