@@ -14,6 +14,10 @@ class API_DB_Router(object):
         """Send all write operations on Example app models to `example_db`."""
         if model._meta.app_label == 'API_App':
             return self.db_name
+        elif model._meta.app_label == 'API_DB':
+            return self.db_name
+        elif model._meta.app_label == 'api_db':
+            return self.db_name
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
