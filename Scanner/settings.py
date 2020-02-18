@@ -95,6 +95,7 @@ WSGI_APPLICATION = 'Scanner.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# WITH DOCKER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -113,6 +114,26 @@ DATABASES = {
         'PORT': '5432',
     },
 }
+
+# # WITHOUT DOCKER
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'WEB_DB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+#     'API_DB': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'API_DB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+# }
 
 # В общем, если использовать отдельную базу данных, то джанго в ней не будет видеть модели пользователей.
 # Поэтому я временно убираю разделение бд, пока не разберусь с этим.
