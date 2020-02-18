@@ -70,10 +70,10 @@
     
 ### 4. Next needs for create and activate virtualenv
     4.1. choose location
-    4.2. python3 -m venv name_venv
+    4.2. python3 -m venv venv
     4.3.1. [In terminal]: source location/name_venv/bin/activate
     4.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
-    -> Add -> choose "Existing environment" -> "..." -> choose location/name_venv/bin/python3
+    -> Add -> choose "Existing environment" -> "..." -> choose location/venv/bin/python3
 
 ### 5. Upgrade pip3 and install requirements 
     pip3 install --upgrade pip
@@ -111,10 +111,10 @@
 
 ### 3. Next needs for create and activate virtualenv
     3.1. choose location
-    3.2. python -m venv name_venv
+    3.2. python -m venv venv
     3.3.1. [In terminal]: location\name_venv\Scripts\activate
     3.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
-    -> Add -> choose "Existing environment" -> "..." -> choose location\name_venv\Scripts\python.exe
+    -> Add -> choose "Existing environment" -> "..." -> choose location\venv\Scripts\python.exe
     
 ### 4. Upgrade pip3 and install requirements 
     pip install --upgrade pip
@@ -168,10 +168,10 @@
 
 ### 3. Next needs for create and activate virtualenv
     3.1. choose location
-    3.2. python3 -m venv name_venv
+    3.2. python3 -m venv venv
     3.3.1. [In terminal]: source location/name_venv/bin/activate
     3.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
-    -> Add -> choose "Existing environment" -> "..." -> choose location/name_venv/bin/python3
+    -> Add -> choose "Existing environment" -> "..." -> choose location/venv/bin/python3
     
 ### 4. Upgrade pip3 and install requirements 
     pip3 install --upgrade pip
@@ -224,10 +224,10 @@
     
 ### 4. Next needs for create and activate virtualenv
     4.1. choose location
-    4.2. python3 -m venv name_venv
+    4.2. python3 -m venv venv
     4.3.1. [In terminal]: source location/name_venv/bin/activate
     4.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
-    -> Add -> choose "Existing environment" -> "..." -> choose location/name_venv/bin/python3
+    -> Add -> choose "Existing environment" -> "..." -> choose location/venv/bin/python3
     
 ### 5. Upgrade pip3 and install requirements 
     pip3 install --upgrade pip
@@ -288,10 +288,10 @@
 
 ### 3. Next needs for create and activate virtualenv
     3.1. choose location
-    3.2. python -m venv name_venv
+    3.2. python -m venv venv
     3.3.1. [In terminal]: location\name_venv\Scripts\activate
     3.3.2. [In PyCharm]: PyCharm preferences -> Project: name -> Project: Interpreter -> 
-    -> Add -> choose "Existing environment" -> "..." -> choose location\name_venv\Scripts\python.exe
+    -> Add -> choose "Existing environment" -> "..." -> choose location\venv\Scripts\python.exe
     
 ### 4. Upgrade pip3 and install requirements 
     pip install --upgrade pip
