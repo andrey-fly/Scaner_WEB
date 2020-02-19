@@ -6,6 +6,8 @@
     {% block title %}
     <title>Main</title>
     {% endblock %}
+    {% block extra_css %}
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/button.css'%}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -22,8 +24,7 @@
 </div>
 {% include 'base/footer.html' %}
 <style>
-        {% block extra_css %}
-        {% endblock %}
+
 </style>
         {% block extra_js %}
         {% endblock %}
