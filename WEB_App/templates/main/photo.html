@@ -1,5 +1,10 @@
 {% extends 'base/base.html' %}
 {% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
+{% endblock %}
+
 {% block content %}
 <div class="content-group">
     <div class="main-content-frame-in-content-group">
@@ -25,6 +30,7 @@
     </div>
 </div>
 {% endblock %}
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
+
+{% block extra_js %}
+<script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}
