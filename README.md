@@ -120,30 +120,13 @@
     pip install --upgrade pip
     pip install -r requirements.txt
     
-### 5. Migrate to PostgreSQL 
-    Теперь самое интересное, 
-    хотя это несложно, как оказалось :)
+### 6. Install Docker
+    Install Docker from [https://www.docker.com](docker.com)
+    (Don't forget about the registration)
+    In application "Docker" needs to authorize
     
-    Ссылка на установку Postgres for windows (установщик, 
-    запускать от имени администратора):
-    https://www.enterprisedb.com/downloads/postgres-postgresql-downloads#windows
-    
-    Устанавливаем пакет (все настройки можно оставить по умолчанию, пароль поставить postgres).
-    После установки выполняем все в следующем порядке:
-    5.1. в программах находим pgAdmin 4 и открываем
-    5.2. заходим во вкладку server 
-    5.3. вводим пароль postgres во всплывающем окне
-    5.4. нажимаем на databases ПКМ -> create -> database
-    5.5. вкладка general:
-    database API_DB
-    owner postgres
-    все остальное по умолчанию
-    5.6. save
-    5.7. аналогично с WEB_DB
-    
-### 6. Дальше все, как обычно
-    python manage.py makemigrations
-    python manage.py migrate
+### 7. Up the project
+    [In Terminal]: docker-compose up
     
 
 ## WITHOUT DOCKER
