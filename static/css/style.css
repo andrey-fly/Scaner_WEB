@@ -168,16 +168,31 @@ header {
     height: 66px;
 }
 
-.navbar-main-element li.current a::after {
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.main-navigation li.highlight a {
+    color: rgb(233, 151, 93);
+}
+
+.main-navigation li.with-sep a {
+    position: relative;
+    padding-left: 22px;
+    margin-left: 8px;
+}
+
+.main-navigation li.with-sep a::before {
     position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 80%;
-    height: 3px;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
-    background-color: #3B84F1;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: 20px;
+    margin-top: -10px;
+    background-color: rgb(192, 47, 47);
     content: '\0020';
     display: block;
     -moz-transition: all 0.3s ease-in-out;
@@ -190,7 +205,8 @@ header {
 
 /**********/
 
-.error {
+
+/* .error {
     color: darkred;
     font-size: 12px;
 }
@@ -256,12 +272,7 @@ span {
     font-size: 12px;
 }
 
-a {
-    color: #333;
-    font-size: 14px;
-    text-decoration: none;
-    margin: 15px 0;
-}
+
 
 button {
     border-radius: 20px;
@@ -287,17 +298,6 @@ button:focus {
 button.ghost {
     background-color: transparent;
     border-color: #FFFFFF;
-}
-
-form {
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
 }
 
 input {
@@ -500,19 +500,10 @@ button:focus {
 button.ghost {
     background-color: transparent;
     border-color: #FFFFFF;
-}
+} */
 
-form {
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
-}
 
+/* 
 input {
     background-color: #eee;
     border: none;
@@ -656,4 +647,4 @@ input {
     margin: 0 5px;
     height: 40px;
     width: 40px;
-}
+} */
