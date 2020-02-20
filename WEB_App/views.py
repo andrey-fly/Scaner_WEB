@@ -3,6 +3,7 @@ from random import randint
 
 from django.conf import settings
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render
@@ -121,6 +122,7 @@ def recovery_password(request):
     return render(request, 'registration/recovery_password.html', context)
 
 
+@login_required()
 def photo(request):
     context = {}
     return render(request, 'main/photo.html', context)
