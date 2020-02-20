@@ -21,4 +21,5 @@ urlpatterns = [
     path('', index),
     path('registration/', signup),
     path('recovery_password/', recovery_password),
+    path('photo/', photo)
 ]

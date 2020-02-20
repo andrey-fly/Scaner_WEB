@@ -121,6 +121,11 @@ def recovery_password(request):
     return render(request, 'registration/recovery_password.html', context)
 
 
+def photo(request):
+    context = {}
+    return render(request, 'main/photo.html', context)
+
+
 def send_recovery_code(code, user):
     email_subject = 'EVILEG :: Сообщение через контактную форму '
     email_body = "Код для восстановления пароля: {}".format(code)
