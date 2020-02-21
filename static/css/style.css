@@ -195,9 +195,13 @@ header {
     transition: all 0.3s ease-in-out;
 }
 
-.i-text {
-    padding-left: 2px;
+footer {
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-
-/**********/
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}

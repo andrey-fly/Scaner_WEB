@@ -1,12 +1,17 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block title %}
+    <title>Photo</title>
+{% endblock %}
+
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
 {% endblock %}
 
 {% block content %}
-<div class="content-group">
+<form id="content-group" method="POST" action="">
+    {% csrf_token %}
     <div class="main-content-frame-in-content-group">
         <p class="header-text-in-main-content-frame">
             Загрузите фотографию товара
@@ -20,17 +25,20 @@
             </span>
         </button>
     </div>
-    <div class="photo-frame-in-content-group">
-        <p class="main-text-in-photo-frame">
-            Можно перетащить сюда фотографию в формате jpeg
-        </p>
-        <p class="description-text-in-photo-frame">
-            Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
-        </p>
+    <div id="photo-frame-in-content-group">
+        <input id="file-input" type="file" name="file" multiple>
+        <label for="file-input">
+            <p class="main-text-in-photo-frame">
+                Можно перетащить сюда фотографию в формате jpeg
+            </p>
+            <p class="description-text-in-photo-frame">
+                Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
+            </p>
+        </label>
     </div>
-</div>
+</form>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/photo.js' %}"></script>
+    <script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}
