@@ -15,8 +15,7 @@
                     {% if not user.is_authenticated %}
                     <li><a href="/login">Авторизация</a></li>
                     <li><a href="/registration">Регистрация</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
+                    {% endif %} {% if user.is_authenticated %}
                     <li><a href="#">Профиль</a></li>
                     <li><a href="/logout">Выход</a></li>
                     {% endif %}
@@ -33,12 +32,12 @@
 </footer>
 <style>
     .footer {
-      position: fixed important!;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      background-color: red;
-      color: white;
-      text-align: center;
+        position: fixed important!;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
     }
 </style>
