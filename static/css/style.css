@@ -194,3 +194,10 @@ header {
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
+
+.i-text {
+    padding-left: 2px;
+}
+
+
+/**********/
