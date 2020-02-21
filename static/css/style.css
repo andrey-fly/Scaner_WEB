@@ -194,3 +194,14 @@ header {
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
+
+footer {
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
