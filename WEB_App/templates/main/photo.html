@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="content-group">
+<div id="content-group" method="POST">
     <div class="main-content-frame-in-content-group">
         <p class="header-text-in-main-content-frame">
             Загрузите фотографию товара
@@ -20,17 +20,18 @@
             </span>
         </button>
     </div>
-    <div class="photo-frame-in-content-group">
+    <form id="photo-frame-in-content-group">
+        <input id="file-input" type="file" name="file" multiple>
         <p class="main-text-in-photo-frame">
             Можно перетащить сюда фотографию в формате jpeg
         </p>
         <p class="description-text-in-photo-frame">
             Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
         </p>
-    </div>
+    </form>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/photo.js' %}"></script>
+    <script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}

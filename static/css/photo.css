@@ -27,7 +27,7 @@
 }
 
 
-.content-group {
+#content-group {
     position: static;
     width: 900px;
     height: 480px;
@@ -43,7 +43,7 @@
 
 /* photo frame */
 
-.photo-frame-in-content-group {
+#photo-frame-in-content-group {
     display: flex;
     flex-direction: column;
     padding: 169px 16px;
@@ -122,6 +122,7 @@
     left: 224px;
     top: 40px;
     margin: 0px 24px;
+    text-align: left;
 }
 
 .header-text-in-main-content-frame {
@@ -200,4 +201,20 @@
     order: 0;
     align-self: center;
     /*margin: 10px 0px;*/
+}
+
+/* ==== */
+/* photo load css */
+/* ==== */
+
+#photo-frame-in-content-group input[type=file] {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	position: absolute;
+	z-index: -10;
+}
+
+#photo-frame-in-content-group dragover {
+	background-color: #966a57;
 }
