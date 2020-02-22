@@ -96,33 +96,13 @@ WSGI_APPLICATION = 'Scanner.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # # WITH DOCKER
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'WEB_DB',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'web_db',
-#         'PORT': '5432',
-#     },
-#     'API_DB': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'API_DB',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'api_db',
-#         'PORT': '5432',
-#     },
-# }
-
-# WITHOUT DOCKER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'WEB_DB',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'web_db',
         'PORT': '5432',
     },
     'API_DB': {
@@ -130,10 +110,30 @@ DATABASES = {
         'NAME': 'API_DB',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'api_db',
         'PORT': '5432',
     },
 }
+
+# WITHOUT DOCKER
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'WEB_DB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+#     'API_DB': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'API_DB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+# }
 
 # В общем, если использовать отдельную базу данных, то джанго в ней не будет видеть модели пользователей.
 # Поэтому я временно убираю разделение бд, пока не разберусь с этим.
