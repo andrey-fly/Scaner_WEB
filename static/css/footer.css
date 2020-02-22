@@ -1,7 +1,7 @@
 .footer-dark {
     padding: 50px 0;
-    color: #f0f9ff;
-    background-color: #282d32;
+    color: black;
+    background: rgba(59, 113, 241, 0.08);
 }
 
 .footer-dark h3 {

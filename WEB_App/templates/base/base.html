@@ -27,7 +27,9 @@
         {% include 'base/menu.html' %}
     </header>
     <main>
-        {% block content %} {% endblock %}
+        <div class="container-fluid">
+            {% block content %} {% endblock %}
+        </div>
     </main>
     <footer>
         {% include 'base/footer.html' %}
