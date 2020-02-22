@@ -21,5 +21,7 @@ urlpatterns = [
     path('', index),
     path('registration/', signup),
     path('recovery_password/', recovery_password),
-    path('photo/', photo)
+    path('photo/', photo),
+    path('product/<int:id>', product),
+    path('product/', product),
 ]
