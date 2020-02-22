@@ -207,7 +207,7 @@
 /* photo load css */
 /* ==== */
 
-#photo-frame-in-content-group input[type=file] {
+#file-input-for-label {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -215,6 +215,19 @@
 	z-index: -10;
 }
 
-#photo-frame-in-content-group dragover {
-	background-color: #966a57;
+#file-input-for-frame {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	position: absolute;
+	z-index: -10;
+}
+
+#photo-frame-in-content-group.highlight {
+    border: 2px dotted #3B84F1;
+	background-color: #e6e6fa;
+}
+
+.photo-load-button-in-main-content-frame:hover {
+    background-color: #002f55;
 }

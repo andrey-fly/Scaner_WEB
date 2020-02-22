@@ -19,15 +19,16 @@
         <p class="description-text-in-main-content-frame">
             Мы расскажем вам о нем всё, что знаем
         </p>
-        <button class="photo-load-button-in-main-content-frame btn-md" style="border: none">
+        <input id="file-input-for-label" type="file" name="file" multiple onchange="handleFiles(this.files)">
+        <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none">
             <span class="text-in-photo-load-button">
                 Загрузить фото
             </span>
-        </button>
+        </label>
     </div>
-    <div id="photo-frame-in-content-group">
-        <input id="file-input" type="file" name="file" multiple>
-        <label for="file-input">
+    <input id="file-input-for-frame" type="file" name="file" multiple onchange="handleFiles(this.files)">
+    <label for="file-input-for-frame" id="photo-frame-in-content-group">
+        <label for="file-input-for-frame">
             <p class="main-text-in-photo-frame">
                 Можно перетащить сюда фотографию в формате jpeg
             </p>
@@ -35,7 +36,7 @@
                 Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
             </p>
         </label>
-    </div>
+    </label>
 </form>
 {% endblock %}
 
