@@ -125,7 +125,13 @@ def recovery_password(request):
 @login_required()
 def photo(request):
     context = {}
+    print(request.POST)
     return render(request, 'main/photo.html', context)
+
+
+def product(request, id=0):
+    context = {}
+    return render(request, 'main/product.html', context)
 
 
 def send_recovery_code(code, user):
