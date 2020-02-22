@@ -130,6 +130,8 @@ a {
 /* Header */
 
 header {
+    -webkit-box-shadow: 0 0.25rem 0.125rem 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.25rem 0.125rem 0 rgba(0, 0, 0, 0.05);
     width: 100%;
     background: transparent;
     -moz-transition: all 0.3s ease-in-out;
