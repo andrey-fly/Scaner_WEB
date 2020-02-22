@@ -1,3 +1,14 @@
+/*
+
+1. Defolt
+2. Header
+3. Modal
+4. Icon
+5. Footer
+
+*/
+
+
 /* Defolt */
 
 html,
@@ -88,7 +99,7 @@ body {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     font-family: 'Montserrat', sans-serif;
-    /*background-color: #282828;*/
+    background-color: #282828;
     color: #d3d3d3;
     webkit-tap-highlight-color: #222;
 }
@@ -127,6 +138,13 @@ header {
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     z-index: 100;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
 }
 
 .navbar-main {
@@ -195,14 +213,441 @@ header {
     transition: all 0.3s ease-in-out;
 }
 
-footer {
-  flex-shrink: 0;
-  overflow: hidden;
-    background: white;
+.i-text {
+    padding-left: 2px;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+
+/**********/
+
+
+/* Modal */
+
+button {
+    border-radius: 20px;
+    border: 1px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
 }
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:focus {
+    outline: none;
+}
+
+button.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+}
+
+form {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    background: #FF416C;
+    background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+    background: linear-gradient(to right, #FF4B2B, #FF416C);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.social-container {
+    margin: 20px 0;
+}
+
+.social-container a {
+    border: 1px solid #DDDDDD;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+    padding: 8px 12px;
+    border: 2px solid #ccc;
+    outline: none;
+}
+
+.typeahead:focus {
+    border: 2px solid #0097cf;
+}
+
+.add {
+    background: #d32641;
+    padding: 20px;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 300px;
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+}
+
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+
+/**********/
+
+
+/* Icon */
+
+.icon {
+    text-decoration: none;
+    border-bottom: none;
+    position: relative;
+}
+
+.icon:before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    text-transform: none !important;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+}
+
+.icon>.label {
+    display: none;
+}
+
+.icon:before {
+    line-height: inherit;
+}
+
+.icon.solid:before {
+    font-weight: 900;
+}
+
+.icon.brands:before {
+    font-family: 'Font Awesome 5 Brands';
+}
+
+.icon {
+    color: #e0e0e0;
+}
+
+ul.icons {
+    cursor: default;
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.icons li {
+    display: inline-block;
+    padding: 0 1.5em 0 0;
+}
+
+ul.icons li:last-child {
+    padding-right: 0 !important;
+}
+
+ul.icons li .icon:before {
+    font-size: 1.75rem;
+}
+
+ul.icons.major li {
+    padding: 0 2.5em 0 0;
+}
+
+ul.icons.major li .icon:before {
+    font-size: 2.75rem;
+}
+
+@media screen and (max-width: 736px) {
+    ul.icons.major li {
+        padding: 0 1.25em 0 0;
+    }
+    ul.icons.major li .icon:before {
+        font-size: 1.75rem;
+    }
+}
+
+ul.icons.labeled li {
+    margin: 1em 0;
+    padding: 0 2em 0 0;
+}
+
+ul.icons.labeled li .icon:before {
+    vertical-align: middle;
+    font-size: 2.25rem;
+    margin-right: 0.5em;
+}
+
+ul.icons.labeled li .icon .label {
+    display: inline-block;
+    vertical-align: middle;
+    color: #999999;
+}
+
+@media screen and (max-width: 736px) and (orientation: portrait) {
+    ul.icons.labeled {
+        text-align: left;
+        margin-right: auto;
+        margin-left: auto;
+        display: inline-block;
+        white-space: nowrap;
+    }
+    ul.icons.labeled li {
+        display: block;
+        padding: 0;
+        margin: 1.5em 0 0 0;
+    }
+    ul.icons.labeled li .icon:before {
+        width: 1.5em;
+        display: block;
+        float: left;
+        margin-right: 0;
+    }
+    ul.icons.labeled li .icon:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+    ul.icons.labeled li:first-child {
+        margin-top: 0;
+    }
+}
+
+#footer a {
+    color: inherit;
+}
+
+
+/********/
+
+
+/* Footer */
+
+#footer {
+    background-color: #f7f7f7;
+    color: #999999;
+    padding: 4.5em 0 2.5em 0;
+    color: #b0b0b0;
+    text-align: center;
+}
+
+#footer input,
+#footer select,
+#footer textarea {
+    color: #999999;
+}
+
+#footer a {
+    color: inherit;
+    border-bottom-color: #c6c6c6;
+}
+
+#footer a:hover {
+    color: #4696e5;
+}
+
+#footer strong,
+#footer b {
+    color: #828282;
+}
+
+#footer h1,
+#footer h2,
+#footer h3,
+#footer h4,
+#footer h5,
+#footer h6 {
+    color: #828282;
+}
+
+#footer blockquote {
+    border-left-color: #d6d6d6;
+}
+
+#footer code {
+    background: rgba(144, 144, 144, 0.075);
+    border-color: #d6d6d6;
+}
+
+#footer hr {
+    border-bottom-color: #d6d6d6;
+}
+
+#footer a {
+    color: inherit;
+}
+
+#footer .copyright {
+    font-size: 0.8em;
+}
+
+@media screen and (max-width: 980px) {
+    #footer {
+        padding: 4em 4em 2em 4em;
+    }
+}
+
+@media screen and (max-width: 736px) and (orientation: landscape) {
+    #footer {
+        padding: 3em 3em 1em 3em;
+    }
+}
+
+@media screen and (max-width: 736px) and (orientation: portrait) {
+    #footer {
+        padding: 3em 1.5em 1em 1.5em;
+    }
+}
+
+
+/**********/
