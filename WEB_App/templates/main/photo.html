@@ -1,15 +1,7 @@
-{% extends 'base/base.html' %}
-{% load static %}
-
-{% block title %}
-    <title>Photo</title>
-{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
-{% endblock %}
-
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Photo</title>
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}"> {% endblock %} {% block content %}
 <form id="content-group" method="POST" action="">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -38,8 +30,6 @@
         </label>
     </label>
 </form>
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'js/photo.js' %}"></script>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}
