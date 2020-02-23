@@ -123,6 +123,7 @@ def recovery_password(request):
 
 
 from django.core.files.storage import FileSystemStorage
+from PIL import Image
 @login_required()
 def photo(request):
     context = {}
@@ -130,10 +131,19 @@ def photo(request):
     print(request.POST)
     print(request.FILES)
     print('----------')
+
     if request.method == 'POST':
         file = request.FILES['file']
         fs = FileSystemStorage()
-        fs.save(file.name, file)
+        file_name = fs.get_available_name(file.name)
+        fs.save(file_name, file)
+        print("Сохранен файл: {}".format(file_name))
+
+        # СЖАТИЕ
+        image = Image.open('collectedmedia/{}'.format(file_name))
+        image.resize(image.size, Image.ANTIALIAS)
+        image.save('collectedmedia/{}'.format(file_name), quality=100, optimize=True)
+
     return render(request, 'main/photo.html', context)
 
 
