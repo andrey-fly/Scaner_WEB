@@ -40,11 +40,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     function uploadFile(file) {
+        let url = '/photo/';
         let formData = new FormData();
-        formData.append('file', file);
+        formData.append('csrfmiddlewaretoken', csrftoken);
+        formData.append('file', file.name);
         fetch(url, {
             method: 'POST',
-            body: formData
+            body: formData,
         });
     }
 });
+
+function func_submit_btn() {
+    let form = document.getElementById("content-group");
+    let input = document.getElementById("file-input-for-label");
+    input.name = 'file';
+    form.submit();
+}
+
+function func_submit_area() {
+    let form = document.getElementById("content-group");
+    let input = document.getElementById("file-input-for-frame");
+    input.name = 'file';
+    form.submit();
+}
