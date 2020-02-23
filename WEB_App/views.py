@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from random import randint
 
@@ -133,6 +134,7 @@ def photo(request):
     print('----------')
 
     if request.method == 'POST':
+        # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         file = request.FILES['file']
         fs = FileSystemStorage()
         file_name = fs.get_available_name(file.name)
@@ -143,6 +145,9 @@ def photo(request):
         image = Image.open('collectedmedia/{}'.format(file_name))
         image.resize(image.size, Image.ANTIALIAS)
         image.save('collectedmedia/{}'.format(file_name), quality=100, optimize=True)
+
+        # УДАЛЕНИЕ КАРТИНКИ
+        os.remove('collectedmedia/{}'.format(file_name), dir_fd=None)
 
     return render(request, 'main/photo.html', context)
 
