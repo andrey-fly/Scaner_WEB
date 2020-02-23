@@ -122,10 +122,18 @@ def recovery_password(request):
     return render(request, 'registration/recovery_password.html', context)
 
 
+from django.core.files.storage import FileSystemStorage
 @login_required()
 def photo(request):
     context = {}
+    print('----------')
     print(request.POST)
+    print(request.FILES)
+    print('----------')
+    if request.method == 'POST':
+        file = request.FILES['file']
+        fs = FileSystemStorage()
+        fs.save(file.name, file)
     return render(request, 'main/photo.html', context)
 
 

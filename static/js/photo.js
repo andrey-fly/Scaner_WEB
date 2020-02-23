@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         let url = '/photo/';
         let formData = new FormData();
         formData.append('csrfmiddlewaretoken', csrftoken);
-        formData.append('file', file.name);
+        formData.append('file', file);
         fetch(url, {
             method: 'POST',
             body: formData,
