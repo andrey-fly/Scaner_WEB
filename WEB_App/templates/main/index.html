@@ -30,22 +30,16 @@
 </form>
 <section>
     <div class="container section-form">
-        <div class="section-form__inner">
-            <div class="section-form__content">
-                <form class="rd-mailform" action="">
-                    <div class="rd-mailform_boxed__inner">
-                        <div class="box-element box-element_md">
-                            <label class="form-label-outside">Поиск товара</label>
-                            <input class="form-input form-control-has-validation form-control-last-child" type="text" placeholder="Искать здесь...">
-                            <button type="submit"></button>
-                        </div>
-                    </div>
-                </form>
+        <div class="search-holder active">
+            <div class="circle container"></div>
+            <div class="form">
+                <div class="search-button"></div>
+                <input type="text" class="search-input" placeholder="Type here to search ..." />
             </div>
         </div>
     </div>
 </section>
-<section class="section-xl">
+<!-- <section class="section-xl">
     <div class="container">
         <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
@@ -57,7 +51,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 {% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 {% if login_errors %}
@@ -74,4 +68,5 @@
     }, 10);
     container.classList.add("right-panel-active")
 </script>
+
 {% endif %} {% endblock %}
