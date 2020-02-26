@@ -1,23 +1,77 @@
-{% extends 'base/base.html' %}
-{% load static %}
-{% block content %}
-<h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1>
-{% include 'main/modal_form.html' %}
-{% endblock %}
-{% block extra_js %}
+{% extends 'base/base.html' %} {% load static %} {% block content %}
+<!-- <h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1> -->
+<form id="content-group" method="POST" action="">
+    {% csrf_token %}
+    <div class="main-content-frame-in-content-group">
+        <p class="header-text-in-main-content-frame">
+            Загрузите фотографию товара
+        </p>
+        <p class="description-text-in-main-content-frame">
+            Мы расскажем вам о нем всё, что знаем
+        </p>
+        <input id="file-input-for-label" type="file" multiple onchange="func_submit_btn();">
+        <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none">
+            <span class="text-in-photo-load-button">
+                Загрузить фото
+            </span>
+        </label>
+    </div>
+    <input id="file-input-for-frame" type="file" multiple onchange="func_submit_area();">
+    <label for="file-input-for-frame" id="photo-frame-in-content-group">
+        <label for="file-input-for-frame">
+            <p class="main-text-in-photo-frame">
+                Можно перетащить сюда фотографию в формате jpeg
+            </p>
+            <p class="description-text-in-photo-frame">
+                Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
+            </p>
+        </label>
+    </label>
+</form>
+<section>
+    <div class="container section-form">
+        <div class="section-form__inner">
+            <div class="section-form__content">
+                <form class="rd-mailform" action="">
+                    <div class="rd-mailform_boxed__inner">
+                        <div class="box-element box-element_md">
+                            <label class="form-label-outside">Поиск товара</label>
+                            <input class="form-input form-control-has-validation form-control-last-child" type="text" placeholder="Искать здесь...">
+                            <button type="submit"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-xl">
+    <div class="container">
+        <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
+            <div class="col-md-9 col-lg-5">
+                <h3>Заголовок</h3>
+                <p>*Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, tempore. Aliquid fugit numquam temporibus sunt voluptas. Excepturi mollitia aliquam, consequatur unde deleniti tempore quia quam? Cupiditate expedita natus architecto culpa?</p>
+            </div>
+            <div class="col-md-9 col-lg-6">
+                <img src="" alt="" width="652" height="491">
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 {% if login_errors %}
 <script>
-    window.setTimeout(function() {modal_btn.click()}, 10 );
+    window.setTimeout(function() {
+        modal_btn.click()
+    }, 10);
     container.classList.remove("right-panel-active")
 </script>
-{% endif %}
-
-{% if reg_form.errors %}
+{% endif %} {% if reg_form.errors %}
 <script>
-    window.setTimeout(function() {modal_btn.click()}, 10 );
+    window.setTimeout(function() {
+        modal_btn.click()
+    }, 10);
     container.classList.add("right-panel-active")
 </script>
-{% endif %}
-
-{% endblock %}
+{% endif %} {% endblock %}
