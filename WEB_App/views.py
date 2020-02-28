@@ -132,6 +132,10 @@ def photo(request):
     print(request.POST)
     print(request.FILES)
     print('----------')
+    # TODO: Реализовать отдельный класс, для работы с изображениями. Методы:
+    # TODO: сохранение картинки: возвращает имя картинки, сохраняет в базу данных информацию о действии (потом)
+    # TODO: сжатие картинки (параметр - качество до 100), возвращает новый размер
+    # TODO: удаление картинки, возвращает true или false в зависимости от успеха
 
     if request.method == 'POST':
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
@@ -143,9 +147,10 @@ def photo(request):
 
         # СЖАТИЕ
         image = Image.open('collectedmedia/{}'.format(file_name))
+        print(os.stat('collectedmedia/{}'.format(file_name)).st_size)
         image.resize(image.size, Image.ANTIALIAS)
         image.save('collectedmedia/{}'.format(file_name), quality=100, optimize=True)
-
+        print(os.stat('collectedmedia/{}'.format(file_name)).st_size)
         # УДАЛЕНИЕ КАРТИНКИ
         os.remove('collectedmedia/{}'.format(file_name), dir_fd=None)
 

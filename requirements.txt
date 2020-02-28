@@ -12,3 +12,8 @@ yummy-sphinx-theme==0.1.1
 djangorestframework==3.11.0
 djoser==2.0.3
 djangorestframework-jwt==1.11.0
+requests==2.23.0
+# for image
+Pillow==7.0.0
+
+
