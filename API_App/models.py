@@ -27,8 +27,7 @@ class Goods(models.Model):
         (1, 'Молочные продукты'),
         (2, 'Мясные продукты'),
     ]
-    # category = models.IntegerField(verbose_name='Категория', choices=CATEGORIES, default=None, null=True)
-    category = models.IntegerField(verbose_name='Категория', choices=Category().get_choices(), default=None, null=True)
+    category = models.IntegerField(verbose_name='Категория', choices=CATEGORIES, default=None, null=True)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
