@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %} {% load static %} {% block content %}
 <!-- <h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1> -->
-<form id="content-group" method="POST" action="">
+<form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
         <p class="header-text-in-main-content-frame">
@@ -15,6 +15,8 @@
                 Загрузить фото
             </span>
         </label>
+
+
     </div>
     <input id="file-input-for-frame" type="file" multiple onchange="func_submit_area();">
     <label for="file-input-for-frame" id="photo-frame-in-content-group">
@@ -28,6 +30,9 @@
         </label>
     </label>
 </form>
+
+{{data}}
+
 <section>
     <div class="container">
         <div class="search-holder active">
@@ -101,6 +106,8 @@
         time: 1000
     });
 </script>
+<script> let csrftoken = '{{ csrf_token }}'; </script>
+<script src="{% static 'js/photo.js' %}"></script>
 
 {% if login_errors %}
 <script>
