@@ -124,32 +124,19 @@ def recovery_password(request):
     return render(request, 'registration/recovery_password.html', context)
 
 
-from django.core.files.storage import FileSystemStorage
-from PIL import Image
 @login_required()
 def photo(request):
     context = {}
-    print('----------')
-    print(request.POST)
-    print(request.FILES)
-    print('----------')
-    # TODO: Реализовать отдельный класс, для работы с изображениями. Методы:
-    # TODO: сохранение картинки: возвращает имя картинки, сохраняет в базу данных информацию о действии (потом)
-    # TODO: сжатие картинки (параметр - качество до 100), возвращает новый размер
-    # TODO: удаление картинки, возвращает true или false в зависимости от успеха
-
     if request.method == 'POST':
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller.save(request_file=request.FILES['file'])
         # СЖАТИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        print(image_controller.compression())
-        print(image_controller.get_file_name())
+        image_controller.compression(quality=100)
+        image_controller.get_file_name()
         # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller.delete_image()
-        print(image_controller.get_file_name())
-
     return render(request, 'main/photo.html', context)
 
 
