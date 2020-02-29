@@ -947,5 +947,9 @@ body::-webkit-scrollbar-thumb {
     margin-bottom: 15px;
 }
 
+.num {
+    font-size: 22px;
+}
+
 
 /*************/
