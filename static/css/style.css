@@ -5,13 +5,16 @@
 3. Modal
 4. Icon
 5. Footer
-6. First section
-
+6. 1 section
+7. Scrollbar
+8. Text selection
+9. 2 section
 */
 
 
 /* Defolt */
 
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin|Montserrat|Raleway|Roboto&display=swap');
 html,
 body,
 div,
@@ -703,7 +706,7 @@ ul.icons.labeled li .icon .label {
 }
 
 #footer .copyright {
-    font-size: 0.8em;
+    font-size: 1em;
 }
 
 @media screen and (max-width: 980px) {
@@ -728,7 +731,7 @@ ul.icons.labeled li .icon .label {
 /**********/
 
 
-/* First section */
+/* 1 section */
 
 *+.section-form {
     margin-top: 30px;
@@ -831,4 +834,118 @@ ul.icons.labeled li .icon .label {
 }
 
 
-/*****************/
+/*************/
+
+
+/* Scrollbar */
+
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #f6f6f6;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+    background-color: #f6f6f6;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: rgba(59, 132, 241, 0.5);
+}
+
+
+/*************/
+
+
+/* Text selection */
+
+*::-moz-selection {
+    background-color: rgba(59, 132, 241, 0.5);
+}
+
+*::selection {
+    background-color: rgba(59, 132, 241, 0.5);
+}
+
+
+/******************/
+
+
+/* 2 section */
+
+.clip-color {
+    background: rgba(59, 132, 241, 0.5);
+    width: 100vw;
+    height: 320px;
+    border-radius: 10px;
+}
+
+.divider {
+    position: relative;
+    padding-bottom: 25px;
+}
+
+.divider-min {
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.divider:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 54px;
+    background-color: rgba(59, 132, 241, 0.5);
+    height: 3px;
+}
+
+.divider-min:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 24px;
+    background-color: rgb(59, 132, 241);
+    height: 3px;
+}
+
+.divider-mid:before {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.row-30 {
+    margin-bottom: -30px;
+}
+
+*+.row,
+*+.row {
+    margin-top: 45px;
+}
+
+@media (min-width: 768px) {
+    *+.row,
+    *+.row {
+        margin-top: 60px;
+    }
+}
+
+.icon-lg {
+    font-size: 50px
+}
+
+.icon-blue {
+    color: rgb(59, 132, 241, 0.5);
+}
+
+.offset-top-bt-15 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+/*************/

@@ -29,31 +29,53 @@
     </label>
 </form>
 <section>
-    <div class="container section-form">
+    <div class="container">
         <div class="search-holder active">
             <div class="circle container"></div>
             <div class="form">
                 <div class="search-button"></div>
-                <input type="text" class="search-input" placeholder="Type here to search ..." />
+                <input type="text" class="search-input" placeholder="Найдите товар ..." />
             </div>
         </div>
     </div>
 </section>
-<!-- <section class="section-xl">
+<section class="section-xl">
     <div class="container">
         <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
-                <h3>Заголовок</h3>
-                <p>*Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, tempore. Aliquid fugit numquam temporibus sunt voluptas. Excepturi mollitia aliquam, consequatur unde deleniti tempore quia quam? Cupiditate expedita natus architecto culpa?</p>
+                <h2 class="divider">Очень интересный заголовок</h2>
+                <p>Не менее интересеный абзац.</p>
             </div>
-            <div class="col-md-9 col-lg-6">
-                <img src="" alt="" width="652" height="491">
+            <div class="col-md-9 col-lg-6 clip-color">
+                <!-- <img src="" alt="" width="652" height="491"> -->
             </div>
         </div>
     </div>
-</section> -->
+</section>
+<section class="section-lg text-center">
+    <div class="container">
+        <h3 class="divider divider-mid">Всякие Прикольные Штуки</h3>
+        <div class="row row-30">
+            <div class="col-6">
+                <i class="icon-lg icon-blue fas fa-project-diagram "></i>
+                <div class="divider-min divider-mid offset-top-bt-15">
+                    <div class="num">326</div>
+                </div>
+                <h5>Исследовано продуктов</h5>
+            </div>
+            <div class="col-6"></div>
+        </div>
+    </div>
+</section>
 {% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
+<script>
+    $(".num").counterUp({
+        delay: 10,
+        time: 1000
+    });
+</script>
+
 {% if login_errors %}
 <script>
     window.setTimeout(function() {
