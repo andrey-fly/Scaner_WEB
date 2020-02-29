@@ -8,7 +8,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from Modules.ImageController import ImageController
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
@@ -148,6 +148,8 @@ def photo(request):
         print(response.status_code)
         print(response.text)
         print('-----------')
+
+        context['data'] = response.text
 
     return render(request, 'main/photo.html', context)
 
