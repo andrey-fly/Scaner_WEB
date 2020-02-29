@@ -15,5 +15,7 @@ djangorestframework-jwt==1.11.0
 requests==2.23.0
 # for image
 Pillow==7.0.0
-
-
+# for detection barcode and objects
+opencv-python==4.2.0.32
+pyzbar==0.1.8
+numpy==1.18.1

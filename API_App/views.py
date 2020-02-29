@@ -39,6 +39,8 @@ class GetByBarCode(generics.ListAPIView):
         return Response(serializer.data)
 
 
+from pyzbar import pyzbar
+import cv2
 class SearchProduct(generics.ListAPIView):
     serializer_class = GoodsListSerializer
     queryset = Goods.objects.none()
@@ -57,5 +59,12 @@ class SearchProduct(generics.ListAPIView):
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller.save(request_file=request.FILES['file'])
+
+        # ИЩЕМ БАРКОД
+        image = cv2.imread('collectedmedia/{}'.format(image_controller.get_file_name()))
+        barcodes = pyzbar.decode(image)
+        print(barcodes)
+        for barcode in barcodes:
+            print(barcode.data.decode('ascii'))
 
         return Response(serializer.data)

@@ -137,7 +137,7 @@ def photo(request):
         image_controller.compression(quality=100)
         image_controller.get_file_name()
         # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        image_controller.delete_image()
+        # image_controller.delete_image()
 
         filepath = 'collectedmedia/{}'.format(image_controller.get_file_name())
         response = requests.get('http://0.0.0.0/api/v1/goods/goods/get_product/',
