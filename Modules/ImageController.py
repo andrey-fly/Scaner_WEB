@@ -22,16 +22,16 @@ class ImageController:
         self.__imagePIL = Image.open('collectedmedia/{}'.format(self.file_name))
         self.size = os.stat('collectedmedia/{}'.format(self.file_name)).st_size
 
-        p = Picture(s3_link ='kek',file=self.file_name)
-        p.save()
-
         # s3_link = models.CharField(verbose_name='Ссылка на s3 хранилище', max_length=255)
         # width = models.IntegerField()
         # height = models.IntegerField()
         # good = models.ForeignKey(to=Goods, on_delete=models.CASCADE)
 
-
         return self.file_name
+
+    def send_to_s3(self):
+        p = Picture(file=self.__file)
+        p.save()
 
     def crop(self, x, y, width, height):
         self.__imagePIL = self.__imagePIL.crop((x, y, width, height))

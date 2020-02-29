@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
-from Modules.ImageController import ImageController
+from Modules.ImageController import ImageController, Picture
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
 from WEB_App.models import Recovery
 
@@ -132,18 +132,19 @@ def photo(request):
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        image_controller.save(request_file=request.FILES['file']) # TODO: генерировать случайное имя
+        image_controller.save(request_file=request.FILES['file'])
         # СЖАТИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller.compression(quality=100)
         image_controller.get_file_name()
-        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        # image_controller.delete_image()
+        image_controller.send_to_s3()
 
         filepath = 'collectedmedia/{}'.format(image_controller.get_file_name())
         response = requests.get('http://0.0.0.0/api/v1/goods/goods/get_product/',
                                 files={'file': open(filepath, 'rb')},
                                 # headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'},
                                 params={'file': filepath})
+        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        image_controller.delete_image()
         print('----WEB----')
         print(response.status_code)
         print(response.text)
@@ -154,8 +155,9 @@ def photo(request):
     return render(request, 'main/photo.html', context)
 
 
-def product(request, id=0):
+def product(request, id):
     context = {}
+    context['img_url'] = Picture.objects.get(id=id).file.url
     return render(request, 'main/product.html', context)
 
 

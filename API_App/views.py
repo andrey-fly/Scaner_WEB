@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 
-from API_App.models import Goods
+from API_App.models import Goods, Picture
 from API_App.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from API_App.serializer import GoodsDetailSerializer, GoodsListSerializer
@@ -56,6 +56,9 @@ class SearchProduct(generics.ListAPIView):
         # print(bar[0]['barcode'])
         # print(bar[0]['rect'])
         # print(bar[0]['rect']['x'])
+
+        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        image_controller.delete_image()
 
         self.queryset = bar
         # print(self.queryset)

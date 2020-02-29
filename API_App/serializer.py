@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from API_App.models import Goods
+from API_App.models import Goods, Picture
 
 
 class GoodsDetailSerializer(serializers.ModelSerializer):

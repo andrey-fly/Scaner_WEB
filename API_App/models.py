@@ -17,11 +17,10 @@ class Goods(models.Model):
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
-class Picture(models.Model):
-    s3_link = models.CharField(verbose_name='Ссылка на s3 хранилище', max_length=255)
 
-    file = models.FileField(upload_to='photos')
-    #width =models.IntegerField()
-    #height = models.IntegerField()
-    #good = models.ForeignKey(to=Goods,on_delete=models.CASCADE)
+class Picture(models.Model):
+    file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
+    # user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+
 
