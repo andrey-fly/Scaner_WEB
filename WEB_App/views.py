@@ -142,7 +142,7 @@ def photo(request):
         filepath = 'collectedmedia/{}'.format(image_controller.get_file_name())
         response = requests.get('http://0.0.0.0/api/v1/goods/goods/get_product/',
                                 files={'file': open(filepath, 'rb')},
-                                headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'},
+                                # headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'},
                                 params={'file': filepath})
         print('----WEB----')
         print(response.status_code)
