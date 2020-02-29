@@ -7,6 +7,7 @@ from API_App.models import Goods
 from API_App.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from API_App.serializer import GoodsDetailSerializer, GoodsListSerializer
+from Modules.BarcodeDetector import BarcodeDetector
 from Modules.ImageController import ImageController
 
 
@@ -61,10 +62,10 @@ class SearchProduct(generics.ListAPIView):
         image_controller.save(request_file=request.FILES['file'])
 
         # ИЩЕМ БАРКОД
-        image = cv2.imread('collectedmedia/{}'.format(image_controller.get_file_name()))
-        barcodes = pyzbar.decode(image)
-        print(barcodes)
-        for barcode in barcodes:
-            print(barcode.data.decode('ascii'))
+        barcode_detector = BarcodeDetector()
+        bar = barcode_detector.detect('collectedmedia/{}'.format(image_controller.get_file_name()))
+        print(bar[0]['barcode'])
+        print(bar[0]['rect'])
+        print(bar[0]['rect']['x'])
 
         return Response(serializer.data)

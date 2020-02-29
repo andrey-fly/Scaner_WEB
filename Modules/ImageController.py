@@ -21,6 +21,11 @@ class ImageController:
         self.size = os.stat('collectedmedia/{}'.format(self.file_name)).st_size
         return self.file_name
 
+    def crop(self, x, y, width, height):
+        self.__imagePIL = self.__imagePIL.crop((x, y, width, height))
+        self.__imagePIL.save(self.file_name)
+        self.size = os.stat('collectedmedia/{}'.format(self.file_name)).st_size
+
     def compression(self, quality=100):
         self.__imagePIL.resize(self.__imagePIL.size, Image.ANTIALIAS)
         self.__imagePIL.save('collectedmedia/{}'.format(self.file_name), quality=quality, optimize=True)
