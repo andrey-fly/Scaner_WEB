@@ -20,7 +20,6 @@ def index(request):
     reg_form = UserRegistrationForm()
     errors = []
     if request.method == 'POST':
-        print(request.POST)
         if request.POST.get('status') == 'SignUp':
             reg_form = UserRegistrationForm(request.POST)
             print(reg_form.data)
@@ -44,6 +43,31 @@ def index(request):
                 errors.append('Неправильный пароль!')
             else:
                 login(request, user)
+
+        if request.FILES:
+            print(123)
+            # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+            image_controller = ImageController()
+            # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+            image_controller.save(request_file=request.FILES['file'])
+            # СЖАТИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+            image_controller.compression(quality=100)
+            image_controller.get_file_name()
+            image_controller.send_to_s3()
+
+            filepath = 'collectedmedia/{}'.format(image_controller.get_file_name())
+            response = requests.get('http://0.0.0.0/api/v1/goods/goods/get_product/',
+                                    files={'file': open(filepath, 'rb')},
+                                    # headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'},
+                                    params={'file': filepath})
+            # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+            image_controller.delete_image()
+            print('----WEB----')
+            print(response.status_code)
+            print(response.text)
+            print('-----------')
+
+        context['data'] = response.text
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
