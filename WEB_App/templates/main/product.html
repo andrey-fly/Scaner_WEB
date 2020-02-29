@@ -1,7 +1,64 @@
 {% extends 'base/base.html' %} {% load static %} {% block title %}
 <title>Product</title>
 {% endblock %} {% block extra_css %}
-<!--    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">-->
-{% endblock %} {% block content %} ВЕРСТАЕМ {% endblock %} {% block extra_js %}
-<!--    <script src="{% static 'js/photo.js' %}"></script>-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
+{% endblock %} {% block content %}
+    <div id="content-block">
+        <div id="photo-block-in-content-block">
+            <div id="mask-group-in-photo-block">
+                <div id="background-figure-in-mask-group">
+                    <img src="{% static 'pics/product.svg'%}" id="photo-in-mask-group">
+                </div>
+            </div>
+            <label id="photo-load-label-in-photo-block">
+                Загрузить новое фото
+            </label>
+        </div>
+        <div id="info-block-in-content-block">
+            <p id="way-to-the-page-in-info-block">
+                Молочные продукты > Сливочное масло
+            </p>
+            <p id="product-name-in-info-block">
+                Масло сливочное "Экомилк" 82,5%
+            </p>
+            <div id="score-block-in-info-block">
+<!--                Like or unlike block-->
+                <div id="recommendation-block-in-score-block">
+                    <img src="{% static 'pics/like.svg'%}" id="image-recommendation-in-recommendation-block">
+                    <p id="text-recommendation-in-recommendation-block">
+                        Можно брать
+                    </p>
+                </div>
+<!--                Score in number block-->
+                <div id="numbered-score-block-in-score-block">
+                    <div id="numbered-score-figure-in-numbered-score-block">
+                        <label id="score-number-in-numbered-score-figure">
+                            74
+                        </label>
+                    </div>
+                    <p id="numbered-score-description-in-numbered-score-block">
+                        Оценка Росконтроль
+                    </p>
+                </div>
+            </div>
+            <div id="adv-list-block-in-info-block">
+                <p id="adv-list-name-in-adv-list-block">Достоинства</p>
+                <ul id="adv-list-in-adv-list-block">
+                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>
+                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>
+                    <li><em>+</em><span>Соответствует указанной в маркировке массовой доле жира</span></li>
+                    <li><em>+</em><span>Не содержит немолочного жира</span></li>
+                    <li><em>+</em><span>Безопасное</span></li>
+                </ul>
+            </div>
+            <div id="disadv-list-block-in-info-block">
+                <p id="disadv-list-name-in-adv-list-block">Недостатки</p>
+                <ul id="disadv-list-in-adv-list-block">
+                    <li><em>-</em><span>Отсутствуют</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %} {% block extra_js %}
+<!--    <script src="{% static 'js/product.js' %}"></script>-->
 {% endblock %}
