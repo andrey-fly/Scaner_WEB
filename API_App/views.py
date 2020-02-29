@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
@@ -13,13 +12,13 @@ from Modules.ImageController import ImageController
 
 class GoodsCreateView(generics.CreateAPIView):
     serializer_class = GoodsDetailSerializer
-    permission_classes = (IsAdminUser, )
+    permission_classes = (IsAdminUser,)
 
 
 class GoodsListView(generics.ListAPIView):
     serializer_class = GoodsListSerializer
     queryset = Goods.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
 
 class GoodsDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -40,22 +39,12 @@ class GetByBarCode(generics.ListAPIView):
         return Response(serializer.data)
 
 
-from pyzbar import pyzbar
-import cv2
 class SearchProduct(generics.ListAPIView):
     serializer_class = GoodsListSerializer
     queryset = Goods.objects.none()
     permission_classes = ()
 
     def get(self, request):
-        queryset = []
-        serializer = self.serializer_class(queryset, many=True)
-
-        print('----API----')
-        print(request.GET)
-        print(request.FILES)
-        print('-----------')
-
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
@@ -64,8 +53,10 @@ class SearchProduct(generics.ListAPIView):
         # ИЩЕМ БАРКОД
         barcode_detector = BarcodeDetector()
         bar = barcode_detector.detect('collectedmedia/{}'.format(image_controller.get_file_name()))
-        print(bar[0]['barcode'])
-        print(bar[0]['rect'])
-        print(bar[0]['rect']['x'])
+        # print(bar[0]['barcode'])
+        # print(bar[0]['rect'])
+        # print(bar[0]['rect']['x'])
 
-        return Response(serializer.data)
+        self.queryset = bar
+        # print(self.queryset)
+        return Response(self.queryset)
