@@ -36,7 +36,7 @@ class Goods(models.Model):
 
 class Picture(models.Model):
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
 
 
