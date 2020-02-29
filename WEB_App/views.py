@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render
 
+from Modules.ImageController import ImageController
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
 from WEB_App.models import Recovery
 
@@ -139,20 +140,15 @@ def photo(request):
 
     if request.method == 'POST':
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        file = request.FILES['file']
-        fs = FileSystemStorage()
-        file_name = fs.get_available_name(file.name)
-        fs.save(file_name, file)
-        print("Сохранен файл: {}".format(file_name))
-
-        # СЖАТИЕ
-        image = Image.open('collectedmedia/{}'.format(file_name))
-        print(os.stat('collectedmedia/{}'.format(file_name)).st_size)
-        image.resize(image.size, Image.ANTIALIAS)
-        image.save('collectedmedia/{}'.format(file_name), quality=100, optimize=True)
-        print(os.stat('collectedmedia/{}'.format(file_name)).st_size)
-        # УДАЛЕНИЕ КАРТИНКИ
-        os.remove('collectedmedia/{}'.format(file_name), dir_fd=None)
+        image_controller = ImageController()
+        # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        image_controller.save(request_file=request.FILES['file'])
+        # СЖАТИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        print(image_controller.compression())
+        print(image_controller.get_file_name())
+        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        image_controller.delete_image()
+        print(image_controller.get_file_name())
 
     return render(request, 'main/photo.html', context)
 
