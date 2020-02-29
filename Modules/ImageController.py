@@ -3,6 +3,8 @@ import os
 from django.core.files.storage import FileSystemStorage
 from PIL import Image
 
+from API_App.models import *
+
 
 class ImageController:
     __fs = FileSystemStorage()
@@ -19,6 +21,16 @@ class ImageController:
         self.__fs.save(self.file_name, self.__file)
         self.__imagePIL = Image.open('collectedmedia/{}'.format(self.file_name))
         self.size = os.stat('collectedmedia/{}'.format(self.file_name)).st_size
+
+        p = Picture(s3_link ='kek',file=self.file_name)
+        p.save()
+
+        # s3_link = models.CharField(verbose_name='Ссылка на s3 хранилище', max_length=255)
+        # width = models.IntegerField()
+        # height = models.IntegerField()
+        # good = models.ForeignKey(to=Goods, on_delete=models.CASCADE)
+
+
         return self.file_name
 
     def crop(self, x, y, width, height):

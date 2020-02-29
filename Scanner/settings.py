@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'API_App',
     'WEB_App',
     'djoser',
-    # 'django-templated-mail',
+    'django_s3_storage'
+
 ]
 
 REST_FRAMEWORK = {
@@ -199,3 +200,14 @@ EMAIL_HOST_PASSWORD = 'password123'      # пароль от ящика
 EMAIL_PORT = 2525                        # порт для подключения
 EMAIL_USE_TLS = True                     # использование протокола шифрования
 DEFAULT_FROM_EMAIL = 'info@example.com'  # email, с которого будет отправлено письмо
+
+
+DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
+
+# The AWS region to connect to.
+AWS_REGION = "nl-ams"
+
+AWS_ACCESS_KEY_ID = "SCW4NVHQWSWKR4YTRCVG"
+AWS_SECRET_ACCESS_KEY = "912dc092-b911-441b-9582-de4180fb47d1"
+AWS_S3_ENDPOINT_URL = "https://s3.nl-ams.scw.cloud"
+AWS_S3_BUCKET_NAME = "scaner-goods-pictures"

@@ -132,7 +132,7 @@ def photo(request):
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
-        image_controller.save(request_file=request.FILES['file'])
+        image_controller.save(request_file=request.FILES['file']) # TODO: генерировать случайное имя
         # СЖАТИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller.compression(quality=100)
         image_controller.get_file_name()

@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/goods/', include('API_App.urls')),
+    path('api/v1/goods/', include('API_App.urls')), # TODO: убрать повтор
     path('api/v1/base-auth/', include('rest_framework.urls')),
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth_token/', include('djoser.urls.authtoken')),

@@ -19,3 +19,6 @@ Pillow==7.0.0
 opencv-python==4.2.0.32
 pyzbar==0.1.8
 numpy==1.18.1
+
+# for S3
+django-s3-storage
