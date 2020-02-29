@@ -67,7 +67,7 @@ def index(request):
             print(response.text)
             print('-----------')
 
-        context['data'] = response.text
+            context['data'] = response.text
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
@@ -181,7 +181,7 @@ def photo(request):
 
 def product(request, id):
     context = {}
-    context['img_url'] = Picture.objects.get(id=id).file.url
+    # context['img_url'] = Picture.objects.get(id=id).file.url
     return render(request, 'main/product.html', context)
 
 
