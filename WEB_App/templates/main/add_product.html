@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Add product</title>
+{% endblock %} {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}">
+{% endblock %} {% block content %}
+    <div id="content-block">
+        <div id="mask-group-in-content-block">
+            <img src="{% static 'pics/product.svg'%}" id="photo-in-mask-group">
+<!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
+        </div>
+        <form id="product-name-form-in-content-group">
+            <p id="header-text-in-form">
+                Добавить продукт
+            </p>
+            <p id="description-text-in-form">
+                На этой странице вы можете отправить нашим модераторам название и
+                фотографию продукта, которого, скорее всего, наш сайт не смог опознать или
+                название которого не совпадает с настоящим.
+            </p>
+            <div id="product-name-input-block">
+                <input type="text" id="product-name-input" placeholder="Введите название продукта...">
+            </div>
+            <label id="form-send-button-in-form">
+                <span id="text-in-form-send-button">
+                    Отправить на модерацию
+                </span>
+            </label>
+        </form>
+    </div>
+{% endblock %} {% block extra_js %}
+<!--    <script src="{% static 'js/add_product.js' %}"></script>-->
+{% endblock %}

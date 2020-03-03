@@ -24,4 +24,6 @@ urlpatterns = [
     path('photo/', photo),
     path('product/<int:id>', product),
     path('product/', product),
+    # path('add_product/<int:id>', add_product),
+    path('add_product/', add_product),
 ]

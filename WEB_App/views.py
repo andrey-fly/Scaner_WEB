@@ -185,6 +185,12 @@ def product(request, id):
     return render(request, 'main/product.html', context)
 
 
+def add_product(request):   #(request, id):
+    context = {}
+    # context['img_url'] = Picture.objects.get(id=id).file.url
+    return render(request, 'main/add_product.html', context)
+
+
 def send_recovery_code(code, user):
     email_subject = 'EVILEG :: Сообщение через контактную форму '
     email_body = "Код для восстановления пароля: {}".format(code)
