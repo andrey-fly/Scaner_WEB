@@ -17,14 +17,14 @@ from django.contrib.auth.models import User
 # base rest views classes
 class BaseCreateView(generics.CreateAPIView):
     serializer_class = None
-    permission_classes = (IsAdminUser, )
+    permission_classes = (IsAdminUser,)
 
 
 class BaseListView(generics.ListAPIView):
     serializer_class = None
     queryset = []
     authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
 
 class BaseDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -123,10 +123,11 @@ class GetByBarCode(generics.ListAPIView):
 
 class SearchProduct(generics.ListAPIView):
     serializer_class = GoodsListSerializer
-    queryset = Goods.objects.none()
+    queryset = Goods.objects.all()
     permission_classes = ()
 
     def get(self, request):
+        queryset = {}
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ДЛЯ ОБРАБОТКИ
@@ -142,12 +143,26 @@ class SearchProduct(generics.ListAPIView):
         target_good = None
         if bar and Goods.objects.filter(barcode=bar[0]['barcode']):
             target_good = Goods.objects.get(barcode=bar[0]['barcode'])
+            picture = Picture(file=request.FILES['file'],
+                              target_good=target_good,
+                              platform=request.GET.get('platform'))
+            picture.save()
 
-        image_controller.send_to_s3(target_good=target_good, platform=request.GET.get('platform'))
+            positives_q = Positive.objects.filter(good=target_good)
+            negatives_q = Negative.objects.filter(good=target_good)
+            positives = []
+            negatives = []
+            for item in positives_q:
+                positives.append(item.value)
+            for item in negatives_q:
+                negatives.append(item.value)
+
+            queryset['good'] = target_good.name
+            queryset['image'] = picture.id
+            # queryset['positives'] = positives
+            # queryset['negatives'] = negatives
 
         # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ПОСЛЕ ОБРАБОТКИ
         image_controller.delete_image()
 
-        self.queryset = bar
-        # print(self.queryset)
-        return Response(self.queryset)
+        return Response(queryset)

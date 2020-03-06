@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
-from Modules.ImageController import ImageController, Picture
+from Modules.ImageController import ImageController, Picture, Goods
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
 from WEB_App.models import Recovery
 
@@ -139,15 +139,34 @@ class PhotoPage(TemplateView):
         response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
                                 files={'file': request.FILES['file']},
                                 params={'user': request.user.id,
-                                        'platform': 'web'}
-                                # headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'}
+                                        'platform': 'web'},
+                                # headers={'Authorization': 'Token 8cf8bf79233bd6f7cd98cc6e8ef1d6efa69996d6'}
                                 )
+        # r = response.json()
+        # print(r[0])
+        # print(r[0]['name'])
+        # for item in r[0]:
+        #     print(item)
         self.context['data'] = response.text
+
+        response = response.json()
+        return redirect(to='/product/{}/?image={}'.format(response['good'], response['image']))
+
         return render(request, self.template_name, self.context)
 
 
 class ProductPage(TemplateView):
     context = {}
+
+    def get(self, request, good):
+        img_id = int(request.GET['image'])
+        good = Goods.objects.get(name=good)
+        img = Picture.objects.get(id=img_id)
+        self.context['img'] = img.file.url
+        self.context['name'] = good.name
+        self.context['positives'] = good.get_positives()
+        self.context['negatives'] = good.get_negatives()
+        return render(request, self.template_name, self.context)
 
 
 def send_recovery_code(code, user):

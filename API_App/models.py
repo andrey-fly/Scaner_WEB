@@ -33,6 +33,12 @@ class Goods(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
 
+    def get_positives(self):
+        return Positive.objects.filter(good=self)
+
+    def get_negatives(self):
+        return Negative.objects.filter(good=self)
+
 
 class Picture(models.Model):
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
@@ -43,14 +49,19 @@ class Picture(models.Model):
 
 
 class Positive(models.Model):
-    goods = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
+    good = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
     value = models.CharField(verbose_name='Достоинство', max_length=128)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
 
 
 class Negative(models.Model):
-    goods = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
+    good = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
     value = models.CharField(verbose_name='Недостаток', max_length=128)
-
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
 
 # class UserActions(models.Model):
 #     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)

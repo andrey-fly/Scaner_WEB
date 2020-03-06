@@ -69,10 +69,14 @@ class PositiveListSerializer(BaseListSerializer):
 
 # for negative characteristics
 class NegativeDetailSerializer(BaseDetailSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Negative
         fields = '__all__'
-        # fields = ('id', 'name', 'user')
+        # fields = ('goods', 'value')
+
+    def create(self, validated_data):
+        return Negative.objects.create(**validated_data)
 
 
 class NegativeListSerializer(BaseListSerializer):

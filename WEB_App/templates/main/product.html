@@ -7,7 +7,7 @@
         <div id="photo-block-in-content-block">
             <div id="mask-group-in-photo-block">
                 <div id="background-figure-in-mask-group">
-                    <img src="{% static 'pics/product.svg'%}" id="photo-in-mask-group">
+                    <img src="{{img}}" id="photo-in-mask-group">
 <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
                 </div>
             </div>
@@ -20,7 +20,7 @@
                 Молочные продукты > Сливочное масло
             </p>
             <p id="product-name-in-info-block">
-                Масло сливочное "Экомилк" 82,5%
+                {{name}}
             </p>
             <div id="score-block-in-info-block">
 <!--                Like or unlike block-->
@@ -45,17 +45,30 @@
             <div id="adv-list-block-in-info-block">
                 <p id="adv-list-name-in-adv-list-block">Достоинства</p>
                 <ul id="adv-list-in-adv-list-block">
-                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>
-                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>
-                    <li><em>+</em><span>Соответствует указанной в маркировке массовой доле жира</span></li>
-                    <li><em>+</em><span>Не содержит немолочного жира</span></li>
-                    <li><em>+</em><span>Безопасное</span></li>
+                    {% if positives %}
+                        {% for positive in positives %}
+                        <li><em>+</em><span>{{positive.value}}</span></li>
+                        {% endfor %}
+                    {% else %}
+                        <li><em>-</em><span>Отсутствуют</span></li>
+                    {% endif %}
+<!--                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>-->
+<!--                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>-->
+<!--                    <li><em>+</em><span>Соответствует указанной в маркировке массовой доле жира</span></li>-->
+<!--                    <li><em>+</em><span>Не содержит немолочного жира</span></li>-->
+<!--                    <li><em>+</em><span>Безопасное</span></li>-->
                 </ul>
             </div>
             <div id="disadv-list-block-in-info-block">
                 <p id="disadv-list-name-in-adv-list-block">Недостатки</p>
                 <ul id="disadv-list-in-adv-list-block">
-                    <li><em>-</em><span>Отсутствуют</span></li>
+                    {% if negatives %}
+                        {% for negative in negatives %}
+                        <li><em>+</em><span>{{negative.value}}</span></li>
+                        {% endfor %}
+                    {% else %}
+                        <li><em>-</em><span>Отсутствуют</span></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
