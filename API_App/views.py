@@ -2,30 +2,117 @@ from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 
-from API_App.models import Goods
+from API_App.models import Goods, Category, Picture, Negative, Positive
 from API_App.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from API_App.serializer import GoodsDetailSerializer, GoodsListSerializer
+from API_App.serializer import GoodsDetailSerializer, GoodsListSerializer, CategoryDetailSerializer, \
+    CategoryListSerializer, PictureDetailSerializer, PictureListSerializer, NegativeDetailSerializer, \
+    NegativeListSerializer, PositiveDetailSerializer, PositiveListSerializer
 from Modules.BarcodeDetector import BarcodeDetector
 from Modules.ImageController import ImageController
 
 
-class GoodsCreateView(generics.CreateAPIView):
-    serializer_class = GoodsDetailSerializer
-    permission_classes = (IsAdminUser,)
+# base rest views classes
+class CreateView(generics.CreateAPIView):
+    serializer_class = None
+    permission_classes = (IsAdminUser, )
 
 
-class GoodsListView(generics.ListAPIView):
-    serializer_class = GoodsListSerializer
-    queryset = Goods.objects.all()
-    permission_classes = (IsAuthenticated,)
+class ListView(generics.ListAPIView):
+    serializer_class = None
+    queryset = []
+    authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated, )
 
 
-class GoodsDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = GoodsDetailSerializer
-    queryset = Goods.objects.all()
+class DetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = None
+    queryset = []
     authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
     permission_classes = (IsOwnerOrReadOnly, IsAdminUser)
+
+
+# goods rest view classes
+class GoodsCreateView(CreateView):
+    serializer_class = GoodsDetailSerializer
+
+
+class GoodsListView(ListView):
+    serializer_class = GoodsListSerializer
+    queryset = Goods.objects.all()
+
+
+class GoodsDetailView(DetailView):
+    serializer_class = GoodsDetailSerializer
+    queryset = Goods.objects.all()
+
+
+# category rest view classes
+class CategoryCreateView(CreateView):
+    serializer_class = CategoryDetailSerializer
+
+
+class CategoryListView(ListView):
+    serializer_class = CategoryListSerializer
+    queryset = Category.objects.all()
+
+
+class CategoryDetailView(DetailView):
+    serializer_class = CategoryDetailSerializer
+    queryset = Category.objects.all()
+
+
+# pictures rest view classes
+class PictureCreateView(CreateView):
+    serializer_class = PictureDetailSerializer
+
+
+class PictureListView(ListView):
+    serializer_class = PictureListSerializer
+    queryset = Picture.objects.all()
+
+
+class PictureDetailView(DetailView):
+    serializer_class = PictureDetailSerializer
+    queryset = Picture.objects.all()
+
+
+# negative characteristics rest view classes
+class NegativeCreateView(CreateView):
+    serializer_class = NegativeDetailSerializer
+
+
+class NegativeListView(ListView):
+    serializer_class = NegativeListSerializer
+    queryset = Negative.objects.all()
+
+
+class NegativeDetailView(DetailView):
+    serializer_class = NegativeDetailSerializer
+    queryset = Negative.objects.all()
+
+
+# positive characteristics rest view classes
+class PositiveCreateView(CreateView):
+    serializer_class = PositiveDetailSerializer
+
+
+class PositiveListView(ListView):
+    serializer_class = PositiveListSerializer
+    queryset = Positive.objects.all()
+
+
+class PositiveDetailView(DetailView):
+    serializer_class = PositiveDetailSerializer
+    queryset = Positive.objects.all()
+
+
+
+
+
+
+
+
 
 
 class GetByBarCode(generics.ListAPIView):

@@ -16,12 +16,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from API_App.views import GoodsCreateView, GoodsListView, GoodsDetailView, GetByBarCode, SearchProduct
+from API_App.views import GoodsCreateView, GoodsListView, GoodsDetailView, GetByBarCode, SearchProduct, \
+    CategoryCreateView, CategoryListView, CategoryDetailView, PictureCreateView, PictureListView, PictureDetailView, \
+    NegativeCreateView, NegativeListView, NegativeDetailView, PositiveCreateView, PositiveDetailView, PositiveListView
 
 urlpatterns = [
     path('goods/create/', GoodsCreateView.as_view()),
     path('goods/all/', GoodsListView.as_view()),
     path('goods/detail/<int:pk>/', GoodsDetailView.as_view()),
+    path('category/create/', CategoryCreateView.as_view()),
+    path('category/all/', CategoryListView.as_view()),
+    path('category/detail/<int:pk>/', CategoryDetailView.as_view()),
+    path('picture/create/', PictureCreateView.as_view()),
+    path('picture/all/', PictureListView.as_view()),
+    path('picture/detail/<int:pk>/', PictureDetailView.as_view()),
+    path('negative/create/', NegativeCreateView.as_view()),
+    path('negative/all/', NegativeListView.as_view()),
+    path('negative/detail/<int:pk>/', NegativeDetailView.as_view()),
+    path('positive/create/', PositiveCreateView.as_view()),
+    path('positive/all/', PositiveListView.as_view()),
+    path('positive/detail/<int:pk>/', PositiveDetailView.as_view()),
+
     path('goods/barcode/<str:barcode>/', GetByBarCode.as_view()),
     path('goods/get_product/', SearchProduct.as_view()),
 ]
