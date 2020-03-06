@@ -166,6 +166,7 @@ class ProductPage(TemplateView):
         self.context['name'] = good.name
         self.context['positives'] = good.get_positives()
         self.context['negatives'] = good.get_negatives()
+        self.context['points'] = good.points_rusControl
         return render(request, self.template_name, self.context)
 
 

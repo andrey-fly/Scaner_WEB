@@ -32,6 +32,7 @@ class Goods(models.Model):
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
+    points_rusControl = models.CharField(verbose_name='Оценка Росконтроля', max_length=10, default='Не указано', null=True)
 
     def get_positives(self):
         return Positive.objects.filter(good=self)
