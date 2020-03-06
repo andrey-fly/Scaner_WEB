@@ -1,7 +1,8 @@
 import os
 import urllib
 from datetime import datetime
-from random import randint
+import random
+import string
 
 import requests
 from django.conf import settings
@@ -82,14 +83,7 @@ def recovery_password(request):
             elif User.objects.filter(email=data):
                 target_user = User.objects.get(email=data)
             if target_user:
-                code = '{}{}{}{}{}{}'.format(
-                    randint(0, 9),
-                    randint(0, 9),
-                    randint(0, 9),
-                    randint(0, 9),
-                    randint(0, 9),
-                    randint(0, 9)
-                )
+                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
                 send_recovery_code(code, target_user)
                 rec = Recovery(target_user=target_user, from_ip=user_ip, code=code)
                 rec.save()
