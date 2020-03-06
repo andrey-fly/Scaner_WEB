@@ -133,8 +133,13 @@ class PhotoPage(TemplateView):
     context = {}
 
     def post(self, request):
+        # Почему именно так?
+        # В дальнейшем предполагается использовать апи для обработки запросов с сайта и приложения,
+        # кроме того, сайт и апи должны работать на разных серверах.
         response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
                                 files={'file': request.FILES['file']},
+                                params={'user': request.user.id,
+                                        'platform': 'web'}
                                 # headers={'Authorization': 'Token a85b76313bb1c85f770e72b8946d426392ec6e3c'}
                                 )
         self.context['data'] = response.text

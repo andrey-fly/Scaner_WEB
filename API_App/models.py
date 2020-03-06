@@ -21,7 +21,7 @@ class Category(models.Model):
 
 class Goods(models.Model):
     name = models.CharField(verbose_name='Наименование', db_index=True, max_length=128)
-    barcode = models.CharField(verbose_name='Штрих-код', db_index=True, max_length=12, default=None, null=True)
+    barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
     imageAIname = models.CharField(verbose_name='Имя в модели нейросети', db_index=True, max_length=64, default=None, null=True)
     CATEGORIES = [
         (1, 'Молочные продукты'),
@@ -38,6 +38,8 @@ class Picture(models.Model):
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     # user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+    target_good = models.ForeignKey(Goods, verbose_name='Товар', on_delete=models.CASCADE, null=True, default=None)
+    platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
 
 
 class Positive(models.Model):
@@ -49,6 +51,13 @@ class Negative(models.Model):
     goods = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
     value = models.CharField(verbose_name='Недостаток', max_length=128)
 
+
+# class UserActions(models.Model):
+#     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+#     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+#     status = models.BooleanField(verbose_name='Успех')
+#     target_good = models.ForeignKey(Goods, verbose_name='Товар', on_delete=models.CASCADE, null=True, default=None)
+#     uploaded_image = models.ForeignKey(Picture, verbose_name='Загруженное изображение', on_delete=models.CASCADE, null=True, default=None)
 
 
 

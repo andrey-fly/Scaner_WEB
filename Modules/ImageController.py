@@ -29,8 +29,10 @@ class ImageController:
 
         return self.file_name
 
-    def send_to_s3(self):
-        p = Picture(file=self.__file)
+    def send_to_s3(self, target_good, platform):
+        p = Picture(file=self.__file,
+                    target_good=target_good,
+                    platform=platform)
         p.save()
 
     def crop(self, x, y, width, height):

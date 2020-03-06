@@ -11,6 +11,8 @@ from API_App.serializer import GoodsDetailSerializer, GoodsListSerializer, Categ
 from Modules.BarcodeDetector import BarcodeDetector
 from Modules.ImageController import ImageController
 
+from django.contrib.auth.models import User
+
 
 # base rest views classes
 class BaseCreateView(generics.CreateAPIView):
@@ -125,11 +127,9 @@ class SearchProduct(generics.ListAPIView):
     permission_classes = ()
 
     def get(self, request):
-
-        print(request.FILES)
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
-        # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ДЛЯ ОБРАБОТКИ
         image_controller.save(request_file=request.FILES['file'])
 
         # ИЩЕМ БАРКОД
@@ -139,7 +139,13 @@ class SearchProduct(generics.ListAPIView):
         # print(bar[0]['rect'])
         # print(bar[0]['rect']['x'])
 
-        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
+        target_good = None
+        if bar and Goods.objects.filter(barcode=bar[0]['barcode']):
+            target_good = Goods.objects.get(barcode=bar[0]['barcode'])
+
+        image_controller.send_to_s3(target_good=target_good, platform=request.GET.get('platform'))
+
+        # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ПОСЛЕ ОБРАБОТКИ
         image_controller.delete_image()
 
         self.queryset = bar
