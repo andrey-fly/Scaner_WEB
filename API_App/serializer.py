@@ -3,83 +3,79 @@ from rest_framework import serializers
 from API_App.models import Goods, Picture, Category, Positive, Negative
 
 
-class DetailSerializer(serializers.ModelSerializer):
+class BaseDetailSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
-    class Meta:
-        model = None
-        field = '__all__'
 
-
-class ListSerializer(serializers.ModelSerializer):
+class BaseListSerializer(serializers.ModelSerializer):
     pass
 
 
 # For goods
-class GoodsDetailSerializer(DetailSerializer):
+class GoodsDetailSerializer(BaseDetailSerializer):
     class Meta:
         model = Goods
         fields = '__all__'
         # fields = ('id', 'name', 'user')
 
 
-class GoodsListSerializer(serializers.ModelSerializer):
+class GoodsListSerializer(BaseListSerializer):
     class Meta:
         model = Goods
         fields = '__all__'
 
 
 #  for pictures
-class PictureDetailSerializer(DetailSerializer):
+class PictureDetailSerializer(BaseDetailSerializer):
     class Meta:
         model = Picture
         fields = '__all__'
         # fields = ('id', 'name', 'user')
 
 
-class PictureListSerializer(serializers.ModelSerializer):
+class PictureListSerializer(BaseListSerializer):
     class Meta:
         model = Picture
         fields = '__all__'
 
 
 # for categories
-class CategoryDetailSerializer(DetailSerializer):
+class CategoryDetailSerializer(BaseDetailSerializer):
     class Meta:
         model = Category
         fields = '__all__'
         # fields = ('id', 'name', 'user')
 
 
-class CategoryListSerializer(serializers.ModelSerializer):
+class CategoryListSerializer(BaseListSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
 
 # for positive characteristics
-class PositiveDetailSerializer(DetailSerializer):
+class PositiveDetailSerializer(BaseDetailSerializer):
     class Meta:
         model = Positive
         fields = '__all__'
         # fields = ('id', 'name', 'user')
 
 
-class PositiveListSerializer(serializers.ModelSerializer):
+class PositiveListSerializer(BaseListSerializer):
     class Meta:
         model = Positive
         fields = '__all__'
 
 
 # for negative characteristics
-class NegativeDetailSerializer(DetailSerializer):
+class NegativeDetailSerializer(BaseDetailSerializer):
     class Meta:
         model = Negative
         fields = '__all__'
         # fields = ('id', 'name', 'user')
 
 
-class NegativeListSerializer(serializers.ModelSerializer):
+class NegativeListSerializer(BaseListSerializer):
     class Meta:
         model = Negative
         fields = '__all__'

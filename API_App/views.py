@@ -13,19 +13,19 @@ from Modules.ImageController import ImageController
 
 
 # base rest views classes
-class CreateView(generics.CreateAPIView):
+class BaseCreateView(generics.CreateAPIView):
     serializer_class = None
     permission_classes = (IsAdminUser, )
 
 
-class ListView(generics.ListAPIView):
+class BaseListView(generics.ListAPIView):
     serializer_class = None
     queryset = []
     authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated, )
 
 
-class DetailView(generics.RetrieveUpdateDestroyAPIView):
+class BaseDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = None
     queryset = []
     authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
@@ -33,88 +33,81 @@ class DetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 # goods rest view classes
-class GoodsCreateView(CreateView):
+class GoodsCreateView(BaseCreateView):
     serializer_class = GoodsDetailSerializer
 
 
-class GoodsListView(ListView):
+class GoodsListView(BaseListView):
     serializer_class = GoodsListSerializer
     queryset = Goods.objects.all()
 
 
-class GoodsDetailView(DetailView):
+class GoodsDetailView(BaseDetailView):
     serializer_class = GoodsDetailSerializer
     queryset = Goods.objects.all()
 
 
 # category rest view classes
-class CategoryCreateView(CreateView):
+class CategoryCreateView(BaseCreateView):
     serializer_class = CategoryDetailSerializer
 
 
-class CategoryListView(ListView):
+class CategoryListView(BaseListView):
     serializer_class = CategoryListSerializer
     queryset = Category.objects.all()
 
 
-class CategoryDetailView(DetailView):
+class CategoryDetailView(BaseDetailView):
     serializer_class = CategoryDetailSerializer
     queryset = Category.objects.all()
 
 
 # pictures rest view classes
-class PictureCreateView(CreateView):
+class PictureCreateView(BaseCreateView):
     serializer_class = PictureDetailSerializer
 
 
-class PictureListView(ListView):
+class PictureListView(BaseListView):
     serializer_class = PictureListSerializer
     queryset = Picture.objects.all()
 
 
-class PictureDetailView(DetailView):
+class PictureDetailView(BaseDetailView):
     serializer_class = PictureDetailSerializer
     queryset = Picture.objects.all()
 
 
 # negative characteristics rest view classes
-class NegativeCreateView(CreateView):
+class NegativeCreateView(BaseCreateView):
     serializer_class = NegativeDetailSerializer
 
 
-class NegativeListView(ListView):
+class NegativeListView(BaseListView):
     serializer_class = NegativeListSerializer
     queryset = Negative.objects.all()
 
 
-class NegativeDetailView(DetailView):
+class NegativeDetailView(BaseDetailView):
     serializer_class = NegativeDetailSerializer
     queryset = Negative.objects.all()
 
 
 # positive characteristics rest view classes
-class PositiveCreateView(CreateView):
+class PositiveCreateView(BaseCreateView):
     serializer_class = PositiveDetailSerializer
 
 
-class PositiveListView(ListView):
+class PositiveListView(BaseListView):
     serializer_class = PositiveListSerializer
     queryset = Positive.objects.all()
 
 
-class PositiveDetailView(DetailView):
+class PositiveDetailView(BaseDetailView):
     serializer_class = PositiveDetailSerializer
     queryset = Positive.objects.all()
 
 
-
-
-
-
-
-
-
-
+# any
 class GetByBarCode(generics.ListAPIView):
     serializer_class = GoodsListSerializer
     queryset = Goods.objects.none()
