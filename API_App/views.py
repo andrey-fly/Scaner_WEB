@@ -125,6 +125,8 @@ class SearchProduct(generics.ListAPIView):
     permission_classes = ()
 
     def get(self, request):
+
+        print(request.FILES)
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
