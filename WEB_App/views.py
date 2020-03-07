@@ -15,7 +15,7 @@ from django.views.generic.base import View
 
 from Modules.ImageController import ImageController, Picture, Goods
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
-from WEB_App.models import Recovery
+from WEB_App.models import Recovery, GoodsInModeration
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -170,9 +170,20 @@ class AddProductPage(View):
     context = {}
 
     def get(self, request):
+        img_id = int(request.GET['image'])
+        img = Picture.objects.get(id=img_id)
+        self.context['img'] = img.file.url
+        gs = GoodsInModeration.objects.get(id=1)
         return render(request, self.template_name, self.context)
 
     def post(self, request):
+        GoodsInModeration(
+            name=request.POST.get('name'),
+            image=Picture.objects.get(id=int(request.GET['image'])),
+            user=request.user
+        ).save()
+        # TODO: сделать страничку на редирект с благодарностью.
+        #  На страничке должен быть таймер в js с последующим переходом на main page
         return render(request, self.template_name, self.context)
 
 

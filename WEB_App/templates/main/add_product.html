@@ -5,10 +5,10 @@
 {% endblock %} {% block content %}
     <div id="content-block">
         <div id="mask-group-in-content-block">
-            <img src="{% static 'pics/product.svg'%}" id="photo-in-mask-group">
+            <img src="{{img}}" id="photo-in-mask-group">
 <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
         </div>
-        <form id="product-name-form-in-content-group">
+        <form id="product-name-form-in-content-group" action="", method="post">
             <p id="header-text-in-form">
                 Добавить продукт
             </p>
@@ -18,13 +18,14 @@
                 название которого не совпадает с настоящим.
             </p>
             <div id="product-name-input-block">
-                <input type="text" id="product-name-input" placeholder="Введите название продукта...">
+                    {% csrf_token %}
+                    <input name="name" type="text" id="product-name-input" placeholder="Введите название продукта...">
             </div>
-            <label id="form-send-button-in-form">
+            <button id="form-send-button-in-form" type="submit">
                 <span id="text-in-form-send-button">
                     Отправить на модерацию
                 </span>
-            </label>
+            </button>
         </form>
     </div>
 {% endblock %} {% block extra_js %}
