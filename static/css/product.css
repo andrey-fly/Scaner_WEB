@@ -45,7 +45,7 @@
     height: 480px;
 
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
-
+    border-radius: 8px;
     align-self: center;
     margin: 0px 16px;
 }
@@ -246,7 +246,6 @@
 }
 
 #numbered-score-figure-in-numbered-score-block {
-    position: static;
     width: 40px;
     height: 40px;
     left: 0px;
@@ -255,15 +254,14 @@
 
     background: #74BC68;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #score-number-in-numbered-score-figure {
-    position: static;
-    width: 40px;
-    height: 40px;
-    left: 0px;
-    top: 0px;
-    padding: calc((100% - 20px)/2);
+    /*position: static;*/
+    /*padding: calc((100% - 20px)/2);*/
 
     font-family: Roboto-Regular;
     font-style: normal;

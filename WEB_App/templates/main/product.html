@@ -50,7 +50,7 @@
                         <li><em>+</em><span>{{positive.value}}</span></li>
                         {% endfor %}
                     {% else %}
-                        <li><em>-</em><span>Отсутствуют</span></li>
+                        <li><em>+</em><span>Отсутствуют</span></li>
                     {% endif %}
 <!--                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>-->
 <!--                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>-->
@@ -64,10 +64,10 @@
                 <ul id="disadv-list-in-adv-list-block">
                     {% if negatives %}
                         {% for negative in negatives %}
-                        <li><em>+</em><span>{{negative.value}}</span></li>
+                        <li><em>–</em><span>{{negative.value}}</span></li>
                         {% endfor %}
                     {% else %}
-                        <li><em>-</em><span>Отсутствуют</span></li>
+                        <li><em>–</em><span>Отсутствуют</span></li>
                     {% endif %}
                 </ul>
             </div>
