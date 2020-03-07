@@ -9,6 +9,7 @@
 7. Scrollbar
 8. Text selection
 9. 2 section
+10. 3 section
 */
 
 
@@ -131,6 +132,10 @@ a {
     margin: 15px 0;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 ul,
 p {
     margin-bottom: 1rem;
@@ -184,6 +189,10 @@ h3,
     .heading-3 {
         font-size: 32px;
     }
+}
+
+.heading-6+p {
+    margin-top: 10px;
 }
 
 p {
@@ -579,7 +588,7 @@ ul.icons li:last-child {
 }
 
 ul.icons li .icon:before {
-    font-size: 1.75rem;
+    font-size: 2rem;
 }
 
 ul.icons.major li {
@@ -656,7 +665,7 @@ ul.icons.labeled li .icon .label {
     color: #999999;
     padding: 4.5em 0 2.5em 0;
     color: #b0b0b0;
-    text-align: center;
+    /* text-align: center; */
 }
 
 #footer input,
@@ -671,7 +680,7 @@ ul.icons.labeled li .icon .label {
 }
 
 #footer a:hover {
-    color: #4696e5;
+    color: #3B84F1;
 }
 
 #footer strong,
@@ -725,6 +734,86 @@ ul.icons.labeled li .icon .label {
     #footer {
         padding: 3em 1.5em 1em 1.5em;
     }
+}
+
+.logoFooter {
+    position: relative;
+}
+
+.linksFooter {
+    margin-top: 46px;
+}
+
+.linkFooter {
+    font-size: 20px;
+    color: #ffd359;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+}
+
+.linkFooter+.linkFooter {
+    margin-left: 40px;
+}
+
+.socialAppLinks {
+    margin-top: 38px;
+    margin-bottom: 48px;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.appLinks {
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: 44px;
+}
+
+.mobileLink__googlePlay {
+    margin: 0 20px 0 0;
+    display: block;
+    height: 40px;
+}
+
+.mobileLink__appStore {
+    display: block;
+    height: 40px;
+    margin: 0;
+}
+
+.app-store {
+    background: #151718;
+    border: 1px solid white;
+    border-radius: 2px;
+    color: white;
+    padding: 5px 0 0 4em;
+    position: relative;
+    text-align: left;
+    -webkit-transition: z-index 0s .25s, -webkit-transform .25s;
+    transition: z-index 0s .25s, -webkit-transform .25s;
+    transition: transform .25s, z-index 0s .25s;
+    transition: transform .25s, z-index 0s .25s, -webkit-transform .25s;
+    width: 225px;
+    z-index: 1;
+}
+
+.app-store .app-store-icon {
+    left: .9em;
+    font-size: 2rem;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.app-store p {
+    font-size: 1rem;
+    margin: 0 0 -.5em 0;
+}
+
+.app-store h1 {
+    font-size: 1.7rem;
+    color: white;
 }
 
 
@@ -876,13 +965,6 @@ body::-webkit-scrollbar-thumb {
 
 /* 2 section */
 
-.clip-color {
-    background: rgba(59, 132, 241, 0.5);
-    width: 100vw;
-    height: 320px;
-    border-radius: 10px;
-}
-
 .divider {
     position: relative;
     padding-bottom: 25px;
@@ -950,6 +1032,12 @@ body::-webkit-scrollbar-thumb {
 .num {
     font-size: 22px;
 }
+
+
+/*************/
+
+
+/* 3 section */
 
 
 /*************/

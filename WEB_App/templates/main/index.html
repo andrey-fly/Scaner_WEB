@@ -15,8 +15,6 @@
                 Загрузить фото
             </span>
         </label>
-
-
     </div>
     <input id="file-input-for-frame" type="file" multiple onchange="func_submit_area();">
     <label for="file-input-for-frame" id="photo-frame-in-content-group">
@@ -30,8 +28,6 @@
         </label>
     </label>
 </form>
-
-{{data}}
 
 <section>
     <div class="container">
@@ -51,8 +47,8 @@
                 <h2 class="divider">Очень интересный заголовок</h2>
                 <p>Не менее интересеный абзац.</p>
             </div>
-            <div class="col-md-9 col-lg-6 clip-color">
-                <!-- <img src="" alt="" width="652" height="491"> -->
+            <div class="col-md-9 col-lg-6">
+                <img src="/static/img/section-1.png" alt="" width="652" height="491">
             </div>
         </div>
     </div>
@@ -92,8 +88,8 @@
                 <h2 class="divider">Очень интересный заголовок</h2>
                 <p>Не менее интересеный абзац.</p>
             </div>
-            <div class="col-md-9 col-lg-6 clip-color">
-                <!-- <img src="" alt="" width="652" height="491"> -->
+            <div class="col-md-9 col-lg-6">
+                <img src="/static/img/section-2.png" alt="" width="652" height="491">
             </div>
         </div>
     </div>
@@ -106,7 +102,9 @@
         time: 1000
     });
 </script>
-<script> let csrftoken = '{{ csrf_token }}'; </script>
+<script>
+    let csrftoken = '{{ csrf_token }}';
+</script>
 <script src="{% static 'js/photo.js' %}"></script>
 
 {% if login_errors %}
