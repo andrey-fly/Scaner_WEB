@@ -14,5 +14,13 @@ class Recovery(models.Model):
 class GoodsInModeration(models.Model):
     name = models.TextField(verbose_name='Наименование', max_length=255)
     image = models.ForeignKey(Picture, verbose_name='Изображение', on_delete=models.CASCADE)
+    STATUSES = [
+        (1, 'Принято на модерацию'),
+        (2, 'Принято в обработку'),
+        (3, 'Успешно'),
+        (4, 'Отклонено'),
+    ]
+    status = models.CharField(verbose_name='Статус', max_length=25,
+                              choices=STATUSES, default=1)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
