@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.views.generic.base import View
 
 from Modules.ImageController import ImageController, Picture, Goods
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
@@ -161,6 +162,17 @@ class ProductPage(TemplateView):
         self.context['positives'] = good.get_positives()
         self.context['negatives'] = good.get_negatives()
         self.context['points'] = good.points_rusControl
+        return render(request, self.template_name, self.context)
+
+
+class AddProductPage(View):
+    template_name = 'main/add_product.html'
+    context = {}
+
+    def get(self, request):
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
         return render(request, self.template_name, self.context)
 
 

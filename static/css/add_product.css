@@ -1,0 +1,111 @@
+#content-block {
+    display: flex;
+    flex-direction: row;
+    margin: 72px 120px;
+}
+
+#mask-group-in-content-block {
+    position: static;
+    width: 360px;
+    height: 479px;
+
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+
+    align-self: center;
+    margin: 0px 40px;
+    border-radius: 8px;
+}
+
+#photo-in-mask-group {
+    position: static;
+    width: 360px;
+    height: 479px;
+    border-radius: 8px;
+}
+
+#header-text-in-form {
+    position: static;
+    font-family: Roboto-Black;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 48px;
+    margin: 16px 0px;
+    line-height: 120%;
+    color: #000000;
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+}
+
+#description-text-in-form {
+    position: static;
+    font-family: Roboto-Regular;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    margin: 16px 0px;
+    line-height: 150%;
+    color: #000000;
+    flex: none;
+    order: 1;
+    align-self: flex-start;
+}
+
+#product-name-form-in-content-group {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 100px - 360px);
+}
+
+#product-name-input-block {
+    height: 60px;
+    border-radius: 30px;
+    border: solid #3B84F1;
+    border-width: 0px;
+    margin: 10px 0px;
+    order: 2;
+}
+
+#product-name-input {
+    height: 60px;
+    width: 100%;
+    padding: 0px 20px;
+    border: none;
+    border-radius: 30px;
+    border: solid #3B84F1;
+    border-width: 3px;
+}
+
+#form-send-button-in-form {
+    display: flex;
+    flex-direction: row;
+    padding: 0px calc((238px - 196px)/2);
+    margin: 30px 0px;
+    position: static;
+    width: 238px;
+    height: 52px;
+    background: #3B84F1;
+    border-radius: 4px;
+    flex: none;
+    order: 3;
+    align-self: center;
+}
+
+#form-send-button-in-form:hover {
+    background: #002f55;
+}
+
+#text-in-form-send-button {
+    position: static;
+    height: 52px;
+    width: 196px;
+    font-family: Roboto-Regular;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 52px;
+    color: #FFFFFF;
+    flex: none;
+    order: 0;
+    align-self: center;
+}
