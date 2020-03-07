@@ -172,14 +172,7 @@ class AddProductPage(View):
             image=Picture.objects.get(id=int(request.GET['image'])),
             user=request.user
         ).save()
-        # TODO: сделать страничку на редирект с благодарностью.
-        #  На страничке должен быть таймер в js с последующим переходом на main page
-        return redirect('../')
-
-
-def thanks(request):
-    context = {}
-    return render(request, 'main/thanks.html', context)
+        return redirect('/thanks/')
 
 
 def send_recovery_code(code, user):
