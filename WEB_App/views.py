@@ -173,7 +173,6 @@ class AddProductPage(View):
         img_id = int(request.GET['image'])
         img = Picture.objects.get(id=img_id)
         self.context['img'] = img.file.url
-        gs = GoodsInModeration.objects.get(id=1)
         return render(request, self.template_name, self.context)
 
     def post(self, request):
@@ -184,7 +183,7 @@ class AddProductPage(View):
         ).save()
         # TODO: сделать страничку на редирект с благодарностью.
         #  На страничке должен быть таймер в js с последующим переходом на main page
-        return render(request, self.template_name, self.context)
+        return redirect('../')
 
 
 def send_recovery_code(code, user):
