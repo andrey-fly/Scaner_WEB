@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.views.generic.base import View
 
 from Modules.ImageController import ImageController, Picture
 from WEB_App.forms import UserRegistrationForm, RecoveryPass
@@ -185,10 +186,15 @@ def product(request, id):
     return render(request, 'main/product.html', context)
 
 
-def add_product(request):   #(request, id):
+class AddProductPage(View):
+    template_name = 'main/add_product.html'
     context = {}
-    # context['img_url'] = Picture.objects.get(id=id).file.url
-    return render(request, 'main/add_product.html', context)
+
+    def get(self, request):
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        return render(request, self.template_name, self.context)
 
 
 def send_recovery_code(code, user):
