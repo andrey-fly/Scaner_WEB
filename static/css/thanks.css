@@ -1,0 +1,23 @@
+#content-block {
+    margin: 72px;
+}
+
+#thanks-text {
+    font-family: Roboto-Regular;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 100px;
+    line-height: 120%;
+
+    color: #007bff;
+    text-align: center;
+}
+
+#timer-description {
+    margin: 50px 0px;
+    font-family: Roboto-Regular;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 120%;
+}

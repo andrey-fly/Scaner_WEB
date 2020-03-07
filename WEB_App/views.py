@@ -185,6 +185,11 @@ def product(request, id):
     return render(request, 'main/product.html', context)
 
 
+def thanks(request):
+    context = {}
+    return render(request, 'main/thanks.html', context)
+
+
 def send_recovery_code(code, user):
     email_subject = 'EVILEG :: Сообщение через контактную форму '
     email_body = "Код для восстановления пароля: {}".format(code)

@@ -24,4 +24,5 @@ urlpatterns = [
     path('photo/', photo),
     path('product/<int:id>', product),
     path('product/', product),
+    path('thanks/', thanks)
 ]

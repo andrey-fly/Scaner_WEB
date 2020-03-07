@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Product</title>
+{% endblock %} {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/thanks.css'%}">
+{% endblock %} {% block content %}
+    <script src="{% static 'js/thanks.js' %}"></script>
+    <div id="content-block">
+        <p id="thanks-text">
+            Спасибо вам за вашу поддержку!
+        </p>
+        <p id="timer-description">
+            Вы вернётесь на главную страницу через <span id="timer"></span> секунд...
+        </p>
+    </div>
+{% endblock %} {% block extra_js %}
+    <script type="text/javascript">
+        timerStart();
+    </script>
+{% endblock %}
