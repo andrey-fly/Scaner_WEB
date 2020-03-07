@@ -715,7 +715,7 @@ ul.icons.labeled li .icon .label {
 }
 
 #footer .copyright {
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 @media screen and (max-width: 980px) {
@@ -740,16 +740,27 @@ ul.icons.labeled li .icon .label {
     position: relative;
 }
 
+.layoutFooter__logo {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+}
+
 .linksFooter {
     margin-top: 46px;
 }
 
 .linkFooter {
     font-size: 20px;
-    color: #ffd359;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .layoutFooter__logo {
+        display: none;
+    }
 }
 
 .linkFooter+.linkFooter {
@@ -770,21 +781,19 @@ ul.icons.labeled li .icon .label {
 }
 
 .mobileLink__googlePlay {
-    margin: 0 20px 0 0;
+    margin: 0 0 0 20px;
     display: block;
-    height: 40px;
 }
 
 .mobileLink__appStore {
     display: block;
-    height: 40px;
     margin: 0;
 }
 
 .app-store {
     background: #151718;
     border: 1px solid white;
-    border-radius: 2px;
+    border-radius: 5px;
     color: white;
     padding: 5px 0 0 4em;
     position: relative;
@@ -808,12 +817,42 @@ ul.icons.labeled li .icon .label {
 
 .app-store p {
     font-size: 1rem;
-    margin: 0 0 -.5em 0;
+    margin: 0 0 -.3em 0;
 }
 
 .app-store h1 {
     font-size: 1.7rem;
     color: white;
+}
+
+@media screen and (max-width: 768px) {
+    .linksFooter {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .linkFooter+.linkFooter {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .socialAppLinks {
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .appLinks {
+        margin-top: 32px;
+        margin-left: 0;
+    }
 }
 
 
