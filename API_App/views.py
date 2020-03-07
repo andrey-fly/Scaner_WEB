@@ -128,6 +128,7 @@ class SearchProduct(generics.ListAPIView):
 
     def get(self, request):
         queryset = {}
+        queryset['status'] = None
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ДЛЯ ОБРАБОТКИ
@@ -136,17 +137,15 @@ class SearchProduct(generics.ListAPIView):
         # ИЩЕМ БАРКОД
         barcode_detector = BarcodeDetector()
         bar = barcode_detector.detect('collectedmedia/{}'.format(image_controller.get_file_name()))
-        # print(bar[0]['barcode'])
-        # print(bar[0]['rect'])
-        # print(bar[0]['rect']['x'])
 
         target_good = None
+
+        picture = Picture(file=request.FILES['file'],
+                          platform=request.GET.get('platform'))
+
         if bar and Goods.objects.filter(barcode=bar[0]['barcode']):
             target_good = Goods.objects.get(barcode=bar[0]['barcode'])
-            picture = Picture(file=request.FILES['file'],
-                              target_good=target_good,
-                              platform=request.GET.get('platform'))
-            picture.save()
+            picture.target_good = target_good
 
             positives_q = Positive.objects.filter(good=target_good)
             negatives_q = Negative.objects.filter(good=target_good)
@@ -157,12 +156,16 @@ class SearchProduct(generics.ListAPIView):
             for item in negatives_q:
                 negatives.append(item.value)
 
+            queryset['status'] = 'ok'
             queryset['good'] = target_good.name
-            queryset['image'] = picture.id
+
             # queryset['positives'] = positives
             # queryset['negatives'] = negatives
 
         # УДАЛЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ПОСЛЕ ОБРАБОТКИ
         image_controller.delete_image()
+
+        picture.save()
+        queryset['image'] = picture.id
 
         return Response(queryset)

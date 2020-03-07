@@ -128,26 +128,17 @@ class PhotoPage(TemplateView):
     context = {}
 
     def post(self, request):
-        # Почему именно так?
-        # В дальнейшем предполагается использовать апи для обработки запросов с сайта и приложения,
-        # кроме того, сайт и апи должны работать на разных серверах.
         response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
                                 files={'file': request.FILES['file']},
                                 params={'user': request.user.id,
                                         'platform': 'web'},
                                 # headers={'Authorization': 'Token 8cf8bf79233bd6f7cd98cc6e8ef1d6efa69996d6'}
                                 )
-        # r = response.json()
-        # print(r[0])
-        # print(r[0]['name'])
-        # for item in r[0]:
-        #     print(item)
-        self.context['data'] = response.text
-
         response = response.json()
-        return redirect(to='/product/{}/?image={}'.format(response['good'], response['image']))
-
-        return render(request, self.template_name, self.context)
+        if response['status'] == 'ok':
+            return redirect(to='/product/{}/?image={}'.format(response['good'], response['image']))
+        else:
+            return redirect(to='/add_product/?image={}'.format(response['image']))
 
 
 class ProductPage(TemplateView):
