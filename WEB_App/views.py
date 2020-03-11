@@ -183,4 +183,4 @@ def send_recovery_code(code, user):
 
 def error_500(request):
     context = {}
-    return render(request, 'Scanner/error_500.html', context)
+    return render(request, 'errors/500.html', context)
