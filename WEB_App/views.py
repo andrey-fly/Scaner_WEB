@@ -180,3 +180,7 @@ def send_recovery_code(code, user):
     email_body = "Код для восстановления пароля: {}".format(code)
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, ['{}'.format(user.email)],
               fail_silently=False)
+
+def error_500(request):
+    context = {}
+    return render(request, 'Scanner/error_500.html', context)

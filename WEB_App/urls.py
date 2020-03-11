@@ -17,6 +17,9 @@ from django.urls import path
 
 from WEB_App.views import *
 
+from django.conf.urls import handler404, handler500
+
+
 urlpatterns = [
     path('', index),
     path('registration/', signup),
@@ -25,4 +28,7 @@ urlpatterns = [
     path('product/<str:good>/', ProductPage.as_view(template_name='main/product.html')),
     path('add_product/', login_required(AddProductPage.as_view())),
     path('thanks/', TemplateView.as_view(template_name='main/thanks.html')),
+
 ]
+
+handler500 = error_500
