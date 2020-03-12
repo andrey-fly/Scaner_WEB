@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'API_App',
     'WEB_App',
     'djoser',
-    'django_s3_storage'
-
+    'django_s3_storage',
+    'mptt',
 ]
 
 REST_FRAMEWORK = {
