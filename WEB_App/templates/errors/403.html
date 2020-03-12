@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Error 403</title>
+{% endblock %}
+{% block extra_css %}
+<!--    <link rel="stylesheet" type="text/css" href="{% static 'css/error.css'%}">-->
+<style>
+#error-name {
+    font-size: 8vw;
+    text-align: center;
+    margin-top: 4%;
+}
+
+#error-text {
+    text-align: center;
+    display: block;
+    width: 70vw;
+    margin: 5% auto;
+    margin-bottom: 3%;
+}
+
+#to-main {
+    font-size: 2vw;
+    text-align: center;
+    color: #0056b3;
+    display: block;
+    width: 10vw;
+    margin: 20px auto;
+    margin-bottom: 2%;
+}
+#to-main:hover {
+    text-decoration: none;
+    color: #333;
+   }
+
+</style>
+{% endblock %}
+{% block content %}
+<h1 id="error-name">Ошибка 403</h1>
+<p id="error-text">
+ Страница не найдена
+</p>
+<a id="to-main" href="/">Назад</a>
+{% endblock %}
