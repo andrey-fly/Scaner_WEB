@@ -1,38 +1,41 @@
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Category(models.Model):
-    name = models.CharField(verbose_name='Наименование', db_index=True, max_length=128)
+class Category(MPTTModel):
+    name = models.CharField(verbose_name='Наименование', max_length=128, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
 
-    def get_choices(self):
-        data = Category.objects.all()
-        choices = []
-        for item in data:
-            choices.append((item.id, '{}'.format(item.name)))
-        return choices
+    class MPTTMeta:
+        level_attr = 'level'
+        order_insertion_by = ['name']
+        parent_attr = 'parent'
+        left_attr = 'lft'
+        right_attr = 'rght'
+        tree_id_attr = 'tree_id'
+        order_insertion_by = []
 
 
 class Goods(models.Model):
     name = models.CharField(verbose_name='Наименование', db_index=True, max_length=128)
     barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
-    imageAIname = models.CharField(verbose_name='Имя в модели нейросети', db_index=True, max_length=64, default=None, null=True)
-    CATEGORIES = [
-        (1, 'Молочные продукты'),
-        (2, 'Мясные продукты'),
-    ]
-    category = models.IntegerField(verbose_name='Категория', choices=CATEGORIES, default=None, null=True)
+    imageAIname = models.CharField(verbose_name='Имя в модели нейросети', db_index=True,
+                                   max_length=64, default=None, null=True)
+    category = models.ForeignKey(Category, verbose_name='Категория',
+                                 on_delete=models.SET_NULL, default=None, null=True)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
-    points_rusControl = models.CharField(verbose_name='Оценка Росконтроля', max_length=10, default='Не указано', null=True)
+    points_rusControl = models.CharField(verbose_name='Оценка Росконтроля',
+                                         max_length=10, default='Не указано', null=True)
 
     def get_positives(self):
         return Positive.objects.filter(good=self)
