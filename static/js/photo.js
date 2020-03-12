@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         dropArea.addEventListener(eventName, highlight, false);
     });
 
-    ['dragleave', 'drop'].forEach(eventName => {
+    ['dragleave'].forEach(eventName => {
         dropArea.addEventListener(eventName, unhighlight, false);
     });
 
@@ -39,15 +39,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
         ([...files]).forEach(uploadFile);
     }
 
-    function uploadFile(file) {
+     async function uploadFile(file) {
+        console.log('kekus');
         let url = '/photo/';
         let formData = new FormData();
         formData.append('csrfmiddlewaretoken', csrftoken);
         formData.append('file', file);
-        fetch(url, {
+        let response = fetch(url, {
             method: 'POST',
             body: formData,
         });
+        /// тут можно бахнуть анимашку загрузки
+        let result = await response;
+
+        if (result.redirected){
+            window.location.href = result.url;
+        }
+
+
     }
 });
 
@@ -61,6 +70,7 @@ function func_submit_btn() {
 function func_submit_area() {
     let form = document.getElementById("content-group");
     let input = document.getElementById("file-input-for-frame");
+    console.log('kek');
     input.name = 'file';
     form.submit();
 }

@@ -128,6 +128,7 @@ class PhotoPage(TemplateView):
     context = {}
 
     def post(self, request):
+        # TODO: Перевести вызов в JS
         response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
                                 files={'file': request.FILES['file']},
                                 params={'user': request.user.id,
