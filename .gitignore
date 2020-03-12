@@ -253,7 +253,7 @@ dmypy.json
 *.webp
 
 # Portable Network Graphics
-*.png
+#*.png
 
 # Animated Portable Network Graphics
 *.apng
@@ -279,7 +279,7 @@ dmypy.json
 *.dib
 
 # ICO
-*.ico
+#*.ico
 
 # 3D Images
 *.3dm
