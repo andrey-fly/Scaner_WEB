@@ -223,7 +223,7 @@ dmypy.json
 
 ### Images ###
 # JPEG
-*.jpg
+#*.jpg
 *.jpeg
 *.jpe
 *.jif
@@ -256,7 +256,7 @@ dmypy.json
 #*.png
 
 # Animated Portable Network Graphics
-*.apng
+#*.apng
 
 # Multiple-image Network Graphics
 *.mng
