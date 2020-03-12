@@ -3,12 +3,12 @@
         <div class="form-container sign-up-container">
             <form action="/" method="POST">
                 {% csrf_token %}
-                <h1>Create Account</h1>
+                <h1>Создание аккаунта</h1>
                 <div class="social-container"><a href="#" class="social"><i
                         class="fab fa-facebook-f"></i></a><a href="#" class="social"><i
                         class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
                         class="fab fa-linkedin-in"></i></a></div>
-                <span>or use your email for registration</span> {% if reg_form.errors %} {% if reg_form.errors.password2 %}
+                <span>или спользуйте вашу почту для регистрации</span> {% if reg_form.errors %} {% if reg_form.errors.password2 %}
                 <div class="row error mb-1">
                     <b>{{reg_form.errors.password2}}</b>
                 </div>
@@ -23,44 +23,44 @@
                 {%endif%} {%endif%} {{ reg_form.username }} {{ reg_form.email }} {{ reg_form.password }} {{ reg_form.password2 }}
 
                 <input type="hidden" value="SignUp" name="status">
-                <button class="mt-3 bt-ghost-up-acc" type="submit">Sign Up</button>
+                <button class="mt-3 bt-ghost-up-acc" type="submit">Регистрация</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
             <form action="#" method="POST">
                 {% csrf_token %}
-                <h1>Sign in</h1>
+                <h1>Войти</h1>
                 <div class="social-container"><a href="#" class="social"><i
                         class="fab fa-facebook-f"></i></a><a href="#" class="social"><i
                         class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
                         class="fab fa-linkedin-in"></i></a></div>
-                <span>or use your account</span> {% for error in login_errors %}
+                <span>или использовать ваш аккаунт</span> {% for error in login_errors %}
                 <div class="row error">
                     <p><b>{{error}}</b></p>
                 </div>
 
                 {% endfor %}
 
-                <input class="mb-2" type="text" placeholder="User or Email" name="identification" required autofocus>
-                <input class="mb-2" type="password" placeholder="Password" name="password" required>
+                <input class="mb-2" type="text" placeholder="Имя или почта" name="identification" required autofocus>
+                <input class="mb-2" type="password" placeholder="Пароль" name="password" required>
 
                 <input type="hidden" name="status" value="SignIn">
-                <a href="/recovery_password">Forgot your password?</a>
-                <button class="bt-ghost-in" type="submit">Sign In</button>
+                <a href="/recovery_password">Забыли пароль?</a>
+                <button class="bt-ghost-in" type="submit">Вход</button>
             </form>
         </div>
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
-                    <h1>Welcome Back!</h1>
-                    <p>To keep connected with us please login with your personal info
+                    <h1>Добро пожаловать назад!</h1>
+                    <p>Чтобы использовать все функции, войдите в аккаунт
                     </p>
-                    <button class="bt-ghost-in-acc" id="signIn">Sign In</button>
+                    <button class="bt-ghost-in-acc" id="signIn">Вход</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Enter your personal details and start journey with us</p>
-                    <button class="bt-ghost-up" id="signUp">Sign Up</button>
+                    <h1>Приветствую, друг!</h1>
+                    <p>Зарегистрируйтесь, чтобы использовать сайт по максимуму</p>
+                    <button class="bt-ghost-up" id="signUp">Регистрация</button>
                 </div>
             </div>
         </div>

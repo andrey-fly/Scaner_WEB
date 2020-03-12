@@ -1,5 +1,4 @@
 {% extends 'base/base.html' %} {% load static %} {% block content %}
-<!-- <h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1> -->
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -50,7 +49,6 @@
                 <p>Не менее интересеный абзац.</p>
             </div>
             <div class="col-md-9 col-lg-6 clip-color">
-                <!-- <img src="" alt="" width="652" height="491"> -->
             </div>
         </div>
     </div>
@@ -91,7 +89,6 @@
                 <p>Не менее интересеный абзац.</p>
             </div>
             <div class="col-md-9 col-lg-6 clip-color">
-                <!-- <img src="" alt="" width="652" height="491"> -->
             </div>
         </div>
     </div>

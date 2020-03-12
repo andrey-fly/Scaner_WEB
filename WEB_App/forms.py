@@ -13,8 +13,8 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('username', 'email')
         widgets = {
-            'username': Input(attrs={'class': 'mb-2', 'placeholder': 'Username'}),
-            'email': Input(attrs={'class': 'mb-2', 'placeholder': 'Email'}),
+            'username': Input(attrs={'class': 'mb-2', 'placeholder': 'Имя'}),
+            'email': Input(attrs={'class': 'mb-2', 'placeholder': 'Почта'}),
         }
 
     def clean_password2(self):
