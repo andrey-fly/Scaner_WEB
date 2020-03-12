@@ -157,7 +157,7 @@ class ProductPage(TemplateView):
 
 
 class AddProductPage(View):
-    template_name = 'main/add_product.html'
+    template_name = 'photo/add_product.html'
     context = {}
 
     def get(self, request):
