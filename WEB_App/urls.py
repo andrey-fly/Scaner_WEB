@@ -25,4 +25,5 @@ urlpatterns = [
     path('product/<str:good>/', ProductPage.as_view(template_name='main/product.html')),
     path('add_product/', login_required(AddProductPage.as_view())),
     path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
+    path('accept/', TemplateView.as_view(template_name='admin/accept.html')),
 ]
