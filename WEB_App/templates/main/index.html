@@ -1,5 +1,4 @@
 {% extends 'base/base.html' %} {% load static %} {% block content %}
-<!-- <h1 class="display-4 card-title">Здравствуйте{% if user.is_authenticated %}, {{user}} {% endif %}</h1> -->
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -44,8 +43,8 @@
     <div class="container">
         <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
-                <h2 class="divider">Очень интересный заголовок</h2>
-                <p>Не менее интересеный абзац.</p>
+                <h2 class="wow fadeInRight divider">Очень интересный заголовок</h2>
+                <p class="wow fadeInRight" style="animation-delay: 0.05s">Не менее интересеный абзац.</p>
             </div>
             <div class="col-md-9 col-lg-6">
                 <img src="/static/img/section-4.png" alt="" width="652" height="491">
@@ -53,53 +52,73 @@
         </div>
     </div>
 </section>
-<section class="section-lg text-center">
+<section class="section-md text-center">
     <div class="container">
         <h3 class="divider divider-mid">Всякие Прикольные Штуки</h3>
         <div class="row row-30">
             <div class="col-lg-4">
-                <i class="icon-lg icon-blue fas fa-project-diagram "></i>
+                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num">123</div>
+                    <div class="num" id="num"></div>
                 </div>
                 <h5>Исследовано продуктов</h5>
             </div>
             <div class="col-lg-4">
-                <i class="icon-lg icon-blue fas fa-project-diagram "></i>
+                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num">123</div>
+                    <div class="num" id="num2"></div>
                 </div>
                 <h5>Исследовано продуктов</h5>
             </div>
             <div class="col-lg-4">
-                <i class="icon-lg icon-blue fas fa-project-diagram "></i>
+                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num">123</div>
+                    <div class="num" id="num3"></div>
                 </div>
                 <h5>Исследовано продуктов</h5>
             </div>
         </div>
     </div>
 </section>
-<!-- <section class="section-xl">
+<section class="section-xl">
     <div class="container">
         <div class="row justify-content-md-center align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
-                <h2 class="divider">Очень интересный заголовок</h2>
-                <p>Не менее интересеный абзац.</p>
+                <h2 class="wow fadeInLeft divider">Очень интересный заголовок</h2>
+                <p class="wow fadeInLeft" style="animation-delay: 0.05s">Не менее интересеный абзац.</p>
             </div>
             <div class="col-md-9 col-lg-6">
                 <img src="/static/img/section-2.png" alt="" width="652" height="491">
             </div>
         </div>
     </div>
-</section> -->
+</section>
 {% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 <script>
-    $(".num").counterUp({
-        delay: 10,
-        time: 1000
+    $('#num').animate({
+        num: 90 - 3 /* - начало */
+    }, {
+        duration: 5000,
+        step: function(num) {
+            this.innerHTML = (num + 3).toFixed(0)
+        }
+    });
+    $('#num2').animate({
+        num: 190 - 3 /* - начало */
+    }, {
+        duration: 3000,
+        step: function(num) {
+            this.innerHTML = (num + 3).toFixed(0)
+        }
+    });
+    $('#num3').animate({
+        num: 15 - 3 /* - начало */
+    }, {
+        duration: 2000,
+        step: function(num) {
+            this.innerHTML = (num + 3).toFixed(0)
+        }
     });
 </script>
 <script>
