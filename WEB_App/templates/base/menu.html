@@ -1,13 +1,13 @@
 {% load static %}
-<div class="navbar-main">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">
-            <img src="/static/pics/logo_and_text.svg">
-        </a>
-        <div id="main-nav-wrap" class="navbar-main-element collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="main-navigation navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
+<div id="home" class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="#"><img src="/static/pics/logo_and_text.svg" title="logo" /></a>
+        </div>
+        <nav class="top-nav">
+            <ul class="top-nav">
+                <li>
+                    <a href="#home">
                         <i class="fas fa-home"></i>
                         <span class="i-text">Главная</span>
                     </a>
@@ -33,7 +33,10 @@
                     </a>
                 </li>
                 {% endif %}
+
             </ul>
-        </div>
-    </nav>
+            <a href="#" id="pull"><img src="/static/img/nav-icon.png" title="menu" /></a>
+        </nav>
+        <div class="clearfix"> </div>
+    </div>
 </div>
