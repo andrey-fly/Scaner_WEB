@@ -17,16 +17,13 @@ from django.urls import path
 
 from WEB_App.views import *
 
-from django.conf.urls import handler403, handler404, handler500
-from WEB_App.views import error_403
-
 
 urlpatterns = [
     path('', index),
     path('registration/', signup),
     path('recovery_password/', recovery_password),
-    path('photo/', login_required(PhotoPage.as_view(template_name='main/photo.html'))),
-    path('product/<str:good>/', ProductPage.as_view(template_name='main/product.html')),
+    path('photo/', login_required(PhotoPage.as_view(template_name='photo/photo.html'))),
+    path('product/<str:good>/', ProductPage.as_view(template_name='photo/product.html')),
     path('add_product/', login_required(AddProductPage.as_view())),
     path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
     path('accept/', TemplateView.as_view(template_name='admin/accept.html')),
