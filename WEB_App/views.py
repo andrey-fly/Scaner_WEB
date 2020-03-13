@@ -30,7 +30,6 @@ def index(request):
     if request.method == 'POST':
         if request.POST.get('status') == 'SignUp':
             reg_form = UserRegistrationForm(request.POST)
-            print(reg_form.data)
             if reg_form.is_valid():
                 new_user = reg_form.save(commit=False)
                 new_user.set_password(reg_form.cleaned_data['password2'])
