@@ -20,6 +20,7 @@ from WEB_App.models import Recovery, GoodsInModeration
 from django.views import View
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
+from django.template import RequestContext
 
 
 def index(request):
@@ -181,3 +182,8 @@ def send_recovery_code(code, user):
     email_body = "Код для восстановления пароля: {}".format(code)
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, ['{}'.format(user.email)],
               fail_silently=False)
+
+
+def error_403(request, exception):
+    context = {}
+    return render(request, 'errors/403.html', context)
