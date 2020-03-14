@@ -1,9 +1,38 @@
-{% extends 'base/base.html' %}
+{% extends 'admin/admin_base.html' %}
 {% load static %}
 {% block title %}
 <title>Модерация</title>
 {% endblock %}
 {% block content %}
+
+<!--{{category_form}}-->
+
+<div class="card mt-3 ml-2 mr-2">
+    <div class="card-body">
+        <p>Создать категорию</p>
+        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseCategory"
+                aria-expanded="false" aria-controls="collapseCategory">
+            Развернуть
+        </button>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="collapse" id="collapseCategory">
+                <div class="card card-body">
+                    <label for="category_name">Наименование: </label>
+                    <input id="category_name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2">
+
+                    <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
+                    <option value="None" disabled selected>Select parent</option>
+                    <option value="{{category.id}}">Родитель</option>
+                    </select>
+                    <input name="image" type="file" accept="image/*" class="row mt-3">
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
 
 {% if not goods_data %}
 <h1>Нет поступлений на модерацию</h1>
@@ -59,6 +88,8 @@
 </div>
 
 {% endfor %}
+
+<div class="mb-3"></div>
 
 {% endif %}
 

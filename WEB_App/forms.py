@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import Input
 
-from API_App.models import Goods
+from API_App.models import Goods, Category
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -57,3 +57,9 @@ class AddGoodForm(forms.ModelForm):
     class Meta:
         model = Goods
         fields = ('name', 'barcode', 'category', 'file', 'points_rusControl')
+
+
+class CreateCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'

@@ -13,7 +13,7 @@ from django.views.generic.base import View
 
 from API_App.models import Category
 from Modules.ImageController import ImageController, Picture, Goods
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm, CreateCategoryForm
 from WEB_App.models import Recovery, GoodsOnModeration
 
 from django.views import View
@@ -243,4 +243,7 @@ class AcceptPage(PermissionRequiredMixin, View):
 
         categories = Category.objects.all()
         context['categories'] = categories
+
+        category_form = CreateCategoryForm()
+        context['category_form'] = category_form
         return context
