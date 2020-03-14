@@ -17,7 +17,10 @@
         </div>
         <div id="info-block-in-content-block">
             <p id="way-to-the-page-in-info-block">
-                Молочные продукты > Сливочное масло
+<!--                Молочные продукты > Сливочное масло-->
+                {% for category in categories %}
+                {{category.name}} >
+                {% endfor %}
             </p>
             <p id="product-name-in-info-block">
                 {{name}}
