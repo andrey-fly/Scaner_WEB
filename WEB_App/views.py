@@ -208,7 +208,7 @@ class AcceptPage(PermissionRequiredMixin, View):
             moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
             name = request.POST.get('name')
             barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
-            points = request.POST.get('points')
+            points = request.POST.get('points') or '?'
             category = None
 
             if Category.objects.filter(id=request.POST.get('category')):
