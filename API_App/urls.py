@@ -18,7 +18,8 @@ from django.urls import path, include
 
 from API_App.views import GoodsCreateView, GoodsListView, GoodsDetailView, GetByBarCode, SearchProduct, \
     CategoryCreateView, CategoryListView, CategoryDetailView, PictureCreateView, PictureListView, PictureDetailView, \
-    NegativeCreateView, NegativeListView, NegativeDetailView, PositiveCreateView, PositiveDetailView, PositiveListView
+    NegativeCreateView, NegativeListView, NegativeDetailView, PositiveCreateView, PositiveDetailView, PositiveListView, \
+    GetBarCode
 
 urlpatterns = [
     path('goods/create/', GoodsCreateView.as_view()),
@@ -43,4 +44,6 @@ urlpatterns = [
 
     path('goods/barcode/<str:barcode>/', GetByBarCode.as_view()),
     path('goods/get_product/', SearchProduct.as_view()),
+
+    path('getbarcode/', GetBarCode.as_view())
 ]

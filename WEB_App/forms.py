@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import Input
 
+from API_App.models import Goods
+
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Пароль'}),
@@ -49,3 +51,9 @@ class RecoveryPass(forms.Form):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
+
+
+class AddGoodForm(forms.ModelForm):
+    class Meta:
+        model = Goods
+        fields = ('name', 'barcode', 'category', 'file', 'points_rusControl')

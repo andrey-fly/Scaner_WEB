@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.urls import path
 
-from WEB_App.views import *
+from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from WEB_App.views import index, signup, recovery_password, PhotoPage, ProductPage, AddProductPage, AcceptPage
 
 
 urlpatterns = [
@@ -26,6 +28,6 @@ urlpatterns = [
     path('product/<str:good>/', ProductPage.as_view(template_name='photo/product.html')),
     path('add_product/', login_required(AddProductPage.as_view())),
     path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
-    path('admin/accept/', TemplateView.as_view(template_name='admin/accept.html')),
+    path('admin/accept/', AcceptPage.as_view()),
     path('admin/urls/', TemplateView.as_view(template_name='admin/links.html')),
 ]

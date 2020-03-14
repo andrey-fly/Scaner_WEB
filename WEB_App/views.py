@@ -1,5 +1,3 @@
-import os
-import urllib
 from datetime import datetime
 import random
 import string
@@ -7,20 +5,20 @@ import string
 import requests
 from django.conf import settings
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
+from API_App.models import Category
 from Modules.ImageController import ImageController, Picture, Goods
-from WEB_App.forms import UserRegistrationForm, RecoveryPass
-from WEB_App.models import Recovery, GoodsInModeration
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm
+from WEB_App.models import Recovery, GoodsOnModeration
 
 from django.views import View
 from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
-from django.template import RequestContext
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 def index(request):
@@ -167,11 +165,24 @@ class AddProductPage(View):
         return render(request, self.template_name, self.context)
 
     def post(self, request):
-        GoodsInModeration(
+        good = GoodsOnModeration(
             name=request.POST.get('name'),
             image=Picture.objects.get(id=int(request.GET['image'])),
             user=request.user
-        ).save()
+        )
+
+        response = requests.get('http://0.0.0.0/api/v1/getbarcode/',
+                                files={'file': good.image.file},
+                                # params={'user': request.user.id,
+                                #         'platform': 'web'},
+                                # headers={'Authorization': 'Token 8cf8bf79233bd6f7cd98cc6e8ef1d6efa69996d6'}
+                                ).json()
+
+        if response['status'] == 'ok':
+            good.barcode = response['barcode']
+
+        good.save()
+
         return redirect('/thanks/')
 
 
@@ -180,3 +191,54 @@ def send_recovery_code(code, user):
     email_body = "Код для восстановления пароля: {}".format(code)
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, ['{}'.format(user.email)],
               fail_silently=False)
+
+
+class AcceptPage(PermissionRequiredMixin, View):
+    template_name = 'admin/accept.html'
+    permission_required = 'WEB_App.view'
+    login_url = '/login/'
+
+    def get(self, request):
+        return render(request, self.template_name, self.get_context())
+
+    def post(self, request):
+        moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
+        if request.POST.get('action') == 'accept':
+            name = request.POST.get('name')
+            barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
+            points = request.POST.get('points')
+            category = None
+
+            if Category.objects.filter(id=request.POST.get('category')):
+                category = Category.objects.get(id=request.POST.get('category'))
+
+            new_good = Goods(
+                name=name,
+                barcode=barcode,
+                category=category,
+                file=moderation_good.image.file,
+                user=request.user,
+                points_rusControl=points
+            )
+
+            if request.FILES:
+                new_good.file = request.FILES.get('image')
+
+            new_good.save()
+            moderation_good.status = 2
+        elif request.POST.get('action') == 'deny':
+            moderation_good.status = 3
+
+        moderation_good.save()
+
+        return render(request, self.template_name, self.get_context())
+
+    def get_context(self):
+        context = {}
+
+        data_goods_on_moderation = GoodsOnModeration.objects.filter(status=1)
+        context['goods_data'] = data_goods_on_moderation
+
+        categories = Category.objects.all()
+        context['categories'] = categories
+        return context

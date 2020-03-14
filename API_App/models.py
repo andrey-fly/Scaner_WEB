@@ -24,7 +24,7 @@ class Category(MPTTModel):
 
 
 class Goods(models.Model):
-    name = models.CharField(verbose_name='Наименование', db_index=True, max_length=128)
+    name = models.CharField(verbose_name='Наименование', db_index=True, max_length=128, unique=True)
     barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
     imageAIname = models.CharField(verbose_name='Имя в модели нейросети', db_index=True,
                                    max_length=64, default=None, null=True)

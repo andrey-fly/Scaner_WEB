@@ -11,14 +11,14 @@ class Recovery(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-class GoodsInModeration(models.Model):
+class GoodsOnModeration(models.Model):
     name = models.TextField(verbose_name='Наименование', max_length=255)
     image = models.ForeignKey(Picture, verbose_name='Изображение', on_delete=models.CASCADE)
+    barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
     STATUSES = [
         (1, 'Принято на модерацию'),
-        (2, 'Принято в обработку'),
-        (3, 'Успешно'),
-        (4, 'Отклонено'),
+        (2, 'Обработано'),
+        (3, 'Отклонено'),
     ]
     status = models.CharField(verbose_name='Статус', max_length=25,
                               choices=STATUSES, default=1)

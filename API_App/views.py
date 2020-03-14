@@ -127,8 +127,7 @@ class SearchProduct(generics.ListAPIView):
     permission_classes = ()
 
     def get(self, request):
-        queryset = {}
-        queryset['status'] = None
+        queryset = {'status': None}
         # ПОЛУЧЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ
         image_controller = ImageController()
         # СОХРАНЕНИЕ КАРТИНКИ ПОЛЬЗОВАТЕЛЯ ДЛЯ ОБРАБОТКИ
@@ -167,5 +166,28 @@ class SearchProduct(generics.ListAPIView):
 
         picture.save()
         queryset['image'] = picture.id
+
+        return Response(queryset)
+
+
+class GetBarCode(generics.ListAPIView):
+    serializer_class = None
+    queryset = None
+    permission_classes = ()
+
+    def get(self, request):
+        queryset = {'status': None}
+        image_controller = ImageController()
+        barcode_detector = BarcodeDetector()
+
+        image_controller.save(request_file=request.FILES['file'])
+        bar = barcode_detector.detect('collectedmedia/{}'.format(image_controller.get_file_name()))
+        if bar:
+            bar = bar[0]['barcode']
+
+            image_controller.delete_image()
+
+            queryset['status'] = 'ok'
+            queryset['barcode'] = bar
 
         return Response(queryset)

@@ -4,39 +4,62 @@
 <title>Модерация</title>
 {% endblock %}
 {% block content %}
+
+{% if not goods_data %}
+<h1>Нет поступлений на модерацию</h1>
+{% else %}
+
+{% for good in goods_data %}
 <div class="card mt-3 ml-2 mr-2">
     <div class="card-body">
-        <p>Продовед</p>
-        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseExample1"
-                aria-expanded="false" aria-controls="collapseExample1">
+        <p>{{good.name}}</p>
+        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseExample{{good.id}}"
+                aria-expanded="false" aria-controls="collapseExample{{good.id}}">
             Развернуть
         </button>
-        <div class="collapse" id="collapseExample1">
-            <div class="card card-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-4">
-                            <img src="{% static 'pics/logo.svg' %}" class="row" height="250">
-                            <input type="file" accept="image/*" class="row mt-3">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="collapse" id="collapseExample{{good.id}}">
+                <div class="card card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="{{good.image.file.url}}" class="row" height="250">
+                                <input name="image" type="file" accept="image/*" class="row mt-3">
+                            </div>
+                            <div class="ml-5 col-6">
+                                <label for id="id">ID </label>
+                                <input for="id" name='id' type="text" value="{{good.id}}" placeholder="id" class="ro2 mt-2" readonly> <br>
+                                <label for="name">Наименование: </label>
+                                <input id="name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2">
+
+                                <label for="barcode">Штрих-код: </label>
+                                <input id="barcode" type="text" name="barcode" value="{{good.barcode}}" placeholder="Баркод" class="row mt-2">
+
+                                <label for="rcn">Оценка Росконтроль: </label>
+                                <input id="rcn" type="text" name="points" value="{{good.points_rusControl}}" placeholder="Оценка Росконтроль" class="row mt-2">
+
+                                <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
+                                    <option value="None" disabled selected>Select category</option>
+                                    {% for category in categories %}
+                                    <option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+                                </select>
+
+<!--                                <textarea placeholder="Описание" name="about" class="row mt-2" style="width: 50mw; height:30mh; resize: none;"></textarea>-->
+                            </div>
                         </div>
-                        <div class="ml-5 col-6">
-                            <input type="text" name="name" value="Продовед" placeholder="Название" class="row mt-2">
-                            <input type="text" name="barcode" value="Баркод" placeholder="Баркод" class="row mt-2">
-                            <select class="form-control form-control-sm ml-1 mt-2 row">
-                                <option>Молоко</option>
-                                <option>Мясо</option>
-                                <option>Хлеб</option>
-                            </select>
-                            <textarea placeholder="Описание" name="about" class="row mt-2" style="width: 50mw; height:30mh; resize: none;"></textarea>
-                        </div>
+                        <button type="submit" class="btn btn-outline-danger float-right mr-1" name="action" value="deny">Отклонить</button>
+                        <button type="submit" class="btn btn-outline-success float-right mr-1" name="action" value="accept">Одобрить</button>
                     </div>
-                    <button type="button" class="btn btn-outline-success float-right mr-1">Добавить</button>
-                    <button type="button" class="btn btn-outline-danger float-right mr-1">Отклонить</button>
-                    <button type="button" class="btn btn-outline-primary float-right mr-1">Сохранить</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+
+{% endfor %}
+
+{% endif %}
 
 {% endblock %}
