@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% block title %}
+<title>Регистрация</title>
+{% endblock %}
+{% block content %}
+<main>
+    <div class="card jumbotron mt-3 mb-3 border-primary" style="width: 25%; min-width: 300px; margin: 0 auto">
+        <div class="card-title text-center">Регистрация</div>
+        <div class="card-body text-center ">
+            <div class="card-text">
+                <form action="/registration/" method="POST">
+                    {% csrf_token %}
+                    <hr>
+                    {% if user_form.errors %}
+                    <div class="row">
+                        {% if user_form.errors.password2 %}
+                        <div class="col-12">
+                            {{user_form.errors.password2}}
+                        </div>
+                        {%endif%}
+                        {% if user_form.errors.username %}
+                        <div class="col-12">
+                            {{user_form.errors.username}}
+                        </div>
+                        {%endif%}
+                        {% if user_form.errors.email %}
+                        <div class="col-12">
+                            {{user_form.errors.email}}
+                        </div>
+                        {%endif%}
+                    </div>
+                    {%endif%}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.username.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.username}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.first_name.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.first_name}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.last_name.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.last_name}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.email.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.email}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.password.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.password}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{user_form.password2.label}}
+                        </div>
+                        <div class="col-12 text-center">
+                            {{user_form.password2}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-outline-primary btn-md btn-block">Создать аккаунт</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

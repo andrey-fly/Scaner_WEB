@@ -1,0 +1,27 @@
+# Needs to install:
+
+# django
+Django==3.0.3
+# for postgresql
+gunicorn==20.0.4
+psycopg2-binary==2.8.4
+# for category tree
+django-js-asset==1.2.2
+django-mptt==0.11.0
+# for autodoc
+Sphinx==2.4.0
+yummy-sphinx-theme==0.1.1
+# for api
+djangorestframework==3.11.0
+djoser==2.0.3
+djangorestframework-jwt==1.11.0
+requests==2.23.0
+# for image
+Pillow==7.0.0
+# for detection barcode and objects
+opencv-python==4.2.0.32
+pyzbar==0.1.8
+numpy==1.18.1
+
+# for S3
+django-s3-storage

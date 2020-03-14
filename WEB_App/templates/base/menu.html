@@ -1,0 +1,52 @@
+{% load static %}
+<div id="home" class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="#"><img src="/static/pics/logo_and_text.svg" title="logo" /></a>
+        </div>
+        <nav class="top-nav">
+            <ul class="top-nav">
+                {% if request.user.is_superuser %}
+                <li>
+                    <a href="/admin/accept/">
+                        <i class="fas fa-home"></i>
+                        <span class="i-text">Админ-панель</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="/">
+                        <i class="fas fa-home"></i>
+                        <span class="i-text">Главная</span>
+                    </a>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" type="button" id="modal_btn" data-toggle="modal" data-target="#signmodal">
+                        <i class="fas fa-user"></i>
+                        <span class="i-text">Вход</span>
+                    </a>
+                </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/photo">
+                        <i class="fas fa-search"></i>
+                        <span class="i-text">Найдите товар</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-user-times"></i>
+                        <span class="i-text">Выйти</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+            <a href="" id="pull"><img src="/static/img/menu.png" title="menu" /></a>
+        </nav>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+

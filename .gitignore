@@ -100,6 +100,7 @@ output.json
 *.mdb
 *.pdb
 *.sqlite3
+*logfile
 
 ### Django ###
 *.pot
@@ -109,6 +110,10 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
+WEB_App/migrations/
+API_App/migrations/
+Scanner/settings.py
+
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -218,7 +223,7 @@ dmypy.json
 
 ### Images ###
 # JPEG
-*.jpg
+#*.jpg
 *.jpeg
 *.jpe
 *.jif
@@ -248,10 +253,10 @@ dmypy.json
 *.webp
 
 # Portable Network Graphics
-*.png
+#*.png
 
 # Animated Portable Network Graphics
-*.apng
+#*.apng
 
 # Multiple-image Network Graphics
 *.mng
@@ -261,7 +266,6 @@ dmypy.json
 *.tif
 
 # Scalable Vector Graphics
-*.svg
 *.svgz
 
 # Portable Document Format
@@ -275,7 +279,7 @@ dmypy.json
 *.dib
 
 # ICO
-*.ico
+#*.ico
 
 # 3D Images
 *.3dm
@@ -494,4 +498,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+collectedstatic/*
 # End of https://www.gitignore.io/api/venv,linux,macos,django,python,images,android,windows,database,pycharm+all

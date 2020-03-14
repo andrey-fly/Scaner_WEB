@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Error 404</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/error.css'%}">
+{% endblock %}
+{% block content %}
+<h1 id="error-name">Ошибка 404</h1>
+<p id="error-text">
+ Страница не найдена
+</p>
+<a id="to-main" href="/">Назад</a>
+{% endblock %}
