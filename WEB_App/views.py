@@ -48,6 +48,18 @@ def index(request):
                 errors.append('Неправильный пароль!')
             else:
                 login(request, user)
+        if request.FILES:
+            response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
+                                    files={'file': request.FILES['file']},
+                                    params={'user': request.user.id,
+                                            'platform': 'web'},
+                                    # headers={'Authorization': 'Token 8cf8bf79233bd6f7cd98cc6e8ef1d6efa69996d6'}
+                                    )
+            response = response.json()
+            if response['status'] == 'ok':
+                return redirect(to='/product/{}/?image={}'.format(response['good'], response['image']))
+            else:
+                return redirect(to='/add_product/?image={}'.format(response['image']))
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
