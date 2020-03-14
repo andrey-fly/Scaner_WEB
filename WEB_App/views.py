@@ -255,14 +255,14 @@ class AcceptPage(PermissionRequiredMixin, View):
             if parent_id:
                 parent = Category.objects.get(id=parent_id)
 
-            response = requests.post('http://0.0.0.0/api/v1/category/create/',
-                                     files={'file': image},
-                                     data={'user': request.user.id,
-                                           'name': name,
-                                           'parent': parent_id,
-                                           },
-                                     headers={'Authorization': 'Token 6078dcc4bd38817c38bff96d48d64a9e05abff3a'}
-            )
+            requests.post('http://0.0.0.0/api/v1/category/create/',
+                          files={'file': image},
+                          data={'user': request.user.id,
+                                'name': name,
+                                'parent': parent_id,
+                                },
+                          headers={'Authorization': 'Token 8e96993a6a5b3f9c515b5cc43c3a7083cb8d1897'}
+                          )
 
         return render(request, self.template_name, self.get_context())
 
