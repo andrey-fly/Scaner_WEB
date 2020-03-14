@@ -303,7 +303,9 @@ nav a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    line-height: 40px;
+    /* Закомментил, т.к. лого уезжало наверх,
+    либо пофиксите уезжающее лого, либо забейте */
+    /*line-height: 40px;*/
 }
 
 nav a:hover {
@@ -767,8 +769,6 @@ ul.icons.labeled li .icon .label {
     padding: 4.5em 0 2.5em 0;
     color: #b0b0b0;
     /* text-align: center; */
-    display: absolute;
-    top: 100px;
 }
 
 #footer input,
