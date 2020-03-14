@@ -141,4 +141,12 @@
     container.classList.add("right-panel-active")
 </script>
 
-{% endif %} {% endblock %}
+{% endif %}
+
+{% if show_modal %}
+<script>
+    $('#signmodal').modal('show')
+</script>
+{% endif %}
+
+{% endblock %}
