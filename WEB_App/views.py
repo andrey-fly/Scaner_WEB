@@ -204,8 +204,8 @@ class AcceptPage(PermissionRequiredMixin, View):
         return render(request, self.template_name, self.get_context())
 
     def post(self, request):
-        moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
         if request.POST.get('action') == 'accept':
+            moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
             name = request.POST.get('name')
             barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
             points = request.POST.get('points')
@@ -228,10 +228,29 @@ class AcceptPage(PermissionRequiredMixin, View):
 
             new_good.save()
             moderation_good.status = 2
-        elif request.POST.get('action') == 'deny':
-            moderation_good.status = 3
+            moderation_good.save()
 
-        moderation_good.save()
+        elif request.POST.get('action') == 'deny':
+            moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
+            moderation_good.status = 3
+            moderation_good.save()
+
+        elif request.POST.get('action') == 'create_category':
+            name = request.POST.get('name')
+            parent_id = request.POST.get('category') or None
+            image = request.FILES.get('image') or None
+            parent = None
+            if parent_id:
+                parent = Category.objects.get(id=parent_id)
+
+            response = requests.post('http://0.0.0.0/api/v1/category/create/',
+                                     files={'file': image},
+                                     data={'user': request.user.id,
+                                           'name': name,
+                                           'parent': parent_id,
+                                           },
+                                     headers={'Authorization': 'Token 6078dcc4bd38817c38bff96d48d64a9e05abff3a'}
+            )
 
         return render(request, self.template_name, self.get_context())
 
@@ -243,7 +262,4 @@ class AcceptPage(PermissionRequiredMixin, View):
 
         categories = Category.objects.all()
         context['categories'] = categories
-
-        category_form = CreateCategoryForm()
-        context['category_form'] = category_form
         return context

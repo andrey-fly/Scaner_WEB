@@ -23,10 +23,15 @@
                     <input id="category_name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2">
 
                     <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
-                    <option value="None" disabled selected>Select parent</option>
-                    <option value="{{category.id}}">Родитель</option>
+                        <option value="None" disabled selected>Select parent</option>
+                        {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
                     </select>
+
                     <input name="image" type="file" accept="image/*" class="row mt-3">
+
+                    <button type="submit" class="btn btn-outline-success float-right mr-1" name="action" value="create_category">Сохранить</button>
                 </div>
             </div>
         </form>
