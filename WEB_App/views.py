@@ -152,7 +152,7 @@ class ProductPage(TemplateView):
         self.context['negatives'] = good.get_negatives()
         self.context['points'] = good.points_rusControl
         if good.category:
-            self.context['categories'] = good.category.get_ancestors()
+            self.context['categories'] = good.category.get_family
         return render(request, self.template_name, self.context)
 
 
