@@ -182,12 +182,13 @@ class GetBarCode(generics.ListAPIView):
 
         image_controller.save(request_file=request.FILES['file'])
         bar = barcode_detector.detect('collectedmedia/{}'.format(image_controller.get_file_name()))
+
         if bar:
             bar = bar[0]['barcode']
 
-            image_controller.delete_image()
-
             queryset['status'] = 'ok'
             queryset['barcode'] = bar
+
+        image_controller.delete_image()
 
         return Response(queryset)
