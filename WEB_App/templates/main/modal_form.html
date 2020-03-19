@@ -3,21 +3,23 @@
         <div class="form-container sign-up-container">
             <form action="/" method="POST">
                 {% csrf_token %}
-                <h1>Создание аккаунта</h1>
-                <div class="social-container"><a href="#" class="social"><i
-                        class="fab fa-facebook-f"></i></a><a href="#" class="social"><i
-                        class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
-                        class="fab fa-linkedin-in"></i></a></div>
-                <span>или спользуйте вашу почту для регистрации</span> {% if reg_form.errors %} {% if reg_form.errors.password2 %}
-                <div class="row error mb-1">
+                <h1 class="mb-2">Создание аккаунта</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <!-- <span>или используйте вашу почту для регистрации</span>  -->
+                {% if reg_form.errors %} {% if reg_form.errors.password2 %}
+                <div class="error-reg">
                     <b>{{reg_form.errors.password2}}</b>
                 </div>
                 {%endif%} {% if reg_form.errors.username %}
-                <div class="row error mb-1">
+                <div class="error-reg">
                     <b>{{reg_form.errors.username}}</b>
                 </div>
                 {%endif%} {% if reg_form.errors.email %}
-                <div class="row error mb-1">
+                <div class="error-reg">
                     <b>{{reg_form.errors.email}}</b>
                 </div>
                 {%endif%} {%endif%} {{ reg_form.username }} {{ reg_form.email }} {{ reg_form.password }} {{ reg_form.password2 }}
@@ -30,12 +32,14 @@
             <form action="#" method="POST">
                 {% csrf_token %}
                 <h1>Войти</h1>
-                <div class="social-container"><a href="#" class="social"><i
-                        class="fab fa-facebook-f"></i></a><a href="#" class="social"><i
-                        class="fab fa-google-plus-g"></i></a><a href="#" class="social"><i
-                        class="fab fa-linkedin-in"></i></a></div>
-                <span>или использовать ваш аккаунт</span> {% for error in login_errors %}
-                <div class="row error">
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+<!--                <span>или использовать ваш аккаунт</span> -->
+                {% for error in login_errors %}
+                <div class="row error-reg">
                     <p><b>{{error}}</b></p>
                 </div>
 

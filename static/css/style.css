@@ -432,6 +432,13 @@ nav a#pull {
     color: rgb(255, 255, 255);
 }
 
+.error-reg {
+ color: darkred;
+ font-size: 0.8rem;
+ margin-right: auto;
+ margin-left: 0;
+}
+
 .bt-ghost-in:active,
 .bt-ghost-up:active,
 .bt-ghost-in-acc:active,
