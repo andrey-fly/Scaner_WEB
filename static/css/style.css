@@ -283,7 +283,6 @@ header {
 
 nav {
     position: relative;
-    float: right;
 }
 
 nav ul {
@@ -305,7 +304,7 @@ nav a {
     text-decoration: none;
     /* Закомментил, т.к. лого уезжало наверх,
     либо пофиксите уезжающее лого, либо забейте */
-    /*line-height: 40px;*/
+    /*line-height: 40px; */
 }
 
 nav a:hover {
