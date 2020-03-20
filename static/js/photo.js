@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     dropArea.addEventListener('drop', handleDrop, false);
 
+    func_element_hide();
+
     function handleDrop(e) {
         let dt = e.dataTransfer;
         let files = dt.files;
@@ -55,9 +57,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if (result.redirected){
             window.location.href = result.url;
         }
-
-
     }
+    window.addEventListener("resize", function() {func_element_hide();});
 });
 
 function func_submit_btn() {
@@ -73,4 +74,17 @@ function func_submit_area() {
     console.log('kek');
     input.name = 'file';
     form.submit();
+}
+
+function func_element_hide(){
+    let dropSubmit = document.getElementById('file-input-for-frame');
+    let dropArea = document.getElementById('photo-frame-in-content-group');
+    if (window.innerWidth < 500){
+        dropSubmit.style.display = 'none';
+        dropArea.style.display = 'none';
+    }
+    else{
+        dropSubmit.style.display = 'flex';
+        dropArea.style.display = 'flex';
+    }
 }

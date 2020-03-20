@@ -22,7 +22,7 @@
 #content-group {
     background-color: #f8f9fa;
     position: static;
-    width: 900px;
+    width: auto;
     height: 480px;
     left: 224px;
     top: 152px;
@@ -31,6 +31,7 @@
     order: 1;
     align-self: center;
     margin: 50px auto;
+    justify-content: center;
 }
 
 
