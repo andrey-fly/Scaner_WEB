@@ -76,6 +76,27 @@
             </div>
         </div>
     </div>
+    <div id="comment-main-block">
+        <div id="add-comment-block">
+            <form action="/product/" method="post">
+                {% csrf_token %}
+                <h1>Прокомментируйте:</h1>
+                {{ comment_form.as_p }}
+                <div>
+                    <input type="submit" class="btn btn-outline-success btn-md" name="status" value="Отправить"
+                           style="width: 100px; border-radius: 16px"/>
+                </div>
+            </form>
+        </div>
+        <div id="comment-list-block">
+            {% for comment in comments %}
+                <div id="comment-block">
+                    <p>Пользователь: {{comment.author}}</p>
+                    <p>{{comment.text}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %} {% block extra_js %}
 <!--    <script src="{% static 'js/product.js' %}"></script>-->
 {% endblock %}

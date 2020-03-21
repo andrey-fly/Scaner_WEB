@@ -114,3 +114,12 @@ class FileForm(forms.Form):
     file = forms.FileField(label='Select a file', required=False,
                            widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'inputGroupFile',
                                                          'aria-describedby': "inputGroupFileBtn"}))
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        label='Обсудите опрос здесь:',
+        widget=forms.Textarea(
+            attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'border-radius: 8px'}),
+        required=False
+    )
