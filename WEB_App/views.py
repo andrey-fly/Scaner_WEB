@@ -50,7 +50,7 @@ def index(request):
                 login(request, user)
         if request.FILES:
             if not request.user.is_authenticated:
-                context['show_modal'] = True
+                context['show_modal'] = 'true'
             else:
                 response = requests.get('http://0.0.0.0/api/v1/goods/get_product/',
                                         files={'file': request.FILES['file']},
