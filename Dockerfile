@@ -6,8 +6,5 @@ WORKDIR /web
 COPY requirements.txt /web/
 RUN pip3 install -r requirements.txt
 
-RUN apt-get update && \
-    apt-get install -y build-essential libzbar-dev
-
 COPY . /web/
 

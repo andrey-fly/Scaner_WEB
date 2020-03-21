@@ -8,7 +8,6 @@
             <div id="mask-group-in-photo-block">
                 <div id="background-figure-in-mask-group">
                     <img src="{{img}}" id="photo-in-mask-group">
-<!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
                 </div>
             </div>
             <label id="photo-load-label-in-photo-block">
@@ -19,7 +18,7 @@
             <p id="way-to-the-page-in-info-block">
 <!--                Молочные продукты > Сливочное масло-->
                 {% for category in categories %}
-                {{category.name}} >
+                {{category}} >
                 {% endfor %}
             </p>
             <p id="product-name-in-info-block">
@@ -50,7 +49,7 @@
                 <ul id="adv-list-in-adv-list-block">
                     {% if positives %}
                         {% for positive in positives %}
-                        <li><em>+</em><span>{{positive.value}}</span></li>
+                        <li><em>+</em><span>{{positive}}</span></li>
                         {% endfor %}
                     {% else %}
                         <li><em>+</em><span>Отсутствуют</span></li>
@@ -67,7 +66,7 @@
                 <ul id="disadv-list-in-adv-list-block">
                     {% if negatives %}
                         {% for negative in negatives %}
-                        <li><em>–</em><span>{{negative.value}}</span></li>
+                        <li><em>–</em><span>{{negative}}</span></li>
                         {% endfor %}
                     {% else %}
                         <li><em>–</em><span>Отсутствуют</span></li>
