@@ -75,6 +75,7 @@ class Comment(models.Model):
     text = models.TextField(verbose_name="Текст комментария", max_length=255)
     good = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
     author = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 # class UserActions(models.Model):
 #     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)

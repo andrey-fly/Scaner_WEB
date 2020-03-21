@@ -298,6 +298,7 @@ class AcceptPage(PermissionRequiredMixin, View):
 def profile(request):
     context = {}
     context['user'] = User.objects.get(id=request.user.id)
+    context['comments'] = Comment.objects.all()
     current_user = User.objects.get(id=request.user.id)
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
