@@ -57,107 +57,10 @@
                                 </a>
                             </div>
                         </li>
-
-
                         {% endif %}
                     </ul>
                 </nav>
             </div>
+        </div>
     </div>
 </nav>
-<!--<div id="home" class="header">-->
-<!--    <div class="container">-->
-<!--        <div class="logo">-->
-<!--            <a href="#"><img src="/static/pics/logo_and_text.svg" title="logo"/></a>-->
-<!--        </div>-->
-<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
-<!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            <img src="/static/img/menu.png" title="menu"/>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--            <nav class="top-nav">-->
-<!--                <ul class="navbar-nav mr-auto top-nav">-->
-<!--                    {% if request.user.is_superuser %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a href="/admin/accept/">-->
-<!--                            <i class="fas fa-home"></i>-->
-<!--                            <span class="i-text">Админ-панель</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    {% endif %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a href="/">-->
-<!--                            <i class="fas fa-home"></i>-->
-<!--                            <span class="i-text">Главная</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    {% if not user.is_authenticated %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" type="button" id="modal_btn" data-toggle="modal"-->
-<!--                           data-target="#signmodal">-->
-<!--                            <i class="fas fa-user"></i>-->
-<!--                            <span class="i-text">Вход</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    {% endif %}-->
-<!--                    {% if user.is_authenticated %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="/photo">-->
-<!--                            <i class="fas fa-search"></i>-->
-<!--                            <span class="i-text">Найдите товар</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="/logout">-->
-<!--                            <i class="fas fa-user-times"></i>-->
-<!--                            <span class="i-text">Выйти</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    {% endif %}-->
-<!--                </ul>-->
-<!--            </nav>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--            <ul class="top-nav">-->
-<!--                {% if request.user.is_superuser %}-->
-<!--                <li>-->
-<!--                    <a href="/admin/accept/">-->
-<!--                        <i class="fas fa-home"></i>-->
-<!--                        <span class="i-text">Админ-панель</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                {% endif %}-->
-<!--                <li>-->
-<!--                    <a href="/">-->
-<!--                        <i class="fas fa-home"></i>-->
-<!--                        <span class="i-text">Главная</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                {% if not user.is_authenticated %}-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" type="button" id="modal_btn" data-toggle="modal" data-target="#signmodal">-->
-<!--                        <i class="fas fa-user"></i>-->
-<!--                        <span class="i-text">Вход</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                {% endif %}-->
-<!--                {% if user.is_authenticated %}-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="/photo">-->
-<!--                        <i class="fas fa-search"></i>-->
-<!--                        <span class="i-text">Найдите товар</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="/logout">-->
-<!--                        <i class="fas fa-user-times"></i>-->
-<!--                        <span class="i-text">Выйти</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                {% endif %}-->
-<!--            </ul>-->
-<!--            </nav>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
