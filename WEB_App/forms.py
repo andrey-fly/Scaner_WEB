@@ -63,3 +63,12 @@ class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        label='Обсудите опрос здесь:',
+        widget=forms.Textarea(
+            attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'border-radius: 8px'}),
+        required=False
+    )

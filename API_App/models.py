@@ -43,6 +43,9 @@ class Goods(models.Model):
     def get_negatives(self):
         return Negative.objects.filter(good=self)
 
+    def get_comments(self):
+        return Comment.objects.filter(good=self)
+
 
 class Picture(models.Model):
     file = models.FileField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
@@ -66,6 +69,12 @@ class Negative(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
+
+
+class Comment(models.Model):
+    text = models.TextField(verbose_name="Текст комментария", max_length=255)
+    good = models.ForeignKey(to=Goods, verbose_name='Продукт', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
 # class UserActions(models.Model):
 #     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)

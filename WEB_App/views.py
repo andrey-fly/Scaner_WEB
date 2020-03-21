@@ -11,9 +11,9 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
-from API_App.models import Category
+from API_App.models import Category, Comment
 from Modules.ImageController import ImageController, Picture, Goods
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm, CreateCategoryForm
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm, CreateCategoryForm, CommentForm
 from WEB_App.models import Recovery, GoodsOnModeration
 
 from django.views import View
@@ -166,6 +166,20 @@ class ProductPage(TemplateView):
         self.context['positives'] = good.get_positives()
         self.context['negatives'] = good.get_negatives()
         self.context['points'] = good.points_rusControl
+        self.context['comments'] = good.get_comments()
+
+        if request.method == 'GET':
+            self.context['comment_form'] = CommentForm()
+        if request.method == 'POST':
+            if request.POST.get('comment'):
+                text = request.POST.get('comment')
+                comment_item = Comment(
+                    text=text,
+                    good=Goods.objects.get(name=good ),
+                    author=User.objects.get(id=request.user.id)
+                )
+                comment_item.save()
+
         if good.category:
             self.context['categories'] = good.category.get_family
         return render(request, self.template_name, self.context)
