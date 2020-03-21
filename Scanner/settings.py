@@ -35,27 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'API_App',
     'WEB_App',
-    'djoser',
     'django_s3_storage',
     'mptt',
 ]
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,7 +57,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             'WEB_App/templates',
-            'API_App/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -102,15 +84,7 @@ DATABASES = {
         'PASSWORD': 'postgres',
         'HOST': 'web_db',
         'PORT': '5432',
-    },
-    'API_DB': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'API_DB',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'api_db',
-        'PORT': '5432',
-    },
+    }
 }
 
 # WITHOUT DOCKER
@@ -122,23 +96,9 @@ DATABASES = {
 #         'PASSWORD': 'postgres',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
-#     },
-#     'API_DB': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'API_DB',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     },
+#     }
 # }
 
-# В общем, если использовать отдельную базу данных, то джанго в ней не будет видеть модели пользователей.
-# Поэтому я временно убираю разделение бд, пока не разберусь с этим.
-# Проблемы с авторизацией в интейрфейс апи
-# DATABASE_ROUTERS = [
-#     'API_App.router.API_DB_Router',
-# ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -205,3 +165,7 @@ AWS_ACCESS_KEY_ID = "SCW4NVHQWSWKR4YTRCVG"
 AWS_SECRET_ACCESS_KEY = "912dc092-b911-441b-9582-de4180fb47d1"
 AWS_S3_ENDPOINT_URL = "https://s3.nl-ams.scw.cloud"
 AWS_S3_BUCKET_NAME = "scaner-goods-pictures"
+
+
+API_URL = 'http://api.scanner.savink.in/'
+API_TOKEN = 'Token c70b88bb12ce5694c171d463518a8dd9aa297ff9'

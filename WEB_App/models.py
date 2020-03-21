@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from API_App.models import Picture
-
 
 class Recovery(models.Model):
     target_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -11,9 +9,14 @@ class Recovery(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
+class UserPhoto(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to='profile', null=True, default='profile_icon')
+
+
 class GoodsOnModeration(models.Model):
     name = models.TextField(verbose_name='Наименование', max_length=255)
-    image = models.ForeignKey(Picture, verbose_name='Изображение', on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
     barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
     STATUSES = [
         (1, 'Принято на модерацию'),
@@ -26,6 +29,9 @@ class GoodsOnModeration(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-class UserPhoto(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to='profile', null=True, default='profile_icon')
+class Picture(models.Model):
+    file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+    # target_good = models.ForeignKey(Goods, verbose_name='Товар', on_delete=models.CASCADE, null=True, default=None)
+    # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')

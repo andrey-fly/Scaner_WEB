@@ -58,7 +58,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-4">
-                                <img src="{{good.image.file.url}}" class="row" height="250">
+                                <img src="{{good.image.url}}" class="row" height="250">
                                 <input name="image" type="file" accept="image/*" class="row mt-3">
                             </div>
                             <div class="ml-5 col-6">
@@ -74,7 +74,7 @@
                                 <input id="rcn" type="text" name="points" value="{{good.points_rusControl}}" placeholder="Оценка Росконтроль" class="row mt-2">
 
                                 <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
-                                    <option value="None" disabled selected>Select category</option>
+                                    <option value="1" disabled selected>Select category</option>
                                     {% for category in categories %}
                                     <option value="{{category.id}}">{{category.name}}</option>
                                     {% endfor %}
