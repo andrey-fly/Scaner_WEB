@@ -6,7 +6,8 @@ from API_App.models import Goods, Category
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Пароль'}),
+    password = forms.CharField(label='Пароль',
+                               widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Пароль'}),
                                min_length=8)
     password2 = forms.CharField(label='Повторите',
                                 widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
@@ -63,3 +64,53 @@ class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class ChangeInfoForm(forms.Form):
+    username = forms.CharField(label='Имя пользователя',
+                               min_length=3,
+                               required=False,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'placeholder': 'Ваше имя',
+                                       'id': 'name'}
+                               )
+    )
+    email = forms.EmailField(label='Электронная почта',
+                             required=False,
+                             widget=forms.EmailInput(
+                                 attrs={
+                                     'placeholder': 'Email',
+                                     'id': 'email'}
+                             )
+    )
+    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput, required=False, initial=None)
+    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput, min_length=8, required=False,
+                                   initial=None)
+    new_password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput, required=False, initial=None)
+    old_password_flag = True
+
+    def set_old_password_flag(self):
+        self.old_password_flag = False
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        if not old_password and self.data.get('new_password'):
+            print('Not')
+            raise forms.ValidationError("Вы должны ввести Ваш старый пароль.")
+        if self.old_password_flag is False:
+            raise forms.ValidationError("Старый пароль, который Вы ввели, - неверен.")
+        return old_password
+
+    def clean_new_password2(self):
+        new_password = self.cleaned_data.get('new_password')
+        new_password2 = self.cleaned_data.get('new_password2')
+        if new_password != new_password2:
+            raise forms.ValidationError('Новые пароли не совпадают.')
+        return new_password2
+
+
+class FileForm(forms.Form):
+    file = forms.FileField(label='Select a file', required=False,
+                           widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'inputGroupFile',
+                                                         'aria-describedby': "inputGroupFileBtn"}))

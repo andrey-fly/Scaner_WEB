@@ -1,0 +1,204 @@
+.main-name {
+        font-size: 7vh;
+        font-style: normal;
+        font-weight: lighter;
+        line-height: 180%;
+        color: #000000;
+        font-family: Roboto-Regular;
+    }
+
+.section-name{
+        font-size: 5vh;
+        font-weight: bold;
+        line-height: 180%;
+        color: #888;
+}
+
+.my-image{
+    height: 130px;
+    width: 130px;
+    margin: 0 auto;
+}
+
+.change-btn {
+    width: 50%;
+    position: static;
+    margin-top: 30px;
+    margin-right: 100%;
+    background: #3B84F1;
+    border-radius: 4px;
+    flex: none;
+    order: 2;
+    align-self: flex-start;
+    position: relative;
+    left: 0;
+}
+
+.change-btn:hover {
+    background: #002f55;
+}
+
+.text-in-change-btn {
+    position: static;
+    font-family: Roboto-Regular;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 52px;
+    color: #FFFFFF;
+    flex: none;
+    order: 0;
+    align-self: center;
+}
+
+.special-container ~.card-title{
+    text-align: center;
+    color: #888;
+    font-weight: bold !important;
+    padding: 20px
+}
+
+.special-container ~.card-text {
+    padding: 10px;
+    color: #888;
+    font-size: 2rem;;
+}
+
+.comment-card {
+    width: 100%;
+    height: 40vh;
+    position: relative;
+}
+
+.comment-card-body {
+    position: relative;
+    height: 40vh;
+}
+
+.comment-card-body > .date {
+    position: absolute;
+    bottom: 10%;
+}
+
+.comment-card-body > .card-title {
+    color: #888;
+    font-size: 32px;
+}
+
+.comment-scroll {
+    height:50vh;
+    overflow-y: scroll;
+    padding:10px;
+    margin: 20px;
+}
+
+.comment-image {
+    position:relative;
+    height: 40vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 50%;
+}
+
+.MultiCarousel { float: left; overflow: hidden; padding: 15px; width: 100%; position:relative; }
+.MultiCarousel .MultiCarousel-inner { transition: 1s ease all; float: left; }
+.MultiCarousel .MultiCarousel-inner .item { float: left;}
+.MultiCarousel .MultiCarousel-inner .item > div {margin:10px;}
+.MultiCarousel .leftLst, .MultiCarousel .rightLst { position:absolute; border-radius:50%;top:calc(50% - 20px); }
+.MultiCarousel .leftLst { left:0; }
+.MultiCarousel .rightLst { right:0; }
+.MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
+
+.rating-area {
+	overflow: hidden;
+	width: 140px;
+	margin: 0 auto;
+}
+.rating-area:not(:checked) > input {
+	display: none;
+}
+.rating-area:not(:checked) > label {
+	float: right;
+	cursor: pointer;
+	font-size: 30px;
+	text-align: center;
+	line-height: 50px;
+	color: lightgrey;
+
+}
+.rating-area:not(:checked) > label:before {
+	content: '★';
+}
+.rating-area > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+.rating-area:not(:checked) > label:hover,
+.rating-area:not(:checked) > label:hover ~ label {
+	color: gold;
+}
+.rating-area > input:checked + label:hover,
+.rating-area > input:checked + label:hover ~ label,
+.rating-area > input:checked ~ label:hover,
+.rating-area > input:checked ~ label:hover ~ label,
+.rating-area > label:hover ~ input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rate-area > label:active {
+	position: relative;
+}
+
+@media (max-width: 767px) {
+
+    .main-name {
+        font-size: 5vh;
+    }
+
+    .change-btn {
+        width: 70%;
+        position: static;
+        margin-top: 30px;
+        margin-right: 100%;
+        background: #3B84F1;
+        border-radius: 4px;
+        flex: none;
+        order: 2;
+        align-self: flex-start;
+        position: relative;
+        left: 0;
+    }
+    .comment-card {
+        width: 100%;
+        height: 50vh;
+        position: relative;
+    }
+
+    .comment-card-body {
+        position: relative;
+        height: 50vh;
+    }
+    .comment-image {
+        position:relative;
+        height: 20vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position-x: 50%;
+        background-position-y: 50%;
+    }
+
+    .comment-card-body > .card-title {
+        color: #888;
+        font-size: 20px;
+    }
+
+    .comment-card-body > .card-text {
+        color: #888;
+        font-size: 18px;
+    }
+    .comment-card-body > .date {
+        position: relative;
+        top: 10%;
+    }
+}

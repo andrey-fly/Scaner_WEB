@@ -1,0 +1,604 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Профиль</title>
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}">
+{% endblock %} {% block content %}
+<main>
+    <h1 class="main-name text-center">Личный кабинет</h1>
+    <hr>
+
+    <div class="row">
+        <div class="col mb-4">
+            <img class="rounded mb-3 float-right my-image" src="{% static 'img/'%}{{photo}}" alt="icon">
+        </div>
+        <div class="col mb-4" style="position: relative;">
+            <p class="card-title text-left">Имя: <span class="font-weight-bold">{{ user.username}}</span></p>
+            <p class="card-title text-left">Email: <span class="font-weight-bold">{{ user.email }}</span></p>
+            <p class="card-title text-left">Последний вход: <span class="font-weight-bold">{{ user.last_login }}</span></p>
+             <form class="form-group" action='/change_info/' method="POST" style="text-align: center; position: relative;">
+                {% csrf_token %}
+                 <button type="submit" name="id" class="btn change-btn btn-md"><span class="text-in-change-btn text-center">Изменить данные</span></button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+    <h2 class="text-center section-name">Мои продукты</h2>
+<!--    Settings:-->
+<!--	Change data items for xs,sm,md and lg display items respectively (адаптивная вёрстка, количество отображаемых продуктов под разные размеры экрана). Ex:data-items="1,3,5,6"-->
+<!--	Change data slide for slides per click Ex:data-slide="1"-->
+    <div class="container special-container">
+        <div class="row">
+            <div class="MultiCarousel" data-items="1,2,3,4" data-slide="2" class="MultiCarousel"  data-interval="1000">
+                <div class="MultiCarousel-inner">
+    <!--                Когда будет возможно передавать все продукты пользователя из базы данных, можно будет через цикл for создавать элементы с классом item-->
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?milk" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+    <!--                                  Чтобы получить оценку пользателем его продуктов, нужно получить id нажатой звезды (изменить class="star-5" на id="star-5" и т.д.)-->
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?meat" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?tomato" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?corn" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?cheese" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?salad" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?cucamber" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Ваша оценка:
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="btn btn-primary leftLst"><</button>
+                <button class="btn btn-primary rightLst">></button>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <h2 class="text-center section-name">Мои комментарии</h2>
+            <nav id="myScrollspy"></nav>
+            <div class="comment-scroll" data-spy="scroll" data-target="#myScrollspy" data-offset="10">
+                <div class="card mb-3 comment-card">
+                  <div class="row no-gutters">
+                    <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?strawberry');"></div>
+                    <div class="col-md-8">
+                      <div class="card-body comment-card-body">
+                        <h5 class="card-title">Продукт</h5>
+                        <p class="card-text">Комментарий о продукте.</p>
+                        <p class="card-text date">21.03.2020</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card mb-3 comment-card">
+                  <div class="row no-gutters">
+                    <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?blueberry');"></div>
+                    <div class="col-md-8">
+                      <div class="card-body comment-card-body">
+                        <h5 class="card-title">Продукт</h5>
+                        <p class="card-text">Комментарий о продукте.</p>
+                        <p class="card-text date">21.03.2020</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card mb-3 comment-card">
+                  <div class="row no-gutters">
+                    <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?waterlemon');"></div>
+                    <div class="col-md-8">
+                      <div class="card-body comment-card-body">
+                        <h5 class="card-title">Продукт</h5>
+                        <p class="card-text">Комментарий о продукте.</p>
+                        <p class="card-text date">21.03.2020</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+    <hr>
+    <h2 class="text-center section-name">Мои оценки</h2>
+    <div class="container special-container">
+        <div class="row">
+            <div class="MultiCarousel" data-items="1,2,3,4" data-slide="2" class="MultiCarousel"  data-interval="1000">
+                <div class="MultiCarousel-inner">
+    <!--                Когда будет возможно передавать все продукты пользователя из базы данных, можно будет через цикл for создавать элементы с классом item-->
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?milk" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+    <!--                                  Чтобы получить оценку пользателем его продуктов, нужно получить id нажатой звезды (изменить class="star-5" на id="star-5" и т.д.)-->
+                                        <input type="radio" id="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?meat" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?tomato" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?corn" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?cheese" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?salad" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="pad15">
+                            <div class="card">
+                                <img src="https://source.unsplash.com/300x300/?cucamber" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h3 class="card-title">Продукт</h3>
+                                  <p class="card-text">
+                                      Немного информации о продукте.
+                                  </p>
+                                  <p class="card-text"><small class="text-muted">
+                                      Вы оценили этот товар 21.03.2020
+                                  </small></p>
+                                  <div class="rating-area">
+                                        <input type="radio" class="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>
+                                        <input type="radio" class="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>
+                                        <input type="radio" class="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>
+                                        <input type="radio" class="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>
+                                        <input type="radio" class="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="btn btn-primary leftLst"><</button>
+                <button class="btn btn-primary rightLst">></button>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block extra_js %}
+<script>
+//Карусель
+$(document).ready(function () {
+    var itemsMainDiv = ('.MultiCarousel');
+    var itemsDiv = ('.MultiCarousel-inner');
+    var itemWidth = "";
+
+    $('.leftLst, .rightLst').click(function () {
+        var condition = $(this).hasClass("leftLst");
+        if (condition)
+            click(0, this);
+        else
+            click(1, this)
+    });
+
+    ResCarouselSize();
+
+
+
+
+    $(window).resize(function () {
+        ResCarouselSize();
+    });
+
+    //this function define the size of the items
+    function ResCarouselSize() {
+        var incno = 0;
+        var dataItems = ("data-items");
+        var itemClass = ('.item');
+        var id = 0;
+        var btnParentSb = '';
+        var itemsSplit = '';
+        var sampwidth = $(itemsMainDiv).width();
+        var bodyWidth = $('body').width();
+        $(itemsDiv).each(function () {
+            id = id + 1;
+            var itemNumbers = $(this).find(itemClass).length;
+            btnParentSb = $(this).parent().attr(dataItems);
+            itemsSplit = btnParentSb.split(',');
+            $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+            if (bodyWidth >= 1200) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 992) {
+                incno = itemsSplit[2];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 768) {
+                incno = itemsSplit[1];
+                itemWidth = sampwidth / incno;
+            }
+            else {
+                incno = itemsSplit[0];
+                itemWidth = sampwidth / incno;
+            }
+            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+            $(this).find(itemClass).each(function () {
+                $(this).outerWidth(itemWidth);
+            });
+
+            $(".leftLst").addClass("over");
+            $(".rightLst").removeClass("over");
+
+        });
+    }
+
+
+    //this function used to move the items
+    function ResCarousel(e, el, s) {
+        var leftBtn = ('.leftLst');
+        var rightBtn = ('.rightLst');
+        var translateXval = '';
+        var divStyle = $(el + ' ' + itemsDiv).css('transform');
+        var values = divStyle.match(/-?[\d\.]+/g);
+        var xds = Math.abs(values[4]);
+        if (e == 0) {
+            translateXval = parseInt(xds) - parseInt(itemWidth * s);
+            $(el + ' ' + rightBtn).removeClass("over");
+
+            if (translateXval <= itemWidth / 2) {
+                translateXval = 0;
+                $(el + ' ' + leftBtn).addClass("over");
+            }
+        }
+        else if (e == 1) {
+            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+            translateXval = parseInt(xds) + parseInt(itemWidth * s);
+            $(el + ' ' + leftBtn).removeClass("over");
+
+            if (translateXval >= itemsCondition - itemWidth / 2) {
+                translateXval = itemsCondition;
+                $(el + ' ' + rightBtn).addClass("over");
+            }
+        }
+        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+    }
+
+    //It is used to get some elements from btn
+    function click(ell, ee) {
+        var Parent = "#" + $(ee).parent().attr("id");
+        var slide = $(Parent).attr("data-slide");
+        ResCarousel(ell, Parent, slide);
+    }
+
+});
+</script>
+{% endblock %}

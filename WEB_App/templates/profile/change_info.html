@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %} {% load static %} {% block title %}
+<title>Изменение данных</title>
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/change_info.css'%}">
+{% endblock %}
+{% block content %}
+<main>
+    <div class="jumbotron main-frame">
+        <h2 class="text-center section-name">Изменение данных</h2>
+        <hr>
+        <div class="row">
+            <div class="col-md-12" style="color: darkred">
+                {{form.errors}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-6">
+                <img class="rounded float-left mb-3" src="{% static 'img/'%}{{userphoto}}" alt="icon"
+                     style="width: 100px; height: 100px">
+                <form enctype="multipart/form-data" action="/change_info/" method="POST">
+                    {% csrf_token %}
+                        <div class="custom-file">
+                            {{photo.file}}
+                            <label class="custom-file-label text-wrap" for="inputGroupFile" id="ididid"><span
+                                    id="chosed_file" class="text-wrap">Выберите файл</span></label>
+                        </div>
+                        <div class="row">
+                            <input type="submit" class="btn change-btn btn-md" id="inputGroupFileBtn"name="status" value="Обновить фото">
+                        </div>
+                </form>
+                <form action="/change_info/" method="POST">
+                    {% for field in form %}
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ field.label }}:
+                        </div>
+                        <div class="col-md-12 form-input">
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row">
+                        <input type="submit" class="btn change-btn btn-md" name="status" value="Сохранить">
+                    </div>
+                </form>
+            </div>
+         </div>
+    </div>
+</main>
+{% endblock %}
+{% block extra_js %}
+<script>
+    inputGroupFile.addEventListener('change', function () {
+        chosed_file.textContent = inputGroupFile.files[0].name;
+    })
+
+</script>
+{% endblock %}

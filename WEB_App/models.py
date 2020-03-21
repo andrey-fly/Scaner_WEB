@@ -24,3 +24,8 @@ class GoodsOnModeration(models.Model):
                               choices=STATUSES, default=1)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class UserPhoto(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to='profile', null=True, default='profile_icon')

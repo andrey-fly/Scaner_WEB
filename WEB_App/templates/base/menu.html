@@ -34,11 +34,21 @@
                         <span class="i-text">Найдите товар</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">
-                        <i class="fas fa-user-times"></i>
-                        <span class="i-text">Выйти</span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                        <span class="i-text">{{user.username}}</span>
                     </a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="/profile" style="text-align: left;">
+                          <i class="fas fa-user-circle"></i>
+                          <span class="i-text">Профиль</span>
+                      </a>
+                      <a class="dropdown-item" href="/logout" style="text-align: left;">
+                          <i class="fas fa-user-times"></i>
+                          <span class="i-text">Выйти</span>
+                      </a>
+                    </div>
                 </li>
                 {% endif %}
 
