@@ -13,8 +13,8 @@ from django.views.generic.base import View
 
 from API_App.models import Category
 from Modules.ImageController import ImageController, Picture, Goods
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm, CreateCategoryForm
-from WEB_App.models import Recovery, GoodsOnModeration
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, AddGoodForm, CreateCategoryForm, ChangeInfoForm, FileForm
+from WEB_App.models import Recovery, GoodsOnModeration, UserPhoto
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -278,3 +278,60 @@ class AcceptPage(PermissionRequiredMixin, View):
         categories = Category.objects.all()
         context['categories'] = categories
         return context
+
+
+def profile(request):
+    context = {}
+    context['user'] = User.objects.get(id=request.user.id)
+    current_user = User.objects.get(id=request.user.id)
+    if UserPhoto.objects.filter(user=current_user):
+        context['photo'] = UserPhoto.objects.get(user=current_user).img
+    else:
+        context['photo'] = 'profile/profile_icon.png'
+    return render(request, 'profile/profile.html', context)
+
+
+def change_info(request):
+    current_user = User.objects.get(id=request.user.id)
+    form = ChangeInfoForm(request.POST)
+    form.fields['username'].widget.attrs['placeholder'] = current_user.username
+    form.fields['email'].widget.attrs['placeholder'] = current_user.email
+    photo = FileForm(request.POST, request.FILES)
+    context = {'form': form, 'photo': photo}
+    if UserPhoto.objects.filter(user=current_user):
+        context['userphoto'] = UserPhoto.objects.get(user=current_user).img
+    else:
+        context['userphoto'] = 'profile/profile_icon.png'
+    if request.method == 'POST':
+        if request.POST.get('old_password'):
+            old_password = request.POST.get('old_password')
+            if current_user.check_password('{}'.format(old_password)) is False:
+                form.set_old_password_flag()
+                return render(request, 'profile/change_info.html', {'form': form})
+        if form.is_valid():
+            if request.POST.get('username'):
+                current_user.username = request.POST.get('username')
+            if request.POST.get('email'):
+                current_user.email = request.POST.get('email')
+            if request.POST.get('old_password'):
+                old_password = request.POST.get('old_password')
+                if current_user.check_password('{}'.format(old_password)) is False:
+                    form.set_old_password_flag()
+                    return render(request, 'profile/change_info.html', {'form': form})
+                else:
+                    current_user.set_password('{}'.format(form.data['new_password2']))
+            current_user.save()
+            login(request, current_user)
+        else:
+            return render(request, 'profile/change_info.html', context)
+        if photo.is_valid():
+            if UserPhoto.objects.filter(user=current_user):
+                userphoto = UserPhoto.objects.get(user=current_user)
+            else:
+                userphoto = UserPhoto(user=current_user, img='profile/profile_icon.png')
+            if request.FILES.get('file'):
+                userphoto.img = request.FILES.get('file')
+                userphoto.save()
+    if request.POST.get('status'):
+        return redirect('/profile')
+    return render(request, 'profile/change_info.html', context)
