@@ -121,5 +121,5 @@ class CommentForm(forms.Form):
         label='Обсудите опрос здесь:',
         widget=forms.Textarea(
             attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'border-radius: 8px'}),
-        required=False
+        required=True
     )

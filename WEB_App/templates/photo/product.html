@@ -91,7 +91,8 @@
         <div id="comment-list-block">
             {% for comment in comments %}
                 <div id="comment-block">
-                    <p>Пользователь: {{comment.author}}</p>
+                    <p>Пользователь: {{comment.user}}</p>
+                    <p>Создано {{comment.created}}</p>
                     <p>{{comment.text}}</p>
                 </div>
             {% endfor %}
