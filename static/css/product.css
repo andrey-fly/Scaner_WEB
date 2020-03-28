@@ -507,13 +507,97 @@ Comments
 
 #comment-main-block {
     display: flex;
-    margin: 72px 0px;
+    flex-direction: column;
+    margin: 60px 10%;
+    margin-right: 25%;
+}
+
+#add-comment-block label {
+    margin: 10px 0px;
+    margin-top: 15px;
+}
+
+#add-comment-block p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+#comment-list-block {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+#comment-list-block textarea {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin: 10px 0px;
+    margin-left: 40px;
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    resize: none;
+}
+
+#comment-list-block input {
+    margin-left: 40px;
+}
+
+#comment-list-block h1 {
+    margin-left: 40px;
+}
+
+/* comment */
+
+#comment-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+#comment-block p {
+    font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
+
+#comment-head-block {
+    display: flex;
+    flex-direction: row;
+}
+
+#vertical-line {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    height: 24px;
+    margin: 0px 10px;
+}
+
+/* sub_comment */
+
+#sub_comment-block {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+#sub_comment-head-block {
+    display: flex;
+    flex-direction: row;
+}
+
+#vertical-line-sub {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    height: 24px;
+    margin: 0px 10px;
 }
 
 #rating{
-    margin: 0;
+    margin: 10px 40px;
+    margin-bottom: 0px;
     padding: 0;
-    font-family: sans-serif;
     border: none;
 }
 
