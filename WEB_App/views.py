@@ -13,7 +13,7 @@ from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN
 from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm, CommentForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment
+from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -250,6 +250,7 @@ class ProductPage(TemplateView):
             self.context['negatives'] = response['negatives']
             self.context['points'] = response['points']
             self.context['categories'] = response['categories']
+            self.context['comments'] = Comment.objects.filter(good=good)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', self.context)
@@ -263,6 +264,14 @@ class ProductPage(TemplateView):
                 good=good
             )
             new_comment.save()
+            return render(request, self.template_name, self.context)
+        elif request.POST.get('response-to-comment'):
+            new_children_comment = ChildrenComment(
+                text=request.POST.get('response-to-comment'),
+                user=User.objects.get(id=request.user.id),
+                parent=Comment.objects.get(id=request.POST.get('comment_id'))
+            )
+            new_children_comment.save()
             return render(request, self.template_name, self.context)
         else:
             return render(request, '500.html', self.context)

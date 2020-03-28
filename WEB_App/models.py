@@ -43,6 +43,9 @@ class Comment(models.Model):
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
     good = models.TextField(verbose_name='Товар')
 
+    def get_children(self):
+        return ChildrenComment.objects.filter(parent=self)
+
 
 class ChildrenComment(models.Model):
     text = models.TextField(verbose_name='Содержимое комментария', null=False)

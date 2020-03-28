@@ -93,6 +93,21 @@
                     <p>Пользователь: {{comment.user}}</p>
                     <p>Создано {{comment.created}}</p>
                     <p>{{comment.text}}</p>
+                    {% for sub_comment in comment.get_children %}
+                    <p>{{sub_comment.user}}</p>
+                    <p>{{sub_comment.text}}</p>
+                    <p>{{sub_comment.created}}</p>
+                    {% endfor %}
+                    <form action="/product/{{name}}/?image={{image_id}}" method="post">
+                        {% csrf_token %}
+                        <h1>Ответить:</h1>
+                        <input type="hidden" value="{{comment.id}}" name="comment_id">
+                        <textarea name="response-to-comment" required></textarea>
+                        <div>
+                            <input type="submit" class="btn btn-outline-success btn-md" name="status" value="Отправить"
+                                   style="width: 100px; border-radius: 16px"/>
+                        </div>
+                    </form>
                 </div>
             {% endfor %}
         </div>
