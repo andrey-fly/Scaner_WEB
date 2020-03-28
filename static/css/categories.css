@@ -1,0 +1,19 @@
+.card-list-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*margin: 10px;*/
+  }
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end
+}
+
+.card{
+    display: flex;
+    align-items: center;
+    width: 18rem;
+    margin: 14px;
+}
