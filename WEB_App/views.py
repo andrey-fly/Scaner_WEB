@@ -237,8 +237,16 @@ class ProductPage(TemplateView):
 
     def get(self, request, good):
         try:
-            self.context['img'] = Picture.objects.get(id=request.GET.get('image')).file.url
             self.context['name'] = good
+            image_id = request.GET.get('image')
+            if image_id:
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                self.context['img'] = image.file.url
+            else:
+                image = Picture.objects.filter(target_good=good)
+                self.context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
@@ -299,6 +307,11 @@ class AcceptPage(PermissionRequiredMixin, View):
 
             if request.FILES:
                 image = request.FILES.get('image')
+                Picture(
+                    file=image,
+                    user=User.objects.get(id=request.user.id),
+                    target_good=name
+                ).save()
 
             requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
                           files={'file': image},
@@ -344,5 +357,19 @@ class AcceptPage(PermissionRequiredMixin, View):
                                   ).json()
         context['categories'] = categories
         return context
+
+
+class CategoryView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        try:
+            context = self.get_context_data(**kwargs)
+            children_category = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
+                                             '{}'.format(context['category']),
+                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['children'] = children_category
+            return render(request, self.template_name, context)
+
+        except ValueError:
+            return render(request, '500.html', context)
 
 

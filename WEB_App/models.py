@@ -33,5 +33,5 @@ class Picture(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
-    # target_good = models.ForeignKey(Goods, verbose_name='Товар', on_delete=models.CASCADE, null=True, default=None)
+    target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')

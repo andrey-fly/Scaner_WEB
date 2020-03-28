@@ -7,7 +7,11 @@
         <div id="photo-block-in-content-block">
             <div id="mask-group-in-photo-block">
                 <div id="background-figure-in-mask-group">
+                    {% if img %}
                     <img src="{{img}}" id="photo-in-mask-group">
+                    {%else%}
+                    <h5 class="text-center p-5">Image not found</h5>
+                    {%endif%}
                 </div>
             </div>
             <label id="photo-load-label-in-photo-block">

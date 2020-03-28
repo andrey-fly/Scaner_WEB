@@ -17,7 +17,7 @@ from django.urls import path
 
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from WEB_App.views import index, signup, recovery_password, PhotoPage, ProductPage, AddProductPage, AcceptPage, profile, change_info
+from WEB_App.views import *
 
 
 urlpatterns = [
@@ -31,5 +31,7 @@ urlpatterns = [
     path('admin/accept/', AcceptPage.as_view()),
     path('admin/urls/', TemplateView.as_view(template_name='admin/links.html')),
     path('profile/', profile),
-    path('change_info/', change_info)
+    path('change_info/', change_info),
+
+    path('category/<str:category>', CategoryView.as_view(template_name='category_list.html')),
 ]
