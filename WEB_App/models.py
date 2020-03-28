@@ -38,7 +38,14 @@ class Picture(models.Model):
 
 
 class Comment(models.Model):
-    text = models.TextField(verbose_name='Содержимое комментария')
+    text = models.TextField(verbose_name='Содержимое комментария', null=False)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
-    # target_good = models.ForeignKey(Goods, verbose_name='Товар', on_delete=models.CASCADE, null=False)
+    good = models.TextField(verbose_name='Товар')
+
+
+class ChildrenComment(models.Model):
+    text = models.TextField(verbose_name='Содержимое комментария', null=False)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    parent = models.ForeignKey(Comment, verbose_name='Комментарий', null=False, on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)

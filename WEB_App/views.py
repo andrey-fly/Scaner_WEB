@@ -238,6 +238,7 @@ class ProductPage(TemplateView):
     def get(self, request, good):
         try:
             self.context['img'] = Picture.objects.get(id=request.GET.get('image')).file.url
+            self.context['image_id'] = request.GET.get('image')
             self.context['name'] = good
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
@@ -253,15 +254,18 @@ class ProductPage(TemplateView):
         except Exception:
             return render(request, '404.html', self.context)
 
-    def post(self, request):
-        if request.POST.get('comment'):
-            comment_item = Comment(
-                text=request.POST.get('comment'),
-                user=User.objects.get(id=request.user.id)
+    def post(self, request, good):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = Comment(
+                text=comment_form.cleaned_data.get('text'),
+                user=User.objects.get(id=request.user.id),
+                good=good
             )
-            comment_item.save()
-            return redirect('/thanks/')
-        return render(request, self.template_name, self.context)
+            new_comment.save()
+            return render(request, self.template_name, self.context)
+        else:
+            return render(request, '500.html', self.context)
 
 
 class AddProductPage(View):

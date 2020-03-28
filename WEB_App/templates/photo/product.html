@@ -77,7 +77,7 @@
     </div>
     <div id="comment-main-block">
         <div id="add-comment-block">
-            <form action="/product/" method="post">
+            <form action="/product/{{name}}/?image={{image_id}}" method="post">
                 {% csrf_token %}
                 <h1>Прокомментируйте:</h1>
                 {{ comment_form.as_p }}
