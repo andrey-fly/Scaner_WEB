@@ -12,8 +12,8 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm, CommentForm
+from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment
 
 from django.views import View
 from django.views.generic import TemplateView
