@@ -1,3 +1,6 @@
+body {
+    overflow-x: hidden !important;
+}
 @font-face {
     font-family: 'Roboto-Regular';
     src: url('fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/Roboto-Regular.woff') format('woff'), url('fonts/Roboto-Regular.ttf') format('truetype'), url('fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');
@@ -21,7 +24,7 @@
 
 #content-block {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     margin: 72px 0px;
 }
 
@@ -35,14 +38,18 @@
     margin-right: 72px;
     margin-left: 200px;
 
-    position: static;
-    width: 360px;
+    /* position: static;
+    width: 360px; */
 }
 
 #mask-group-in-photo-block {
     position: static;
-    width: 360px;
-    height: 480px;
+    display: flex;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    padding: 5px;
+    background-color: #f4f3f3;
 
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
@@ -50,22 +57,26 @@
     margin: 0px 16px;
 }
 
-#background-figure-in-mask-group {
+/* #background-figure-in-mask-group {
     position: relative;
     height: 480px;
+    height: auto;
     background: #C4C4C4;
     border-radius: 8px;
-}
+} */
 
 #photo-in-mask-group {
     position: absolute;
-    width: 360px;
-    height: 480px;
+    /* width: 360px;
+    height: 480px; */
+    width: 100%;
+    max-width: 480px;
+    height: auto;
     border-radius: 8px;
 }
 
 #photo-load-label-in-photo-block {
-    position: static;
+    position: relative;
     height: 32px;
 
     font-family: Roboto-Regular;
@@ -105,6 +116,7 @@
     height: 19px;
     left: 8px;
     top: 0px;
+    margin-bottom: 10px;
 
     font-family: Roboto-Regular;
     font-style: normal;
@@ -158,6 +170,7 @@
     order: 2;
     align-self: flex-start;
     margin: 0px 8px;
+    flex-flow: inherit;
 }
 
 /* Recommendation block (like or not) */
@@ -176,6 +189,7 @@
     flex: none;
     order: 0;
     align-self: flex-start;
+    margin-bottom: 10px;
 }
 
 #image-recommendation-in-recommendation-block {
@@ -314,6 +328,7 @@
     order: 3;
     align-self: flex-start;
     margin: 0px 8px;
+    margin-top: 30px;
 }
 
 #adv-list-name-in-adv-list-block {
@@ -497,7 +512,11 @@
     color: #FF7C6A;
 }
 
-
+@media only screen and (max-width: 1100px) {
+    #info-block-in-content-block {
+        margin-top: 20px;
+    }
+}
 
 /*
 ---------------

@@ -1,3 +1,6 @@
+body {
+    overflow-x: hidden !important;
+}
 @font-face {
     font-family: 'Roboto-Regular';
     src: url('fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/Roboto-Regular.woff') format('woff'), url('fonts/Roboto-Regular.ttf') format('truetype'), url('fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');
@@ -106,7 +109,7 @@
     left: 224px;
     top: 40px;
     margin: 0px 24px;
-    text-align: left;
+    text-align: center;
 }
 
 .header-text-in-main-content-frame {
@@ -128,6 +131,7 @@
 
 .description-text-in-main-content-frame {
     position: static;
+    text-align: center;
     /*width: 476px;
     height: 66px;*/
     left: 8px;
@@ -140,11 +144,11 @@
     color: #000000;
     flex: none;
     order: 1;
-    align-self: flex-start;
 }
 
 .photo-load-button-in-main-content-frame {
     display: flex;
+    margin 0 auto;
     flex-direction: row;
     padding: 0px 60px;
     position: static;
@@ -156,7 +160,6 @@
     border-radius: 4px;
     flex: none;
     order: 2;
-    align-self: flex-start;
 }
 
 .text-in-photo-load-button {

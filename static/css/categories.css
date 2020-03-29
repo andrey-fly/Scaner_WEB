@@ -1,3 +1,6 @@
+body {
+    overflow-x: hidden !important;
+}
 .card-list-group {
     display: flex;
     flex-wrap: wrap;

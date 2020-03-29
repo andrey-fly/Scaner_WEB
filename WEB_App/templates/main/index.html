@@ -1,4 +1,6 @@
-{% extends 'base/base.html' %} {% load static %} {% block content %}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -9,7 +11,7 @@
             Мы расскажем вам о нем всё, что знаем
         </p>
         <input id="file-input-for-label" type="file" multiple onchange="func_submit_btn();">
-        <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none">
+        <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none; margin: 0 auto">
             <span class="text-in-photo-load-button">
                 Загрузить фото
             </span>

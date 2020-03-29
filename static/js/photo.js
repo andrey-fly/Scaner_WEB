@@ -79,7 +79,7 @@ function func_submit_area() {
 function func_element_hide(){
     let dropSubmit = document.getElementById('file-input-for-frame');
     let dropArea = document.getElementById('photo-frame-in-content-group');
-    if (window.innerWidth < 500){
+    if (window.innerWidth < 910){
         dropSubmit.style.display = 'none';
         dropArea.style.display = 'none';
     }
