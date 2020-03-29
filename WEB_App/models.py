@@ -35,3 +35,20 @@ class Picture(models.Model):
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
+
+
+class Comment(models.Model):
+    text = models.TextField(verbose_name='Содержимое комментария', null=False)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+    good = models.TextField(verbose_name='Товар')
+
+    def get_children(self):
+        return ChildrenComment.objects.filter(parent=self)
+
+
+class ChildrenComment(models.Model):
+    text = models.TextField(verbose_name='Содержимое комментария', null=False)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    parent = models.ForeignKey(Comment, verbose_name='Комментарий', null=False, on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)

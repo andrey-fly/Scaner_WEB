@@ -241,42 +241,20 @@
     <h2 class="text-center section-name">Мои комментарии</h2>
             <nav id="myScrollspy"></nav>
             <div class="comment-scroll" data-spy="scroll" data-target="#myScrollspy" data-offset="10">
+                {% for comment in comments %}
                 <div class="card mb-3 comment-card">
                   <div class="row no-gutters">
                     <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?strawberry');"></div>
                     <div class="col-md-8">
                       <div class="card-body comment-card-body">
-                        <h5 class="card-title">Продукт</h5>
-                        <p class="card-text">Комментарий о продукте.</p>
-                        <p class="card-text date">21.03.2020</p>
+                        <h5 class="card-title">{{comment.good}}</h5>
+                        <p class="card-text">{{comment.text}}</p>
+                        <p class="card-text date">{{comment.created}}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="card mb-3 comment-card">
-                  <div class="row no-gutters">
-                    <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?blueberry');"></div>
-                    <div class="col-md-8">
-                      <div class="card-body comment-card-body">
-                        <h5 class="card-title">Продукт</h5>
-                        <p class="card-text">Комментарий о продукте.</p>
-                        <p class="card-text date">21.03.2020</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card mb-3 comment-card">
-                  <div class="row no-gutters">
-                    <div class="col-md-4 comment-image" style="background-image: url('https://source.unsplash.com/300x300/?waterlemon');"></div>
-                    <div class="col-md-8">
-                      <div class="card-body comment-card-body">
-                        <h5 class="card-title">Продукт</h5>
-                        <p class="card-text">Комментарий о продукте.</p>
-                        <p class="card-text date">21.03.2020</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {% endfor %}
             </div>
     <hr>
     <h2 class="text-center section-name">Мои оценки</h2>

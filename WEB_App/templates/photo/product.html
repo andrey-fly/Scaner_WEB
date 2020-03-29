@@ -79,6 +79,68 @@
             </div>
         </div>
     </div>
+    <div id="comment-main-block">
+        <div id="add-comment-block">
+            <form action="/product/{{name}}/?image={{image_id}}" method="post">
+                {% csrf_token %}
+                <h1>Прокомментируйте:</h1>
+                <fieldset id="rating">
+                    <legend class="rating_caption"> Ваша оценка: </legend>
+                    <div class="rating_group">
+                        <input class="rating_input" type="radio" name="rating" id="star-5" value="5">
+                        <label class="rating_star" for="star-5" aria-label="Отлично"></label>
+                        <input class="rating_input" type="radio" name="rating" id="star-4" value="4">
+                        <label class="rating_star" for="star-4" aria-label="Хорошо"></label>
+                        <input class="rating_input" type="radio" name="rating" id="star-3" value="3">
+                        <label class="rating_star" for="star-3" aria-label="Нормально"></label>
+                        <input class="rating_input" type="radio" name="rating" id="star-2" value="2">
+                        <label class="rating_star" for="star-2" aria-label="Плохо"></label>
+                        <input class="rating_input" type="radio" name="rating" id="star-1" value="1">
+                        <label class="rating_star" for="star-1" aria-label="Ужасно"></label>
+                    </div>
+                </fieldset>
+                {{ comment_form.as_p }}
+                <div>
+                    <input type="submit" class="btn btn-outline-success btn-md"
+                           name="status" value="Отправить"
+                           style="width: 100px; border-radius: 16px"/>
+                </div>
+            </form>
+        </div>
+        <div id="comment-list-block">
+            {% for comment in comments %}
+                <div id="comment-block">
+                    <div id="comment-head-block">
+                        <p>Пользователь: {{comment.user}}</p>
+                        <div id="vertical-line"></div>
+                        <p>Создано {{comment.created}}</p>
+                    </div>
+                    <p style="margin-left: 15px;">{{comment.text}}</p>
+                    {% for sub_comment in comment.get_children %}
+                        <div id="sub_comment-block">
+                            <div id="sub_comment-head-block">
+                                <p>Пользователь: {{sub_comment.user}}</p>
+                                <div id="vertical-line-sub"></div>
+                                <p>Создано {{sub_comment.created}}</p>
+                            </div>
+                            <p style="margin-left: 15px;">{{sub_comment.text}}</p>
+                        </div>
+                    {% endfor %}
+                    <form action="/product/{{name}}/?image={{image_id}}" method="post">
+                        {% csrf_token %}
+                        <h1>Ответить:</h1>
+                        <input type="hidden" value="{{comment.id}}" name="comment_id">
+                        <textarea name="response-to-comment" placeholder="Описание" required></textarea>
+                        <div>
+                            <input type="submit" class="btn btn-outline-success btn-md"
+                                   name="status" value="Отправить"
+                                   style="width: 100px; border-radius: 16px"/>
+                        </div>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %} {% block extra_js %}
 <!--    <script src="{% static 'js/product.js' %}"></script>-->
 {% endblock %}

@@ -496,3 +496,169 @@
 
     color: #FF7C6A;
 }
+
+
+
+/*
+---------------
+Comments
+---------------
+*/
+
+#comment-main-block {
+    display: flex;
+    flex-direction: column;
+    margin: 60px 10%;
+    margin-right: 25%;
+}
+
+#add-comment-block label {
+    margin: 10px 0px;
+    margin-top: 15px;
+}
+
+#add-comment-block p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+#comment-list-block {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+#comment-list-block textarea {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin: 10px 0px;
+    margin-left: 40px;
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    resize: none;
+}
+
+#comment-list-block input {
+    margin-left: 40px;
+}
+
+#comment-list-block h1 {
+    margin-left: 40px;
+}
+
+/* comment */
+
+#comment-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+#comment-block p {
+    font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
+
+#comment-head-block {
+    display: flex;
+    flex-direction: row;
+}
+
+#vertical-line {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    height: 24px;
+    margin: 0px 10px;
+}
+
+/* sub_comment */
+
+#sub_comment-block {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+#sub_comment-head-block {
+    display: flex;
+    flex-direction: row;
+}
+
+#vertical-line-sub {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    height: 24px;
+    margin: 0px 10px;
+}
+
+#rating{
+    margin: 10px 40px;
+    margin-bottom: 0px;
+    padding: 0;
+    border: none;
+}
+
+#rating_caption{
+    margin-bottom: 0.5em;
+    padding: 0;
+}
+
+#rating_group{
+    position: relative;
+    width: 10em;
+    height: 2em;
+    background-image: url(http://s1.iconbird.com/ico/2013/12/517/w128h1281386955448starempty3.png);
+    background-size: 2em 1.9em;
+    background-repeat: repeat-x;
+}
+
+#rating_input{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+#rating_star{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 2em;
+    background-size: 2em 1.9em;
+    background-repeat: repeat-x;
+}
+
+#rating_star:hover,
+#rating_input:checked + #rating_star{
+    background-image:url(http://s1.iconbird.com/ico/2013/12/517/w128h12813869554480starfull3.png);
+}
+
+#rating_star:nth-of-type(1){
+    z-index: 5;
+    width: 2em;
+}
+
+#rating_star:nth-of-type(2){
+    z-index: 4;
+    width: 4em;
+}
+
+#rating_star:nth-of-type(3){
+    z-index: 3;
+    width: 6em;
+}
+
+#rating_star:nth-of-type(4){
+    z-index: 2;
+    width: 8em;
+}
+
+#rating_star:nth-of-type(5){
+    z-index: 1;
+    width: 10em;
+}

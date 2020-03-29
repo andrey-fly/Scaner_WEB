@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import Input
 
+from WEB_App.models import Comment, ChildrenComment
+
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль',
@@ -100,3 +102,12 @@ class FileForm(forms.Form):
     file = forms.FileField(label='Select a file', required=False,
                            widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'inputGroupFile',
                                                          'aria-describedby': "inputGroupFileBtn"}))
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', )
+        widgets = {
+            'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'border-radius: 8px'}),
+        }

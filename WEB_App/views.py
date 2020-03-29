@@ -252,13 +252,36 @@ class ProductPage(TemplateView):
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
 
+            self.context['comment_form'] = CommentForm()
             self.context['positives'] = response['positives']
             self.context['negatives'] = response['negatives']
             self.context['points'] = response['points']
             self.context['categories'] = response['categories']
+            self.context['comments'] = Comment.objects.filter(good=good)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', self.context)
+
+    def post(self, request, good):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = Comment(
+                text=comment_form.cleaned_data.get('text'),
+                user=User.objects.get(id=request.user.id),
+                good=good
+            )
+            new_comment.save()
+            return render(request, self.template_name, self.context)
+        elif request.POST.get('response-to-comment'):
+            new_children_comment = ChildrenComment(
+                text=request.POST.get('response-to-comment'),
+                user=User.objects.get(id=request.user.id),
+                parent=Comment.objects.get(id=request.POST.get('comment_id'))
+            )
+            new_children_comment.save()
+            return render(request, self.template_name, self.context)
+        else:
+            return render(request, '500.html', self.context)
 
 
 class AddProductPage(View):
@@ -307,11 +330,6 @@ class AcceptPage(PermissionRequiredMixin, View):
 
             if request.FILES:
                 image = request.FILES.get('image')
-                Picture(
-                    file=image,
-                    user=User.objects.get(id=request.user.id),
-                    target_good=name
-                ).save()
 
             requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
                           files={'file': image},
