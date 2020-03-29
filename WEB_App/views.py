@@ -390,6 +390,6 @@ class CategoryView(TemplateView):
             return render(request, self.template_name, context)
 
         except ValueError:
-            return render(request, '500.html', context)
+            return render(request, self.template_name, context)
 
 

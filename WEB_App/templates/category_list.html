@@ -10,13 +10,8 @@
 {% endblock %}
 
 {% block content %}
-<!--{{children.0.id}}-->
-<!--{{children.0.name}}-->
-<!--{{children.0.parent}}-->
 
 <div class="card-list-group">
-<!--{% if children %}-->
-
   {% for category in children %}
   <div class="card" >
     {%if category.file%}
@@ -45,10 +40,10 @@
   </div>
   {% endfor %}
 
-<!--  {% else %}-->
-<!--  <script>document.location.href = '/product/{{category}}/'</script>-->
-<!---->
-<!--  {% endif %}-->
+
+  {% if not children and not goods %}
+  <h3 class="p-5 text-danger">Элементы не найдены</h3>
+  {% endif %}
 
 </div>
 
