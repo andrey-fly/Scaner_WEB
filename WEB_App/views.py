@@ -393,3 +393,11 @@ class CategoryView(TemplateView):
             return render(request, self.template_name, context)
 
 
+class CategoryFirstPageView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
+                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+        return render(request, self.template_name, context)
+
+
