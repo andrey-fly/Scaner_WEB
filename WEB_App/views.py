@@ -381,10 +381,12 @@ class CategoryView(TemplateView):
     def get(self, request, *args, **kwargs):
         try:
             context = self.get_context_data(**kwargs)
-            children_category = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
-                                             '{}'.format(context['category']),
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-            context['children'] = children_category
+            context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
+                                               '{}'.format(context['category']),
+                                               headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+                                            '{}'.format(context['category']),
+                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             return render(request, self.template_name, context)
 
         except ValueError:
