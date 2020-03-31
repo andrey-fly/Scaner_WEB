@@ -109,5 +109,5 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('text', )
         widgets = {
-            'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'border-radius: 8px'}),
+            'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'width: auto !important; border-radius: 8px'}),
         }

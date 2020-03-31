@@ -8,19 +8,19 @@ from django.contrib.auth import login
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.db.models import Avg, Q
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN
 from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm, CommentForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment
+from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate
 
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django.http import HttpResponse
-
 
 
 def signup(request):
@@ -101,6 +101,8 @@ def profile(request):
     context = {}
     context['user'] = User.objects.get(id=request.user.id)
     current_user = User.objects.get(id=request.user.id)
+    print(Rate.objects.get(user=request.user))
+    context['rated'] = Rate.objects.filter(user=request.user)
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
     else:
@@ -258,6 +260,12 @@ class ProductPage(TemplateView):
             self.context['points'] = response['points']
             self.context['categories'] = response['categories']
             self.context['comments'] = Comment.objects.filter(good=good)
+            try:
+                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+                    print(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+            except Exception:
+                print('error')
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', self.context)
@@ -279,6 +287,14 @@ class ProductPage(TemplateView):
                 parent=Comment.objects.get(id=request.POST.get('comment_id'))
             )
             new_children_comment.save()
+            return render(request, self.template_name, self.context)
+        if request.POST.get('rating'):
+            new_rating = Rate(
+                user=User.objects.get(id=request.user.id),
+                rating=request.POST.get('rating'),
+                good=good
+            )
+            new_rating.save()
             return render(request, self.template_name, self.context)
         else:
             return render(request, '500.html', self.context)

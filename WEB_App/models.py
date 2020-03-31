@@ -52,3 +52,10 @@ class ChildrenComment(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     parent = models.ForeignKey(Comment, verbose_name='Комментарий', null=False, on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+
+
+class Rate(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    rating = models.FloatField(verbose_name='Рейтинг')
+    good = models.TextField(verbose_name='Товар')
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)

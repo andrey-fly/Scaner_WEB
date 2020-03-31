@@ -549,7 +549,7 @@ Comments
 
 #comment-list-block textarea {
     width: 100%;
-    height: calc(1.5em + .75rem + 2px);
+    height: 40px;
     border-radius: 8px;
     padding: 9px 12px;
     margin: 10px 0px;
@@ -576,15 +576,29 @@ Comments
     margin-bottom: 50px;
 }
 
+#comment-text {
+    color:
+}
+
 #comment-block p {
     font-size: 18px;
     margin-bottom: 5px;
     margin-top: 0px;
 }
 
+.breadcrumb-item > a {
+    color: #10bbc4;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">" !important;
+}
+
 #comment-head-block {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    border: aquamarine solid 0.5px;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 #vertical-line {
@@ -597,8 +611,13 @@ Comments
 /* sub_comment */
 
 #sub_comment-block {
+    display: flex;
+    flex-flow: column;
     margin-top: 20px;
     margin-left: 40px;
+    padding: 5px;
+    border: darkviolet solid 0.5px;
+    border-radius: 5px;
 }
 
 #sub_comment-head-block {
@@ -614,8 +633,8 @@ Comments
 }
 
 #rating{
-    margin: 10px 40px;
-    margin-bottom: 0px;
+    /* margin: 10px 40px;
+    margin-bottom: 0px; */
     padding: 0;
     border: none;
 }
