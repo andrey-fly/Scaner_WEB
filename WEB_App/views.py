@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm, CommentForm
+from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
 from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate
 
 from django.views import View
@@ -245,16 +245,18 @@ class ProductPage(TemplateView):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
+                print(image.id)
+                self.context['img_id'] = image.id
                 self.context['img'] = image.file.url
             else:
                 image = Picture.objects.filter(target_good=good)
+                self.context['img_id'] = image[0].id
                 self.context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
 
-            self.context['comment_form'] = CommentForm()
             self.context['positives'] = response['positives']
             self.context['negatives'] = response['negatives']
             self.context['points'] = response['points']
@@ -262,7 +264,6 @@ class ProductPage(TemplateView):
             self.context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    print(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
                     self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception:
                 print('error')
@@ -271,32 +272,32 @@ class ProductPage(TemplateView):
             return render(request, '404.html', self.context)
 
     def post(self, request, good):
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            new_comment = Comment(
-                text=comment_form.cleaned_data.get('text'),
-                user=User.objects.get(id=request.user.id),
-                good=good
-            )
-            new_comment.save()
+        try:
+            # comment_form = CommentForm(request.POST)
+            # if comment_form.is_valid():
+            if request.POST.get('comment'):
+                new_comment = Comment(
+                    text=request.POST.get('comment'),
+                    user=User.objects.get(id=request.user.id),
+                    good=good
+                )
+                new_comment.save()
+            if request.POST.get('response-to-comment'):
+                new_children_comment = ChildrenComment(
+                    text=request.POST.get('response-to-comment'),
+                    user=User.objects.get(id=request.user.id),
+                    parent=Comment.objects.get(id=request.POST.get('comment_id'))
+                )
+                new_children_comment.save()
+            if request.POST.get('rating'):
+                new_rating = Rate(
+                    user=User.objects.get(id=request.user.id),
+                    rating=request.POST.get('rating'),
+                    good=good
+                )
+                new_rating.save()
             return render(request, self.template_name, self.context)
-        elif request.POST.get('response-to-comment'):
-            new_children_comment = ChildrenComment(
-                text=request.POST.get('response-to-comment'),
-                user=User.objects.get(id=request.user.id),
-                parent=Comment.objects.get(id=request.POST.get('comment_id'))
-            )
-            new_children_comment.save()
-            return render(request, self.template_name, self.context)
-        if request.POST.get('rating'):
-            new_rating = Rate(
-                user=User.objects.get(id=request.user.id),
-                rating=request.POST.get('rating'),
-                good=good
-            )
-            new_rating.save()
-            return render(request, self.template_name, self.context)
-        else:
+        except Exception:
             return render(request, '500.html', self.context)
 
 

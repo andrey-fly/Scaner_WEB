@@ -104,10 +104,10 @@ class FileForm(forms.Form):
                                                          'aria-describedby': "inputGroupFileBtn"}))
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('text', )
-        widgets = {
-            'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'width: auto !important; border-radius: 8px'}),
-        }
+# class CommentForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ('text', )
+#         widgets = {
+#             'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'width: auto !important; border-radius: 8px'}),
+#         }
