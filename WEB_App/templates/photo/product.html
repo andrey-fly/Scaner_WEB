@@ -134,7 +134,7 @@
                 <p style="margin-left: 15px;">{{sub_comment.text}}</p>
             </div>
             {% endfor %}
-            <form action="/product/{{name}}/?image={{img_id}" method="post">
+            <form action="/product/{{name}}/?image={{img_id}}" method="post">
                 {% csrf_token %}
                 <h1>Ответить:</h1>
                 <input type="hidden" value="{{comment.id}}" name="comment_id">
