@@ -243,21 +243,19 @@ class ProductPage(View):
     def get(self, request, good):
         try:
             self.context['name'] = good
-            image_id = request.GET.get('image')
-            if image_id:
-                image = Picture.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                self.context['img_id'] = image.id
-                self.context['img'] = image.file.url
-            else:
-                image = Picture.objects.filter(target_good=good)
-                self.context['img_id'] = image[0].id
-                self.context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
+            img = response['image']
+            if request.GET.get('image'):
+                image_id = request.GET.get('image')
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                img = image.file.url
+
+            self.context['img'] = img
 
             self.context['positives'] = response['positives']
             self.context['negatives'] = response['negatives']
