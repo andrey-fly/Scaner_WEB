@@ -234,7 +234,8 @@ class PhotoPage(TemplateView):
             return redirect(to='/add_product/?image={}'.format(picture.id))
 
 
-class ProductPage(TemplateView):
+class ProductPage(View):
+    template_name = 'photo/product.html'
     context = {}
 
     def get(self, request, good):
@@ -296,6 +297,7 @@ class ProductPage(TemplateView):
                     good=good
                 )
                 new_rating.save()
+            self.context['comments'] = Comment.objects.filter(good=good)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '500.html', self.context)
