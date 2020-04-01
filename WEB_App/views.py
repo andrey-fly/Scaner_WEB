@@ -103,7 +103,10 @@ def profile(request):
     current_user = User.objects.get(id=request.user.id)
 
     context['comments'] = Comment.objects.filter(user=current_user)
-    context['rated'] = Rate.objects.filter(user=request.user)
+    context['rates'] = Rate.objects.filter(user=request.user)
+
+    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
