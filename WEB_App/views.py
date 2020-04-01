@@ -104,6 +104,7 @@ def profile(request):
 
     context['comments'] = Comment.objects.filter(user=current_user)
     context['rates'] = Rate.objects.filter(user=request.user)
+    context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
 
     context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
                                     headers={'Authorization': '{}'.format(API_TOKEN)}).json()
