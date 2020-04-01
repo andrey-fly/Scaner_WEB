@@ -12,38 +12,133 @@
 {% block content %}
 
 <div class="card-list-group">
-  {% for category in children %}
-  <div class="card" >
-    {%if category.file%}
-    <img src="{{category.file}}" class="card-img-top" alt="{{category.name}}">
-    {%else%}
-    <h5 class="text-wrap p-5">Image not found</h5>
-    {%endif%}
-    <div class="card-body">
-      <h5 class="card-title text-center">{{category.name}}</h5>
-      <a href="/category/{{category.url_name}}" class="btn btn-primary">Перейти</a>
+    {% for category in children %}
+    <div class="card">
+        {%if category.file%}
+        <img src="{{category.file}}" class="card-img-top" alt="{{category.name}}">
+        {%else%}
+        <h5 class="text-wrap p-5">Image not found</h5>
+        {%endif%}
+        <div class="card-body">
+            <h5 class="card-title text-center">{{category.name}}</h5>
+            <a href="/category/{{category.url_name}}" class="btn btn-primary">Перейти</a>
+            {% if user.is_superuser %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                Редактировать категорию
+            </button>
+
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Редактировать категорию</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <p>Поменять фото для категории</p>
+                                <input type="file" accept="image/*">
+                                <button class="btn btn-outline-primary">Сменить фото</button>
+                            </div>
+                            <div>
+                                <p>Поменять название категории</p>
+                                <input type="text" placeholder="Новое навзание для категории"
+                                       value="подставить нынешнее значение категории">
+                                <button class="btn btn-outline-primary">Сменить название</button>
+                            </div>
+                            <div>
+                                <p>Поменять детей у категории</p>
+                                <input type="text" readonly value="генерить список детей">
+                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>
+                            </div>
+                            <div>
+                                <p>Добавить нового ребёнка для категории</p>
+                                <input type="text" placeholder="Название нового ребёнка">
+                                <input type="file" accept="image/*">
+                                <button class="btn btn-outline-primary">Добавить ребёнка</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-primary">Сохранить изменения</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">
+                Редактировать товар
+            </button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalTitle">Редактировать товар</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                          <div>
+                            <p>Поменять фото для товара</p>
+                            <input type="file" accept="image/*">
+                            <button class="btn btn-outline-primary">Сменить фото</button>
+                          </div>
+                          <div>
+                            <p>Поменять название товара</p>
+                            <input type="text" placeholder="Новое навзание для товара" value="подставить нынешнее значение товара">
+                            <button class="btn btn-outline-primary">Сменить название</button>
+                          </div>
+                          <div>
+                            <p>Поменять баркод товара</p>
+                            <input type="text" value="генерить список детей" value="подставить нынешнее значение баркода">
+                            <button class="btn btn-outline-primary">Сменить баркод</button>
+                          </div>
+                          <div>
+                            <p>Изменить плюсы и минусы отвара</p>
+                            <input type="text" readonly value="генерить плюсов и минусов">
+                            <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>
+                          </div>
+                          <div>
+                            <p>Изменить рейтин росконтроля</p>
+                            <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля" value="нынешнее значение рейтинга">
+                            <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-primary">Сохранить изменения</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 
-  {% for good in goods %}
-  <div class="card" >
-    {%if good.file%}
-    <img src="{{good.file}}" class="card-img-top" alt="{{good.name}}">
-    {%else%}
-    <h5 class="text-wrap p-5">Image not found</h5>
-    {%endif%}
-    <div class="card-body">
-      <h5 class="card-title text-center">{{good.name}}</h5>
-      <a href="/product/{{good.name}}" class="btn btn-primary">Перейти</a>
+    {% for good in goods %}
+    <div class="card">
+        {%if good.file%}
+        <img src="{{good.file}}" class="card-img-top" alt="{{good.name}}">
+        {%else%}
+        <h5 class="text-wrap p-5">Image not found</h5>
+        {%endif%}
+        <div class="card-body">
+            <h5 class="card-title text-center">{{good.name}}</h5>
+            <a href="/product/{{good.name}}" class="btn btn-primary">Перейти</a>
+        </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 
 
-  {% if not children and not goods %}
-  <h3 class="p-5 text-danger">Элементы не найдены</h3>
-  {% endif %}
+    {% if not children and not goods %}
+    <h3 class="p-5 text-danger">Элементы не найдены</h3>
+    {% endif %}
 
 </div>
 
