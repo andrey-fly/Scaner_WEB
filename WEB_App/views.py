@@ -101,8 +101,10 @@ def profile(request):
     context = {}
     context['user'] = User.objects.get(id=request.user.id)
     current_user = User.objects.get(id=request.user.id)
-    print(Rate.objects.get(user=request.user))
+
+    context['comments'] = Comment.objects.filter(user=current_user)
     context['rated'] = Rate.objects.filter(user=request.user)
+
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
     else:
@@ -246,7 +248,6 @@ class ProductPage(View):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
-                print(image.id)
                 self.context['img_id'] = image.id
                 self.context['img'] = image.file.url
             else:
@@ -350,7 +351,7 @@ class AcceptPage(PermissionRequiredMixin, View):
             barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
             points = request.POST.get('points') or '?'
             category = request.POST.get('category')
-            image = None
+            image = moderation_good.image
 
             if request.FILES:
                 image = request.FILES.get('image')
