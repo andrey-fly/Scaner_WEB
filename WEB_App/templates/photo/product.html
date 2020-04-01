@@ -91,7 +91,7 @@
             {% if not rated %}
             <legend class="rating_caption"> Ваша оценка:</legend>
             <div class="rating_group">
-                <form action="/product/{{name}}/?image={{img_id}" method="POST">
+                <form action="/product/{{name}}/?image={{img_id}}" method="POST">
                     {% csrf_token %}
                     <span class="my-rating-9"></span>
                     <span class="live-rating"></span>

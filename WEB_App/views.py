@@ -101,8 +101,10 @@ def profile(request):
     context = {}
     context['user'] = User.objects.get(id=request.user.id)
     current_user = User.objects.get(id=request.user.id)
-    print(Rate.objects.get(user=request.user))
+
+    context['comments'] = Comment.objects.filter(user=current_user)
     context['rated'] = Rate.objects.filter(user=request.user)
+
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
     else:
@@ -234,28 +236,26 @@ class PhotoPage(TemplateView):
             return redirect(to='/add_product/?image={}'.format(picture.id))
 
 
-class ProductPage(TemplateView):
+class ProductPage(View):
+    template_name = 'photo/product.html'
     context = {}
 
     def get(self, request, good):
         try:
             self.context['name'] = good
-            image_id = request.GET.get('image')
-            if image_id:
-                image = Picture.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                print(image.id)
-                self.context['img_id'] = image.id
-                self.context['img'] = image.file.url
-            else:
-                image = Picture.objects.filter(target_good=good)
-                self.context['img_id'] = image[0].id
-                self.context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
+            img = response['image']
+            if request.GET.get('image'):
+                image_id = request.GET.get('image')
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                img = image.file.url
+
+            self.context['img'] = img
 
             self.context['positives'] = response['positives']
             self.context['negatives'] = response['negatives']
@@ -265,8 +265,8 @@ class ProductPage(TemplateView):
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-            except Exception:
-                print('error')
+            except Exception as exc:
+                print(exc.args)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', self.context)
@@ -296,6 +296,12 @@ class ProductPage(TemplateView):
                     good=good
                 )
                 new_rating.save()
+            self.context['comments'] = Comment.objects.filter(good=good)
+            try:
+                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+                    self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+            except Exception as exc:
+                print(exc.args)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '500.html', self.context)
@@ -343,7 +349,7 @@ class AcceptPage(PermissionRequiredMixin, View):
             barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
             points = request.POST.get('points') or '?'
             category = request.POST.get('category')
-            image = None
+            image = moderation_good.image
 
             if request.FILES:
                 image = request.FILES.get('image')
