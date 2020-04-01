@@ -11,7 +11,7 @@ class Recovery(models.Model):
 
 class UserPhoto(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to='profile', null=True, default='profile_icon')
+    img = models.ImageField(upload_to='photos', null=True, default='profile_icon')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлено', auto_now=True)
 
