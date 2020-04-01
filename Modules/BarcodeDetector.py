@@ -16,7 +16,7 @@ class BarcodeDetector:
                         'y': barcode.rect.top,
                         'width': barcode.rect.width,
                         'height': barcode.rect.height
-                        }
+                    }
                     }
             response.append(item)
 
