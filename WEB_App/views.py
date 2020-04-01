@@ -266,8 +266,8 @@ class ProductPage(View):
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-            except Exception:
-                print('error')
+            except Exception as exc:
+                print(exc.args)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', self.context)
@@ -298,6 +298,11 @@ class ProductPage(View):
                 )
                 new_rating.save()
             self.context['comments'] = Comment.objects.filter(good=good)
+            try:
+                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+                    self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+            except Exception as exc:
+                print(exc.args)
             return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '500.html', self.context)
