@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %} {% load static %} {% block title %}
 <title>Профиль</title>
 {% endblock %} {% block extra_css %}
+<script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}">
 {% endblock %} {% block content %}
 
@@ -19,7 +20,7 @@
         <form class="form-group" action='/change_info/' method="POST"
               style="text-align: center; position: relative;">
             {% csrf_token %}
-            <button type="submit" name="id" class="btn change-btn btn-md"><span
+            <button type="submit" name="id" class="btn change-btn btn-outline-primary btn-md"><span
                     class="text-in-change-btn text-center">Изменить данные</span></button>
         </form>
     </div>
@@ -27,6 +28,7 @@
 
 <hr>
 <h2 class="text-center section-name">Мои продукты</h2>
+{% if own_goods %}
 <div id="carouselProducts" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         {% for own_good in own_goods%}
@@ -37,34 +39,19 @@
         {%endif%}
         {%endfor%}
     </ol>
-    <div class="carousel-inner">
+    <div class="carousel-inner goods">
         {% for own_good in own_goods%}
-        {% if own_good.id == own_goods.0.id %}
         <div class="carousel-item active">
             {% if own_good.status == 'Одобрено' %}
             <a href="/product/{{own_good.name}}/"><img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."></a>
             {% else %}
             <img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="...">
             {% endif %}
-
             <div class="carousel-caption d-md-block">
                 <h3 class="card-title">{{own_good.name}}</h3>
                 <p class="card-text ratingText">Статус: {{own_good.status}}</p>
             </div>
         </div>
-        {%else%}
-        <div class="carousel-item">
-            {%if own_good.status == 'Одобрено' %}
-            <a href="/product/{{own_good.name}}/"><img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."></a>
-            {%else%}
-            <img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="...">
-            {%endif%}
-            <div class="carousel-caption d-md-block">
-                <h3 class="card-title">{{own_good.name}}</h3>
-                <p class="card-text ratingText">Статус: {{own_good.status}}</p>
-            </div>
-        </div>
-        {%endif%}
         {%endfor%}
     </div>
     <a class="carousel-control-prev" href="#carouselProducts" role="button" data-slide="prev">
@@ -76,10 +63,20 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+{% else %}
+<div class="card border-primary mb-3" style="max-width: 360px; margin: 0 auto;">
+  <img src="{% static 'img/warning.jpg' %}" class="card-img-top" alt="Image not found ;(" style="max-width: 720px; height: auto; max-height: 360px">
+  <div class="card-body text-primary">
+    <h5 class="card-title">Видимо, вы ещё не добавляли свои продукты на сайт</h5>
+      <p class="card-text">Но мы всегда рады получить ваши фото 📷</p>
+  </div>
+    <div class="card-footer bg-transparent border-primary"><a href="/photo" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете это исправить</a></div>
+</div>
+{% endif %}
 
 <hr>
 <h2 class="text-center section-name">Мои комментарии</h2>
-
+{% if comments %}
 <nav id="myScrollspy"></nav>
 <div class="comment-scroll" data-spy="scroll" data-target="#myScrollspy" data-offset="10">
     {% for comment in comments %}
@@ -98,11 +95,22 @@
     </div>
     {%endfor%}
 </div>
+{% else %}
+<div class="card border-primary mb-3" style="max-width: 360px; margin: 0 auto;">
+  <img src="{% static 'img/warning.jpg' %}" class="card-img-top" alt="Image not found ;(" style="max-width: 720px; height: auto; max-height: 360px">
+  <div class="card-body text-primary">
+    <h5 class="card-title">Видимо, вы ещё не оставляли комментарии на сайте</h5>
+      <p class="card-text">Но мы всегда рады узнать ваше мнение  🤔</p>
+  </div>
+    <div class="card-footer bg-transparent border-primary"><a href="/category" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете прокомментировать все наши продукты</a></div>
+</div>
+{% endif %}
 <hr>
 <h2 class="text-center section-name">Мои оценки</h2>
+{% if rates %}
 <div id="carouselRates" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-        {% for rare in rates%}
+        {% for rare in rates %}
         {% if rate.good == rate.0.good %}
         <li data-target="#carouselRates" class="active"></li>
         {% else %}
@@ -110,27 +118,21 @@
         {% endif %}
         {% endfor %}
     </ol>
-    <div class="carousel-inner">
+    <div class="carousel-inner" id="rating">
         {% for rate in rates%}
-        {% if rate.good == rates.0.good %}
+        {%for good in goods%}
+        {%if rate.good == good.name%}
         <div class="carousel-item active">
-            <a href="/product/{{rate.good}}/"><img src="{%for good in goods%}{%if rate.good == good.name%}{{good.file}}{%endif%}{%endfor%}" class="d-block w-100 photo" alt="..."></a>
+            <a href="/product/{{rate.good}}/"><img src="{{good.file}}" class="d-block w-100 photo" alt="Image not found" style="max-width: 720px; height: auto; max-height: 480px"></a>
             <div class="carousel-caption d-md-block">
-                <h3 class="card-title ratingTitle">{{rate.good}}</h3>
-                <p class="card-text ratingText">Вы оценили этот товар {{rate.created}}</p>
-                <p>Ваша оценка: </p>
-            </div>
-        </div>
-        {% else %}
-        <div class="carousel-item">
-            <a href="/product/{{rate.good}}/"><img src="{%for good in goods%}{%if rate.good == good.name%}{{good.file}}{%endif%}{%endfor%}" class="d-block w-100 photo" alt="..."></a>
-            <div class="carousel-caption d-md-block">
-                <h3 class="card-title ratingTitle">rate.good</h3>
-                <p class="card-text ratingText">Вы оценили этот товар {{rate.created}}</p>
-                <p>Ваша оценка: </p>
+                <h3 class="card-title mb-0 mt-0">{{rate.good}}</h3>
+                <p class="card-text mb-0">Вы оценили этот товар {{rate.created}}</p>
+                <p class="mb-0">Ваша оценка: </p>
+                <p id="rate" style="font-size: 20px;">{{rate.rating}}</p>
             </div>
         </div>
         {% endif %}
+        {%endfor%}
         {% endfor %}
     </div>
     <a class="carousel-control-prev" href="#carouselRates" role="button" data-slide="prev">
@@ -142,6 +144,29 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+<p>{% for rate in rates%}{%endfor%}</p>
+{% else %}
+<div class="card border-primary mb-3" style="max-width: 360px; margin: 0 auto;">
+  <img src="{% static 'img/warning.jpg' %}" class="card-img-top" alt="Image not found ;(" style="max-width: 720px; height: auto; max-height: 360px">
+  <div class="card-body text-primary">
+    <h5 class="card-title">Видимо, вы ещё не оценивали наши товары</h5>
+      <p class="card-text">Но мы всегда рады вашим звёздам ⭐</p>
+  </div>
+    <div class="card-footer bg-transparent border-primary"><a href="/category" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете выставить рейтинг всем нашим продуктам</a></div>
+</div>
+{% endif %}
+
 {% endblock %}
 {% block extra_js %}
+<script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
+<script>
+    let all_ratings = document.getElementById('rating').getElementsByClassName('active');
+    while (all_ratings.length > 1) {
+            all_ratings[1].classList.remove('active');
+        }
+    let all_goods = document.getElementById('goods').getElementsByClassName('active');
+    while (all_goods.length > 1) {
+            all_goods[1].classList.remove('active');
+        }
+</script>
 {% endblock %}

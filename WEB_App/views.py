@@ -98,10 +98,8 @@ def send_recovery_code(code, user):
 
 
 def profile(request):
-    context = {}
-    context['user'] = User.objects.get(id=request.user.id)
+    context = {'user': User.objects.get(id=request.user.id)}
     current_user = User.objects.get(id=request.user.id)
-
     context['comments'] = Comment.objects.filter(user=current_user)
     context['rates'] = Rate.objects.filter(user=request.user)
     context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
@@ -109,6 +107,7 @@ def profile(request):
     context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
                                     headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
+    context['length'] = [i for i in range(len(context['goods']))]
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
     else:
@@ -260,6 +259,8 @@ class ProductPage(View):
                 img = image.file.url
 
             context['img'] = img
+            print(request.GET.get('image'))
+            context['img_id'] = request.GET.get('image')
 
             context['positives'] = response['positives']
             context['negatives'] = response['negatives']

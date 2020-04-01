@@ -28,17 +28,13 @@ body {
     position: static;
     margin-top: 30px;
     margin-right: 100%;
-    background: #3B84F1;
+    /* background: #3B84F1; */
     border-radius: 4px;
     flex: none;
     order: 2;
     align-self: flex-start;
     position: relative;
     left: 0;
-}
-
-.change-btn:hover {
-    background: #002f55;
 }
 
 .text-in-change-btn {
@@ -48,7 +44,7 @@ body {
     font-weight: bold;
     font-size: 16px;
     line-height: 52px;
-    color: #FFFFFF;
+    /* color: #FFFFFF; */
     flex: none;
     order: 0;
     align-self: center;
@@ -226,8 +222,8 @@ body {
         position: static;
         margin-top: 30px;
         margin-right: 100%;
-        background: #3B84F1;
-        border-radius: 4px;
+        /* background: #3B84F1; */
+        /* border-radius: 4px; */
         flex: none;
         order: 2;
         align-self: flex-start;
