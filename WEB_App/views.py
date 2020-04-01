@@ -103,7 +103,10 @@ def profile(request):
     current_user = User.objects.get(id=request.user.id)
 
     context['comments'] = Comment.objects.filter(user=current_user)
-    context['rated'] = Rate.objects.filter(user=request.user)
+    context['rates'] = Rate.objects.filter(user=request.user)
+
+    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
     if UserPhoto.objects.filter(user=current_user):
         context['photo'] = UserPhoto.objects.get(user=current_user).img
@@ -238,11 +241,11 @@ class PhotoPage(TemplateView):
 
 class ProductPage(View):
     template_name = 'photo/product.html'
-    context = {}
 
     def get(self, request, good):
+        context = {}
         try:
-            self.context['name'] = good
+            context['name'] = good
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
@@ -255,23 +258,24 @@ class ProductPage(View):
                 image.save()
                 img = image.file.url
 
-            self.context['img'] = img
+            context['img'] = img
 
-            self.context['positives'] = response['positives']
-            self.context['negatives'] = response['negatives']
-            self.context['points'] = response['points']
-            self.context['categories'] = response['categories']
-            self.context['comments'] = Comment.objects.filter(good=good)
+            context['positives'] = response['positives']
+            context['negatives'] = response['negatives']
+            context['points'] = response['points']
+            context['categories'] = response['categories']
+            context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
-            return render(request, self.template_name, self.context)
+            return render(request, self.template_name, context)
         except Exception:
-            return render(request, '404.html', self.context)
+            return render(request, '404.html', context)
 
     def post(self, request, good):
+        context = {}
         try:
             # comment_form = CommentForm(request.POST)
             # if comment_form.is_valid():
@@ -296,15 +300,15 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
-            self.context['comments'] = Comment.objects.filter(good=good)
+            context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    self.context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
-            return render(request, self.template_name, self.context)
+            return render(request, self.template_name, context)
         except Exception:
-            return render(request, '500.html', self.context)
+            return render(request, '500.html', context)
 
 
 class AddProductPage(View):
