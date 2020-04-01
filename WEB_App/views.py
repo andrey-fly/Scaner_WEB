@@ -369,12 +369,12 @@ class AcceptPage(PermissionRequiredMixin, View):
                                 },
                           headers={'Authorization': '{}'.format(API_TOKEN)}
                           )
-            moderation_good.status = 2
+            moderation_good.status = 'Одобрено'
             moderation_good.save()
 
         elif request.POST.get('action') == 'deny':
             moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
-            moderation_good.status = 3
+            moderation_good.status = 'Отклонено'
             moderation_good.save()
 
         elif request.POST.get('action') == 'create_category':
@@ -395,7 +395,7 @@ class AcceptPage(PermissionRequiredMixin, View):
     def get_context(self):
         context = {}
 
-        data_goods_on_moderation = GoodsOnModeration.objects.filter(status=1)
+        data_goods_on_moderation = GoodsOnModeration.objects.filter(status='Принято на модерацию')
         context['goods_data'] = data_goods_on_moderation
 
         categories = requests.get('http://api.scanner.savink.in/api/v1/category/all/',

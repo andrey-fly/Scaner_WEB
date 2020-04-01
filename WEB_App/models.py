@@ -20,11 +20,11 @@ class GoodsOnModeration(models.Model):
     barcode = models.TextField(verbose_name='Штрих-код', db_index=True, default=None, null=True)
     STATUSES = [
         (1, 'Принято на модерацию'),
-        (2, 'Обработано'),
+        (2, 'Одобрено'),
         (3, 'Отклонено'),
     ]
     status = models.CharField(verbose_name='Статус', max_length=25,
-                              choices=STATUSES, default=1)
+                              choices=STATUSES, default='Принято на модерацию')
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 

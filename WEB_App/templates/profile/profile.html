@@ -41,7 +41,7 @@
         {% for own_good in own_goods%}
         {% if own_good.id == own_goods.0.id %}
         <div class="carousel-item active">
-            {% if own_good.status == '2' %}
+            {% if own_good.status == 'Одобрено' %}
             <a href="/product/{{own_good.name}}/"><img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."></a>
             {% else %}
             <img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="...">
@@ -54,7 +54,7 @@
         </div>
         {%else%}
         <div class="carousel-item">
-            {%if own_good.status == '2' %}
+            {%if own_good.status == 'Одобрено' %}
             <a href="/product/{{own_good.name}}/"><img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."></a>
             {%else%}
             <img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="...">
