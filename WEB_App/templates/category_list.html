@@ -24,7 +24,8 @@
             <a href="/category/{{category.url_name}}" class="btn btn-primary">Перейти</a>
 
             {% if user.is_superuser %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong{{category.id}}">
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#exampleModalLong{{category.id}}">
                 Редактировать категорию
             </button>
 
@@ -41,45 +42,47 @@
                         <div class="modal-body">
                             <form action="" method="POST" enctype="multipart/form-data">
                                 <input name="type" value="category" type="hidden">
-                              <div>
-                                      {% csrf_token %}
-                                      <p>Поменять фото для категории</p>
-                                      <input type="file" accept="image/*" name="image">
-                                      <input type="hidden" name="category_id" value="{{category.id}}">
-<!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
-                              </div>
-                              <div>
-                                <p>Поменять название категории</p>
-                                <input type="text" placeholder="Новое навзание для категории" value="{{category.name}}" name="new_name">
-<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
-                              </div>
                                 <div>
-                                <p>Поменять ссылку категории</p>
-                                <input type="text" placeholder="Новое навзание для категории" value="{{category.url_name}}" name="new_url">
-<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
-                              </div>
-                              <div>
-                                <p>Поменять родителя категории</p>
-<!--                                <input type="text" readonly value="генерить список детей">-->
-                                  <select name="parent" class="form-control form-control-sm ml-1 mt-2 row" >
+                                    {% csrf_token %}
+                                    <p>Поменять фото для категории</p>
+                                    <input type="file" accept="image/*" name="image">
+                                    <input type="hidden" name="category_id" value="{{category.id}}">
+                                    <!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
+                                </div>
+                                <div>
+                                    <p>Поменять название категории</p>
+                                    <input type="text" placeholder="Новое навзание для категории"
+                                           value="{{category.name}}" name="new_name">
+                                    <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                                </div>
+                                <div>
+                                    <p>Поменять ссылку категории</p>
+                                    <input type="text" placeholder="Новое навзание для категории"
+                                           value="{{category.url_name}}" name="new_url">
+                                    <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                                </div>
+                                <div>
+                                    <p>Поменять родителя категории</p>
+                                    <!--                                <input type="text" readonly value="генерить список детей">-->
+                                    <select name="parent" class="form-control form-control-sm ml-1 mt-2 row">
                                         <option disabled selected>Select category</option>
                                         {% for parent in categories %}
                                         <option value="{{parent.id}}">{{parent.name}}</option>
                                         {% endfor %}
                                     </select>
-<!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
-                              </div>
-                              <div>
-                                <p>Добавить нового ребёнка для категории</p>
-                                <input type="text" placeholder="Название нового ребёнка">
-                                <input type="file" accept="image/*">
-<!--                                <button class="btn btn-outline-primary">Добавить ребёнка</button>-->
-                              </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
-                            </div>
-                        </form>
+                                    <!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
+                                </div>
+                                <div>
+                                    <p>Добавить нового ребёнка для категории</p>
+                                    <input type="text" placeholder="Название нового ребёнка">
+                                    <input type="file" accept="image/*">
+                                    <!--                                <button class="btn btn-outline-primary">Добавить ребёнка</button>-->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -101,7 +104,8 @@
             <a href="/product/{{good.name}}/" class="btn btn-primary">Перейти</a>
 
             {% if user.is_superuser %}
-        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal{{good.id}}">
+            <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
+                    data-target="#exampleModal{{good.id}}">
                 Редактировать товар
             </button>
 
@@ -120,31 +124,28 @@
                             <input name="type" value="good" type="hidden">
                             <input type="hidden" name="good_id" value="{{good.id}}">
                             <div class="modal-body">
-                              <div>
-                                <p>Поменять фото для товара</p>
-                                <input type="file" accept="image/*" name="image">
-<!--                                <button class="btn btn-outline-primary">Сменить фото</button>-->
-                              </div>
-                              <div>
-                                <p>Поменять название товара</p>
-                                <input type="text" placeholder="Новое навзание для товара" value="{{good.name}}" name="new_name">
-<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
-                              </div>
-                              <div>
-                                <p>Поменять баркод товара</p>
-                                <input type="text" value="{{good.barcode}}" name="new_barcode">
-<!--                                <button class="btn btn-outline-primary">Сменить баркод</button>-->
-                              </div>
-                              <div>
-                                <p>Изменить плюсы и минусы отвара</p>
-                                <input type="text" readonly value="генерить плюсов и минусов">
-<!--                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>-->
-                              </div>
-                              <div>
-                                <p>Изменить рейтин росконтроля</p>
-                                <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля" value="{{good.points_rusControl}}" name="new_points">
-<!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
-                              </div>
+                                <div>
+                                    <p>Поменять фото для товара</p>
+                                    <input type="file" accept="image/*" name="image">
+                                    <!--                                <button class="btn btn-outline-primary">Сменить фото</button>-->
+                                </div>
+                                <div>
+                                    <p>Поменять название товара</p>
+                                    <input type="text" placeholder="Новое навзание для товара" value="{{good.name}}"
+                                           name="new_name">
+                                    <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                                </div>
+                                <div>
+                                    <p>Поменять баркод товара</p>
+                                    <input type="text" value="{{good.barcode}}" name="new_barcode">
+                                    <!--                                <button class="btn btn-outline-primary">Сменить баркод</button>-->
+                                </div>
+                                <div>
+                                    <p>Изменить рейтин росконтроля</p>
+                                    <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля"
+                                           value="{{good.points_rusControl}}" name="new_points">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -154,7 +155,91 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#Modal{{good.id}}">
+                Редактировать плюсы
+            </button>
+            <div class="modal fade" id="Modal{{good.id}}" tabindex="-1" role="dialog"
+                 aria-labelledby="ModalTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalTitle">Редактировать минусы товара</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input name="type" value="good" type="hidden">
+                            <input type="hidden" name="good_id" value="{{good.id}}">
+                            <div class="modal-body">
+                                <div>
+                                    <p>Удалить плюс товара</p>
+                                    <input type="text" readonly value="генерить плюсы">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>-->
+                                </div>
+                                <div>
+                                    <p>Добавить плюс товара</p>
+                                    <input type="text" placeholder="Добавить плюс товара">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                </div>
+                                <div>
+                                    <p>Редактировать плюс товара</p>
+                                    <input type="text" placeholder="Редактировать плюс товара">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#example{{good.id}}">
+                Редактировать минусы
+            </button>
+            <div class="modal fade" id="example{{good.id}}" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleTitle">Редактировать минусы товара</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input name="type" value="good" type="hidden">
+                            <input type="hidden" name="good_id" value="{{good.id}}">
+                            <div class="modal-body">
+                                <div>
+                                    <p>Удалить минус товара</p>
+                                    <input type="text" readonly value="генерить минусы">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>-->
+                                </div>
+                                <div>
+                                    <p>Добавить минус товара</p>
+                                    <input type="text" placeholder="Добавить минус товара">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                </div>
+                                <div>
+                                    <p>Редактировать минус товара</p>
+                                    <input type="text" placeholder="Редактировать минус товара">
+                                    <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
         </div>
     </div>
