@@ -109,9 +109,7 @@ def profile(request):
 
     context['length'] = [i for i in range(len(context['goods']))]
     if UserPhoto.objects.filter(user=current_user):
-        context['photo'] = UserPhoto.objects.get(user=current_user).img
-    else:
-        context['photo'] = 'profile/profile_icon.png'
+        context['photo'] = UserPhoto.objects.get(user=current_user).img.url
     return render(request, 'profile/profile.html', context)
 
 
@@ -123,9 +121,7 @@ def change_info(request):
     photo = FileForm(request.POST, request.FILES)
     context = {'form': form, 'photo': photo}
     if UserPhoto.objects.filter(user=current_user):
-        context['userphoto'] = UserPhoto.objects.get(user=current_user).img
-    else:
-        context['userphoto'] = 'profile/profile_icon.png'
+        context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
     if request.method == 'POST':
         if request.POST.get('old_password'):
             old_password = request.POST.get('old_password')

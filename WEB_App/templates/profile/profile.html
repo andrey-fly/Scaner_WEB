@@ -10,7 +10,11 @@
 
 <div class="row">
     <div class="col mb-4">
-        <img class="rounded mb-3 float-right my-image" src="{% static 'img/'%}{{photo}}" alt="icon">
+        {% if photo %}
+        <img class="rounded mb-3 float-right my-image" src="{{photo}}" alt="icon">
+        {% else %}
+        <img class="rounded mb-3 float-right my-image" src="{% static 'img/profile/'%}profile_icon.png" alt="icon">
+        {% endif %}
     </div>
     <div class="col mb-4" style="position: relative;">
         <p class="card-title text-left">Имя: <span class="font-weight-bold">{{ user.username}}</span></p>
