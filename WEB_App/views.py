@@ -375,17 +375,14 @@ class AcceptPage(PermissionRequiredMixin, View):
             moderation_good.save()
 
         elif request.POST.get('action') == 'create_category':
-            name = request.POST.get('name')
-            parent_id = request.POST.get('category') or None
+            payload = {}
+            payload['name'] = request.POST.get('name')
+            payload['url_name'] = request.POST.get('url_name')
+            payload['parent'] = request.POST.get('category') or None
             image = request.FILES.get('image') or None
+
             requests.post('http://api.scanner.savink.in/api/v1/category/create/',
-                          files={'file': image},
-                          data={'user': request.user.id,
-                                'name': name,
-                                'parent': parent_id,
-                                },
-                          headers={'Authorization': '{}'.format(API_TOKEN)}
-                          )
+                          files={'file': image}, data=payload, headers=API_HEADERS)
 
         return render(request, self.template_name, self.get_context())
 
