@@ -169,3 +169,6 @@ AWS_S3_BUCKET_NAME = "scaner-goods-pictures"
 
 API_URL = 'http://api.scanner.savink.in/'
 API_TOKEN = 'Token c70b88bb12ce5694c171d463518a8dd9aa297ff9'
+API_HEADERS = {
+    'Authorization': '{}'.format(API_TOKEN),
+}

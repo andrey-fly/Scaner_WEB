@@ -39,32 +39,46 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                          <div>
-                            <p>Поменять фото для категории</p>
-                            <input type="file" accept="image/*">
-                            <button class="btn btn-outline-primary">Сменить фото</button>
-                          </div>
-                          <div>
-                            <p>Поменять название категории</p>
-                            <input type="text" placeholder="Новое навзание для категории" value="подставить нынешнее значение категории">
-                            <button class="btn btn-outline-primary">Сменить название</button>
-                          </div>
-                          <div>
-                            <p>Поменять детей у категории</p>
-                            <input type="text" readonly value="генерить список детей">
-                            <button class="btn btn-outline-primary">Выбрать ребёнка</button>
-                          </div>
-                          <div>
-                            <p>Добавить нового ребёнка для категории</p>
-                            <input type="text" placeholder="Название нового ребёнка">
-                            <input type="file" accept="image/*">
-                            <button class="btn btn-outline-primary">Добавить ребёнка</button>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-primary">Сохранить изменения</button>
-                        </div>
+                            <form action="/category/" method="POST" enctype="multipart/form-data">
+                              <div>
+                                      {% csrf_token %}
+                                      <p>Поменять фото для категории</p>
+                                      <input type="file" accept="image/*" name="image">
+                                      <input type="hidden" name="category_id" value="{{category.id}}">
+<!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
+                              </div>
+                              <div>
+                                <p>Поменять название категории</p>
+                                <input type="text" placeholder="Новое навзание для категории" value="{{category.name}}" name="new_name">
+<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                              </div>
+                                <div>
+                                <p>Поменять ссылку категории</p>
+                                <input type="text" placeholder="Новое навзание для категории" value="{{category.url_name}}" name="new_url">
+<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                              </div>
+                              <div>
+                                <p>Поменять родителя категории</p>
+<!--                                <input type="text" readonly value="генерить список детей">-->
+<!--                                  <select name="parent" class="form-control form-control-sm ml-1 mt-2 row" >-->
+<!--                                    <option disabled selected>Select category</option>-->
+<!--                                    {% for parent in categories %}-->
+<!--                                    <option value="{{parent.id}}">{{parent.name}}</option>-->
+<!--                                    {% endfor %}-->
+<!--                                </select>-->
+<!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
+                              </div>
+                              <div>
+                                <p>Добавить нового ребёнка для категории</p>
+                                <input type="text" placeholder="Название нового ребёнка">
+                                <input type="file" accept="image/*">
+<!--                                <button class="btn btn-outline-primary">Добавить ребёнка</button>-->
+                              </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

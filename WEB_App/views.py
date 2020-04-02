@@ -12,7 +12,7 @@ from django.db.models import Avg, Q
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
-from Scanner.settings import API_TOKEN
+from Scanner.settings import API_TOKEN, API_HEADERS
 from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
 from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate
 
@@ -404,14 +404,22 @@ class AcceptPage(PermissionRequiredMixin, View):
 
 class CategoryView(TemplateView):
     def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         try:
-            context = self.get_context_data(**kwargs)
             context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                                '{}'.format(context['category']),
                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            return render(request, self.template_name, context)
+
+        except ValueError:
+            return render(request, self.template_name, context)
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        try:
             return render(request, self.template_name, context)
 
         except ValueError:
@@ -425,4 +433,32 @@ class CategoryFirstPageView(TemplateView):
                                              headers={'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        category_id = request.POST.get('category_id')
+
+        payload = {}
+        image = request.FILES.get('image')
+        payload['name'] = request.POST.get('new_name')
+        payload['url_name'] = request.POST.get('new_url')
+
+        url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
+
+        try:
+            requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+        except ValueError:
+            return render(request, self.template_name, context)
+
+        context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
+                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+        return render(request, self.template_name, context)
+
+# requests.post('http://api.scanner.savink.in/api/v1/category/create/',
+#                           files={'file': image},
+#                           data={'user': request.user.id,
+#                                 'name': name,
+#                                 'parent': parent_id,
+#                                 },
+#                           headers={'Authorization': '{}'.format(API_TOKEN)}
+#                           )
 
