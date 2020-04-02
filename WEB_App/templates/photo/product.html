@@ -8,20 +8,11 @@
 {% block content %}
 <div id="content-block">
     <div id="photo-block-in-content-block">
-<!--        <div class="zoom" id="mask-group-in-photo-block ex1">-->
-<!--            &lt;!&ndash;                <div id="background-figure-in-mask-group">&ndash;&gt;-->
-<!--            {% if img %}-->
-<!--            <img src="{{img}}" data-zoom-image="{{img}}" id="photo-in-mask-group zoom_01">-->
-<!--            {%else%}-->
-<!--            <h5 class="text-center p-5">Image not found</h5>-->
-<!--            {%endif%}-->
-<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--        </div>-->
 <!--        <span class='zoom' id='ex1'>-->
 <!--          <img src='{{img}}' alt='Image not found' style="max-width: 630px">-->
 <!--        </span>-->
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
+                <div class="carousel-inner" role="listbox" style=" width:100%; height: 400px;">
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="{{img}}" alt="First slide">
                     </div>
@@ -41,9 +32,6 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-<!--            <label id="photo-load-label-in-photo-block">-->
-<!--                Загрузить новое фото-->
-<!--            </label>-->
         </div>
         <label id="photo-load-label-in-photo-block">
             Загрузить новое фото
