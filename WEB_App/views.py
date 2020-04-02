@@ -409,6 +409,8 @@ class CategoryView(TemplateView):
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
+                                                 headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             return render(request, self.template_name, context)
 
         except ValueError:
@@ -423,6 +425,7 @@ class CategoryView(TemplateView):
             category_id = request.POST.get('category_id')
             payload['name'] = request.POST.get('new_name')
             payload['url_name'] = request.POST.get('new_url')
+            payload['parent'] = request.POST.get('parent')
 
             url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
@@ -435,9 +438,7 @@ class CategoryView(TemplateView):
             payload['name'] = request.POST.get('new_name')
             payload['barcode'] = request.POST.get('new_barcode')
             payload['points_rusControl'] = request.POST.get('new_points')
-            print(payload)
-            print(request.FILES.get('image'))
-            print(request.POST)
+            payload['parent'] = request.POST.get('parent')
             url = 'http://api.scanner.savink.in/api/v1/goods/detail/{}/'.format(good_id)
 
             try:
@@ -474,6 +475,7 @@ class CategoryFirstPageView(TemplateView):
         image = request.FILES.get('image')
         payload['name'] = request.POST.get('new_name')
         payload['url_name'] = request.POST.get('new_url')
+        payload['parent'] = request.POST.get('parent')
 
         url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
