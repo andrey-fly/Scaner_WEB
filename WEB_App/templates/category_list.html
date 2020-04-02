@@ -22,12 +22,13 @@
         <div class="card-body">
             <h5 class="card-title text-center">{{category.name}}</h5>
             <a href="/category/{{category.url_name}}" class="btn btn-primary">Перейти</a>
+
             {% if user.is_superuser %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong{{category.id}}">
                 Редактировать категорию
             </button>
 
-            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+            <div class="modal fade" id="exampleModalLong{{category.id}}" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -38,80 +39,47 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div>
-                                <p>Поменять фото для категории</p>
-                                <input type="file" accept="image/*">
-                                <button class="btn btn-outline-primary">Сменить фото</button>
-                            </div>
-                            <div>
+                            <form action="#" method="POST" enctype="multipart/form-data">
+                                <input name="type" value="category" type="hidden">
+                              <div>
+                                      {% csrf_token %}
+                                      <p>Поменять фото для категории</p>
+                                      <input type="file" accept="image/*" name="image">
+                                      <input type="hidden" name="category_id" value="{{category.id}}">
+<!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
+                              </div>
+                              <div>
                                 <p>Поменять название категории</p>
-                                <input type="text" placeholder="Новое навзание для категории"
-                                       value="подставить нынешнее значение категории">
-                                <button class="btn btn-outline-primary">Сменить название</button>
-                            </div>
-                            <div>
-                                <p>Поменять детей у категории</p>
-                                <input type="text" readonly value="генерить список детей">
-                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>
-                            </div>
-                            <div>
+                                <input type="text" placeholder="Новое навзание для категории" value="{{category.name}}" name="new_name">
+<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                              </div>
+                                <div>
+                                <p>Поменять ссылку категории</p>
+                                <input type="text" placeholder="Новое навзание для категории" value="{{category.url_name}}" name="new_url">
+<!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                              </div>
+                              <div>
+                                <p>Поменять родителя категории</p>
+<!--                                <input type="text" readonly value="генерить список детей">-->
+                                  <select name="parent" class="form-control form-control-sm ml-1 mt-2 row" >
+                                        <option disabled selected>Select category</option>
+                                        {% for parent in categories %}
+                                        <option value="{{parent.id}}">{{parent.name}}</option>
+                                        {% endfor %}
+                                    </select>
+<!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
+                              </div>
+                              <div>
                                 <p>Добавить нового ребёнка для категории</p>
                                 <input type="text" placeholder="Название нового ребёнка">
                                 <input type="file" accept="image/*">
-                                <button class="btn btn-outline-primary">Добавить ребёнка</button>
+<!--                                <button class="btn btn-outline-primary">Добавить ребёнка</button>-->
+                              </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-primary">Сохранить изменения</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">
-                Редактировать товар
-            </button>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalTitle">Редактировать товар</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                          <div>
-                            <p>Поменять фото для товара</p>
-                            <input type="file" accept="image/*">
-                            <button class="btn btn-outline-primary">Сменить фото</button>
-                          </div>
-                          <div>
-                            <p>Поменять название товара</p>
-                            <input type="text" placeholder="Новое навзание для товара" value="подставить нынешнее значение товара">
-                            <button class="btn btn-outline-primary">Сменить название</button>
-                          </div>
-                          <div>
-                            <p>Поменять баркод товара</p>
-                            <input type="text" value="генерить список детей" value="подставить нынешнее значение баркода">
-                            <button class="btn btn-outline-primary">Сменить баркод</button>
-                          </div>
-                          <div>
-                            <p>Изменить плюсы и минусы отвара</p>
-                            <input type="text" readonly value="генерить плюсов и минусов">
-                            <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>
-                          </div>
-                          <div>
-                            <p>Изменить рейтин росконтроля</p>
-                            <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля" value="нынешнее значение рейтинга">
-                            <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-primary">Сохранить изменения</button>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -130,7 +98,64 @@
         {%endif%}
         <div class="card-body">
             <h5 class="card-title text-center">{{good.name}}</h5>
-            <a href="/product/{{good.name}}" class="btn btn-primary">Перейти</a>
+            <a href="/product/{{good.name}}/" class="btn btn-primary">Перейти</a>
+
+            {% if user.is_superuser %}
+        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal{{good.id}}">
+                Редактировать товар
+            </button>
+
+            <div class="modal fade" id="exampleModal{{good.id}}" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalTitle">Редактировать товар</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input name="type" value="good" type="hidden">
+                            <input type="hidden" name="good_id" value="{{good.id}}">
+                            <div class="modal-body">
+                              <div>
+                                <p>Поменять фото для товара</p>
+                                <input type="file" accept="image/*" name="image">
+                                <button class="btn btn-outline-primary">Сменить фото</button>
+                              </div>
+                              <div>
+                                <p>Поменять название товара</p>
+                                <input type="text" placeholder="Новое навзание для товара" value="{{good.name}}" name="new_name">
+                                <button class="btn btn-outline-primary">Сменить название</button>
+                              </div>
+                              <div>
+                                <p>Поменять баркод товара</p>
+                                <input type="text" value="{{good.barcode}}" name="new_barcode">
+                                <button class="btn btn-outline-primary">Сменить баркод</button>
+                              </div>
+                              <div>
+                                <p>Изменить плюсы и минусы отвара</p>
+                                <input type="text" readonly value="генерить плюсов и минусов">
+                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>
+                              </div>
+                              <div>
+                                <p>Изменить рейтин росконтроля</p>
+                                <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля" value="{{good.points_rusControl}}" name="new_points">
+                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         </div>
     </div>
     {% endfor %}

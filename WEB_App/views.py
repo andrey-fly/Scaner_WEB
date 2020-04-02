@@ -419,11 +419,47 @@ class CategoryView(TemplateView):
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        try:
-            return render(request, self.template_name, context)
+        payload = {}
+        image = request.FILES.get('image')
 
-        except ValueError:
-            return render(request, self.template_name, context)
+        if request.POST.get('type') == 'category':
+            category_id = request.POST.get('category_id')
+            payload['name'] = request.POST.get('new_name')
+            payload['url_name'] = request.POST.get('new_url')
+
+            url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
+
+            try:
+                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+            except ValueError:
+                return render(request, self.template_name, context)
+        elif request.POST.get('type') == 'good':
+            good_id = request.POST.get('good_id')
+            payload['name'] = request.POST.get('new_name')
+            payload['barcode'] = request.POST.get('new_barcode')
+            payload['points_rusControl'] = request.POST.get('new_points')
+            print(payload)
+            print(request.FILES.get('image'))
+            print(request.POST)
+            url = 'http://api.scanner.savink.in/api/v1/goods/detail/{}/'.format(good_id)
+
+            try:
+                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+            except ValueError:
+                return render(request, self.template_name, context)
+
+        context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
+                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+        context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
+                                           '{}'.format(context['category']),
+                                           headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+        context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+                                        '{}'.format(context['category']),
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+        return render(request, self.template_name, context)
 
 
 class CategoryFirstPageView(TemplateView):
@@ -452,13 +488,3 @@ class CategoryFirstPageView(TemplateView):
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
                                              headers={'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
-
-# requests.post('http://api.scanner.savink.in/api/v1/category/create/',
-#                           files={'file': image},
-#                           data={'user': request.user.id,
-#                                 'name': name,
-#                                 'parent': parent_id,
-#                                 },
-#                           headers={'Authorization': '{}'.format(API_TOKEN)}
-#                           )
-

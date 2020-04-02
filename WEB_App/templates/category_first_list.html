@@ -24,11 +24,11 @@
             <h5 class="card-title text-center">{{category.name}}</h5>
             <a href="/category/{{category.url_name}}" class="btn btn-primary">Перейти</a>
             {% if user.is_superuser %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong{{category.id}}">
                 Редактировать категорию
             </button>
 
-            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+            <div class="modal fade" id="exampleModalLong{{category.id}}" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -60,12 +60,12 @@
                               <div>
                                 <p>Поменять родителя категории</p>
 <!--                                <input type="text" readonly value="генерить список детей">-->
-<!--                                  <select name="parent" class="form-control form-control-sm ml-1 mt-2 row" >-->
-<!--                                    <option disabled selected>Select category</option>-->
-<!--                                    {% for parent in categories %}-->
-<!--                                    <option value="{{parent.id}}">{{parent.name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
+                                  <select name="parent" class="form-control form-control-sm ml-1 mt-2 row" >
+                                    <option disabled selected>Select category</option>
+                                    {% for parent in categories %}
+                                    <option value="{{parent.id}}">{{parent.name}}</option>
+                                    {% endfor %}
+                                </select>
 <!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
                               </div>
                               <div>
@@ -79,6 +79,7 @@
                                 <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                             </div>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
