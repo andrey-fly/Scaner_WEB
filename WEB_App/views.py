@@ -247,7 +247,8 @@ class ProductPage(View):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
-                context['img'] = image.file.url
+                images = Picture.objects.filter(target_good=good)
+                context['images'] = images
             else:
                 images = Picture.objects.filter(target_good=good)
                 context['images'] = images
@@ -256,7 +257,6 @@ class ProductPage(View):
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
 
-            context['img'] = img
             print(request.GET.get('image'))
             context['img_id'] = request.GET.get('image')
 
@@ -302,7 +302,7 @@ class ProductPage(View):
                 )
                 new_rating.save()
             if request.POST.get('rating'):
-                new_photo_rate = RatePhotoForm(
+                new_photo_rate = RatePhoto(
                     rate=request.POST.get('rating'),
                     parent=request.POST.get('img_id')
                 )
