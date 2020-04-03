@@ -282,7 +282,8 @@ class ProductPage(View):
             self.context['categories'] = response['categories']
             self.context['comments'] = Comment.objects.filter(good=good)
             return render(request, self.template_name, self.context)
-        except Exception:
+        except Exception as exc:
+            print(exc)
             return render(request, '404.html', context)
 
     def post(self, request, good):
