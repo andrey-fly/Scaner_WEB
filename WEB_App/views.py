@@ -242,7 +242,8 @@ class ProductPage(TemplateView):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
-                self.context['img'] = image.file.url
+                images = Picture.objects.filter(target_good=good)
+                self.context['images'] = images
             else:
                 images = Picture.objects.filter(target_good=good)
                 self.context['images'] = images
@@ -281,7 +282,7 @@ class ProductPage(TemplateView):
             new_children_comment.save()
             return render(request, self.template_name, self.context)
         elif request.POST.get('rating'):
-            new_photo_rate = RatePhotoForm(
+            new_photo_rate = RatePhoto(
                 rate=request.POST.get('rating'),
                 parent=request.POST.get('img_id')
             )
