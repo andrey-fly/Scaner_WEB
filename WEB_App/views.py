@@ -409,14 +409,17 @@ class CategoryView(TemplateView):
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-            context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                                 headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-            context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
-                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            if request.user.is_superuser:
+                context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
+                                                     headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-            context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
-                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
+                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+                context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
+                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
             return render(request, self.template_name, context)
 
         except ValueError:
