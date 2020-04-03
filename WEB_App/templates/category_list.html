@@ -42,6 +42,7 @@
                         <div class="modal-body">
                             <form action="" method="POST" enctype="multipart/form-data">
                                 <input name="type" value="category" type="hidden">
+                                <input name="action" type="hidden" value="change">
                                 <div>
                                     {% csrf_token %}
                                     <p>Поменять фото для категории</p>
@@ -73,8 +74,6 @@
                                     <!--                                <button class="btn btn-outline-primary">Выбрать ребёнка</button>-->
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-outline-danger  justify-content-left">Удалить
-                            </button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                                 </div>
@@ -84,80 +83,60 @@
                 </div>
             </div>
             <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
-                    data-target="#Modal{{category.id}}">
-                Добавить нового ребёнка для категории
+                    data-target="#ModalChild{{category.id}}">
+                Добавить дочернюю категорию
             </button>
-            <div class="modal fade" id="Modal{{category.id}}" tabindex="-1"
+            <div class="modal fade" id="ModalChild{{category.id}}" tabindex="-1"
                  role="dialog"
                  aria-labelledby="Title" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="Title">Добавить нового ребёнка для
-                                категории</h5>
+                            <h5 class="modal-title" id="Title">Добавить дочернюю категорию</h5>
                             <button type="button" class="close" data-dismiss="modal"
                                     aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <p>Создать категорию</p>
-                            <button class="btn btn-primary float-right" type="button"
-                                    data-toggle="collapse"
-                                    data-target="#collapseCategory"
-                                    aria-expanded="false"
-                                    aria-controls="collapseCategory">
-                                Развернуть
-                            </button>
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <p class="text-center">Создать категорию</p>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="type" value="create_category">
 
-                            <form method="POST" action="" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="collapse" id="collapseCategory">
-                                    <label for="category_name">Наименование: </label>
-                                    <input id="category_name" type="text"
-                                           name="name" value="{{good.name}}"
-                                           placeholder="Название" class="row mt-2"
-                                           required>
+                                        <label for="category_name">Наименование: </label>
+                                        <input id="category_name" type="text"
+                                               name="name" value="{{good.name}}"
+                                               placeholder="Название" class="row mt-2"
+                                               required>
 
-                                    <label for="url_name">Хвост ссылки: </label>
-                                    <input id="url_name" type="text" name="url_name"
-                                           placeholder="URL" class="row mt-2"
-                                           required>
-
-                                    <select name="category"
-                                            class="form-control form-control-sm ml-1 mt-2 row">
-                                        <option value="None" disabled selected>
-                                            Select parent
-                                        </option>
-                                        {% for category in categories %}
-                                        <option value="{{category.id}}">
-                                            {{category.name}}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                    <input name="image" type="file" accept="image/*"
-                                           class="row mt-3">
-                                    <button type="submit"
-                                            class="btn btn-outline-success float-right mr-1"
-                                            name="action" value="create_category">
-                                        Сохранить
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger mr-5 justify-content-left">Удалить
-                            </button>
-                            <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">Close
-                            </button>
-                            <button type="submit" class="btn btn-outline-primary">Сохранить
-                                изменения
-                            </button>
-                        </div>
+                                        <label for="url_name">Хвост ссылки: </label>
+                                        <input id="url_name" type="text" name="url_name"
+                                               placeholder="URL" class="row mt-2"
+                                               required>
+                                        <input name="parent" type="hidden" value="{{category.id}}">
+                                        <input name="image" type="file" accept="image/*"
+                                               class="row mt-3">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить
+                                    изменения
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="category_id" value="{{category.id}}">
+                <input name="type" value="category" type="hidden">
+                <button type="submit" class="btn btn-block btn-outline-danger mt-3">Удалить</button>
+            </form>
         </div>
     </div>
 
@@ -194,34 +173,29 @@
                     <form action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input name="type" value="good" type="hidden">
+                        <input name="action" value="change" type="hidden">
                         <input type="hidden" name="good_id" value="{{good.id}}">
                         <div class="modal-body">
                             <div>
                                 <p>Поменять фото для товара</p>
                                 <input type="file" accept="image/*" name="image">
-                                <!--                                <button class="btn btn-outline-primary">Сменить фото</button>-->
                             </div>
                             <div>
                                 <p>Поменять название товара</p>
                                 <input type="text" placeholder="Новое навзание для товара" value="{{good.name}}"
                                        name="new_name">
-                                <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
                             </div>
                             <div>
                                 <p>Поменять баркод товара</p>
                                 <input type="text" value="{{good.barcode}}" name="new_barcode">
-                                <!--                                <button class="btn btn-outline-primary">Сменить баркод</button>-->
                             </div>
                             <div>
-                                <p>Изменить рейтин росконтроля</p>
+                                <p>Изменить рейтинг росконтроля</p>
                                 <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля"
                                        value="{{good.points_rusControl}}" name="new_points">
-                                <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger mr-2 justify-content-left">Удалить
-                            </button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                         </div>
@@ -242,32 +216,39 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input name="type" value="good" type="hidden">
-                        <input type="hidden" name="good_id" value="{{good.id}}">
                         <div class="modal-body">
                             <div>
-                                <p>Удалить плюс товара</p>
-                                <input type="text" readonly value="генерить плюсы">
-                                <!--                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>-->
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <p>Удалить плюс товара</p>
+                                    <select name="positive_id" class="form-control form-control-sm ml-1 mt-2 row">
+                                        <option value="None" disabled selected>Выбрать</option>
+                                        {% for positive in positives %}
+                                        {% if positive.good == good.id %}
+                                        <option value="{{positive.id}}">{{positive.value}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <input name="type" value="positive" type="hidden">
+                                    <input type="hidden" name="good_id" value="{{good.id}}">
+                                    <input name="action" value="delete_positive" type="hidden">
+                                    <button class="btn btn-outline-danger" type="submit">Удалить</button>
+                                </form>
                             </div>
                             <div>
-                                <p>Добавить плюс товара</p>
-                                <input type="text" placeholder="Добавить плюс товара">
-                                <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
-                            </div>
-                            <div>
-                                <p>Редактировать плюс товара</p>
-                                <input type="text" placeholder="Редактировать плюс товара">
-                                <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input name="type" value="positive" type="hidden">
+                                    <input type="hidden" name="good_id" value="{{good.id}}">
+                                    <p>Добавить плюс товара</p>
+                                    <input name="action" value="add_positive" type="hidden">
+                                    <input type="text" placeholder="Добавить плюс товара" name="positive">
+                                    <button class="btn btn-success" type="submit">Добавить</button>
+                                </form>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger mr-2 justify-content-left">Удалить
-                            </button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                         </div>
                     </form>
                 </div>
@@ -286,37 +267,52 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input name="type" value="good" type="hidden">
-                        <input type="hidden" name="good_id" value="{{good.id}}">
-                        <div class="modal-body">
+                    <div class="modal-body">
                             <div>
-                                <p>Удалить минус товара</p>
-                                <input type="text" readonly value="генерить минусы">
-                                <!--                                <button class="btn btn-outline-primary">Изменить плюсы/минусы</button>-->
+                               <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <p>Удалить минус товара</p>
+                                    <select name="negative_id" class="form-control form-control-sm ml-1 mt-2 row">
+                                        <option value="None" disabled selected>Выбрать</option>
+                                        {% for negative in negatives %}
+                                        {% if negative.good == good.id %}
+                                        <option value="{{negative.id}}">{{negative.value}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <input name="type" value="negative" type="hidden">
+                                    <input type="hidden" name="good_id" value="{{good.id}}">
+                                    <input name="action" value="delete_negative" type="hidden">
+                                    <button class="btn btn-outline-danger" type="submit">Удалить</button>
+                                </form>
                             </div>
                             <div>
-                                <p>Добавить минус товара</p>
-                                <input type="text" placeholder="Добавить минус товара">
-                                <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
-                            </div>
-                            <div>
-                                <p>Редактировать минус товара</p>
-                                <input type="text" placeholder="Редактировать минус товара">
-                                <!--                                <button class="btn btn-outline-primary">Изменить рейтинг росконтроля</button>-->
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input name="type" value="negative" type="hidden">
+                                    <input type="hidden" name="good_id" value="{{good.id}}">
+                                    <p>Добавить минус товара</p>
+                                    <input name="action" value="add_negative" type="hidden">
+                                    <input type="text" placeholder="Добавить плюс товара" name="negative">
+                                    <button class="btn btn-success" type="submit">Добавить</button>
+                                </form>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger mr-2 justify-content-left">Удалить
-                            </button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="category_id" value="{{category.id}}">
+                <input name="type" value="good" type="hidden">
+                <button type="submit" class="btn btn-block btn-outline-danger mt-3">Удалить</button>
+            </form>
+
         {% endif %}
 
     </div>

@@ -411,12 +411,19 @@ class CategoryView(TemplateView):
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
                                                  headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+            context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
+                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+            context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
+                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             return render(request, self.template_name, context)
 
         except ValueError:
             return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
+        print(request.POST)
         context = self.get_context_data(**kwargs)
         payload = {}
         image = request.FILES.get('image')
@@ -430,9 +437,13 @@ class CategoryView(TemplateView):
             url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
             try:
-                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                if request.POST.get('action') == 'delete':
+                    requests.request("DELETE", url, headers=API_HEADERS)
+                elif request.POST.get('action') == 'change':
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
             except ValueError:
                 return render(request, self.template_name, context)
+
         elif request.POST.get('type') == 'good':
             good_id = request.POST.get('good_id')
             payload['name'] = request.POST.get('new_name')
@@ -442,7 +453,55 @@ class CategoryView(TemplateView):
             url = 'http://api.scanner.savink.in/api/v1/goods/detail/{}/'.format(good_id)
 
             try:
-                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                if request.POST.get('action') == 'delete':
+                    requests.request("DELETE", url, headers=API_HEADERS)
+                elif request.POST.get('action') == 'change':
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+            except ValueError:
+                return render(request, self.template_name, context)
+
+        elif request.POST.get('type') == 'create_category':
+            payload['name'] = request.POST.get('name')
+            payload['url_name'] = request.POST.get('url_name')
+            payload['parent'] = request.POST.get('parent') or None
+            image = request.FILES.get('image') or None
+            try:
+                requests.post('http://api.scanner.savink.in/api/v1/category/create/',
+                              files={'file': image}, data=payload, headers=API_HEADERS)
+            except ValueError:
+                return render(request, self.template_name, context)
+
+        elif request.POST.get('type') == 'positive':
+            payload['value'] = request.POST.get('positive')
+            payload['good'] = request.POST.get('good_id')
+
+            positive_id = request.POST.get('positive_id')
+            url = 'http://api.scanner.savink.in/api/v1/positive/detail/{}/'.format(positive_id)
+
+            try:
+                if request.POST.get('action') == 'add_positive':
+                    requests.post('http://api.scanner.savink.in/api/v1/positive/create/',
+                                  data=payload, headers=API_HEADERS)
+                elif request.POST.get('action') == 'delete_positive':
+                    requests.request("DELETE", url, headers=API_HEADERS)
+
+            except ValueError:
+                return render(request, self.template_name, context)
+
+        elif request.POST.get('type') == 'negative':
+            payload['value'] = request.POST.get('negative')
+            payload['good'] = request.POST.get('good_id')
+
+            negative_id = request.POST.get('negative_id')
+            url = 'http://api.scanner.savink.in/api/v1/negative/detail/{}/'.format(negative_id)
+
+            try:
+                if request.POST.get('action') == 'add_negative':
+                    requests.post('http://api.scanner.savink.in/api/v1/negative/create/',
+                                  data=payload, headers=API_HEADERS)
+                elif request.POST.get('action') == 'delete_negative':
+                    requests.request("DELETE", url, headers=API_HEADERS)
+
             except ValueError:
                 return render(request, self.template_name, context)
 
@@ -456,6 +515,12 @@ class CategoryView(TemplateView):
         context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                         '{}'.format(context['category']),
                                         headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+        context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
+                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+        context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
+                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
         return render(request, self.template_name, context)
 
@@ -480,7 +545,10 @@ class CategoryFirstPageView(TemplateView):
         url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
         try:
-            requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+            if request.POST.get('type') == 'delete':
+                requests.request("DELETE", url, headers=API_HEADERS)
+            elif request.POST.get('type') == 'change':
+                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
         except ValueError:
             return render(request, self.template_name, context)
 
