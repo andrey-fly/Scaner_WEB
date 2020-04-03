@@ -51,7 +51,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
             method: 'POST',
             body: formData,
         });
-        /// тут можно бахнуть анимашку загрузки
+        $('.loader').css('display', 'block');
+        setTimeout(function(){
+          $('.loader').fadeOut(700, function(){
+            $(this).css('display', 'none');
+          });
+            }, 1500);
+
         let result = await response;
 
         if (result.redirected){
