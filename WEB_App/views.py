@@ -243,6 +243,15 @@ class ProductPage(View):
 
         try:
             context['name'] = good
+            image_id = request.GET.get('image')
+            if image_id:
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                context['img'] = image.file.url
+            else:
+                image = Picture.objects.filter(target_good=good)
+                context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
@@ -278,8 +287,10 @@ class ProductPage(View):
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
         try:
+            # comment_form = CommentForm(request.POST)
+            # if comment_form.is_valid():
             rate_form = RatePhotoForm(request.POST)
-        if request.POST.get('comment'):
+            if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
                     user=User.objects.get(id=request.user.id),
@@ -300,6 +311,12 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
+            if rate_form.is_valid():
+                new_photo_rate = RatePhoto(
+                    rate=rate_form.POST.get('rating_photo'),
+                    parent=Picture.objects.get(id)
+                )
+                new_photo_rate.save()
             if images and target_good:
                 for image in images:
                     PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
