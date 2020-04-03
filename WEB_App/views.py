@@ -244,8 +244,8 @@ class ProductPage(TemplateView):
                 image.save()
                 self.context['img'] = image.file.url
             else:
-                image = Picture.objects.filter(target_good=good)
-                self.context['img'] = image[0].file.url
+                images = Picture.objects.filter(target_good=good)
+                self.context['images'] = images
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
@@ -280,10 +280,10 @@ class ProductPage(TemplateView):
             )
             new_children_comment.save()
             return render(request, self.template_name, self.context)
-        elif rate_form.is_valid():
-            new_photo_rate = RatePhoto(
-                rate=rate_form.POST.get('rating_photo'),
-                parent=Picture.objects.get(id)
+        elif request.POST.get('rating'):
+            new_photo_rate = RatePhotoForm(
+                rate=request.POST.get('rating'),
+                parent=request.POST.get('img_id')
             )
             new_photo_rate.save()
         else:
