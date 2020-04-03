@@ -243,10 +243,10 @@ class ProductPage(TemplateView):
                 image.target_good = good
                 image.save()
                 images = Picture.objects.filter(target_good=good)
-                self.context['images'] = images
+                self.context['images'] = images[1:]
             else:
                 images = Picture.objects.filter(target_good=good)
-                self.context['images'] = images
+                self.context['images'] = images[1:]
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
