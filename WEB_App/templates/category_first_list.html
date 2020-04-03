@@ -30,9 +30,53 @@
             </button>
 
             <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
-                    data-target="#Modal{{category.id}}">
+                    data-target="#ModalChild{{category.id}}">
                 Добавить дочернюю категорию
             </button>
+            <div class="modal fade" id="ModalChild{{category.id}}" tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="Title" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="Title">Добавить дочернюю категорию</h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <p class="text-center">Создать категорию</p>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="type" value="create_category">
+
+                                        <label for="category_name">Наименование: </label>
+                                        <input id="category_name" type="text"
+                                               name="name" value="{{good.name}}"
+                                               placeholder="Название" class="row mt-2"
+                                               required>
+
+                                        <label for="url_name">Хвост ссылки: </label>
+                                        <input id="url_name" type="text" name="url_name"
+                                               placeholder="URL" class="row mt-2"
+                                               required>
+                                        <input name="parent" type="hidden" value="{{category.id}}">
+                                        <input name="image" type="file" accept="image/*"
+                                               class="row mt-3">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить
+                                    изменения
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
                     data-target="#good{{category.id}}">
                 Добавить товар в категорию
@@ -165,56 +209,60 @@
                 </div>
             </div>
         </div>
-
-            <div class="modal fade" id="good{{category.id}}" tabindex="-1"
-                 role="dialog"
-                 aria-labelledby="Modal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Modal">Добавить новый продукт в категорию</h5>
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <p>Создать название продукта</p>
-                                <input type="text" placeholder="Название нового продукта">
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="add_good">
+                <input type="hidden" name="category_id" value="{{category.id}}">
+                <div class="modal fade" id="good{{category.id}}" tabindex="-1"
+                     role="dialog"
+                     aria-labelledby="Modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Modal">Добавить новый продукт в категорию</h5>
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            <div>
-                                <p>Фото нового продукта</p>
-                                <input type="file" accept="image/*">
+                            <div class="modal-body">
+                                <div>
+                                    <p>Создать название продукта</p>
+                                    <input type="text" placeholder="Название нового продукта" name="new_name">
+                                </div>
+                                <div>
+                                    <p>Фото нового продукта</p>
+                                    <input type="file" accept="image/*" name="image">
+                                </div>
+                                <div>
+                                    <p>Добавление баркода нового продукта</p>
+                                    <input type="text" placeholder="Баркод" name="barcode">
+                                </div>
+                                <div>
+                                    <p>Добавление оценки росконтроля</p>
+                                    <input type="number" placeholder="Оценка" name="points_rusControl">
+                                </div>
+<!--                                <div>-->
+<!--                                    <p>Добавление плюсов нового продукта</p>-->
+<!--                                    <input type="text" placeholder="Плюс">-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <p>Добавление минусов нового продукта</p>-->
+<!--                                    <input type="text" placeholder="Минус">-->
+<!--                                </div>-->
                             </div>
-                            <div>
-                                <p>Добавление баркода нового продукта</p>
-                                <input type="text" placeholder="Баркод">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="submit" class="btn btn-outline-primary">Сохранить
+                                    изменения
+                                </button>
                             </div>
-                            <div>
-                                <p>Добавление оценки росконтроля</p>
-                                <input type="number" placeholder="Оценка">
-                            </div>
-                            <div>
-                                <p>Добавление плюсов нового продукта</p>
-                                <input type="text" placeholder="Плюс">
-                            </div>
-                            <div>
-                                <p>Добавление минусов нового продукта</p>
-                                <input type="text" placeholder="Минус">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">Close
-                            </button>
-                            <button type="submit" class="btn btn-outline-primary">Сохранить
-                                изменения
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             {% endif %}
     </div>
 </div>
