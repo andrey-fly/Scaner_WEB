@@ -13,9 +13,8 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN, API_HEADERS
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate, \
-    PictureOnModeration
+from WEB_App.forms import *
+from WEB_App.models import *
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -276,7 +275,8 @@ class ProductPage(View):
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
         try:
-            if request.POST.get('comment'):
+            rate_form = RatePhotoForm(request.POST)
+        if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
                     user=User.objects.get(id=request.user.id),
@@ -297,7 +297,6 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
-
             if images and target_good:
                 for image in images:
                     PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
@@ -312,6 +311,12 @@ class ProductPage(View):
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
+        elif rate_form.is_valid():
+            new_photo_rate = RatePhoto(
+                rate=rate_form.POST.get('rating_photo'),
+                parent=Picture.objects.get(id)
+            )
+            new_photo_rate.save()
         except Exception:
             return render(request, '500.html', context)
 
