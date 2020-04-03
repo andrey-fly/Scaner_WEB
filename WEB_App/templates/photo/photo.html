@@ -10,10 +10,87 @@
             display: none;
         }
     }
+
+
+.preloader {
+  /*фиксированное позиционирование*/
+  position: fixed;
+  /* координаты положения */
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  /* фоновый цвет элемента */
+  background: #e0e0e0;
+  /* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
+  z-index: 1001;
+}
+
+.preloader__row {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  margin-top: -35px;
+  margin-left: -35px;
+  text-align: center;
+  animation: preloader-rotate 2s infinite linear;
+}
+
+.preloader__item {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  background-color: #337ab7;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  animation: preloader-bounce 2s infinite ease-in-out;
+}
+
+.preloader__item:last-child {
+  top: auto;
+  bottom: 0;
+  animation-delay: -1s;
+}
+
+@keyframes preloader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes preloader-bounce {
+
+  0%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+.loaded_hiding .preloader {
+  transition: 0.3s opacity;
+  opacity: 0;
+}
+
+.loaded .preloader {
+  display: none;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
 {% endblock %}
 {% block content %}
+<div class="preloader" style="display: none">
+  <div class="preloader__row">
+    <div class="preloader__item"></div>
+    <div class="preloader__item"></div>
+  </div>
+</div>
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -23,14 +100,14 @@
         <p class="description-text-in-main-content-frame">
             Мы расскажем вам о нем всё, что знаем
         </p>
-        <input id="file-input-for-label" type="file" accept="image/*" multiple onchange="func_submit_btn();">
+        <input class="files" id="file-input-for-label" type="file" accept="image/*" multiple onchange="func_submit_btn();">
         <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none; margin: 0 auto">
             <span class="text-in-photo-load-button">
                 Загрузить фото
             </span>
         </label>
     </div>
-    <input id="file-input-for-frame" type="file" accept="image/*" multiple onchange="func_submit_area();">
+    <input class="files" id="file-input-for-frame" type="file" accept="image/*" multiple onchange="func_submit_area();">
     <label for="file-input-for-frame" id="photo-frame-in-content-group">
         <label for="file-input-for-frame">
             <p class="main-text-in-photo-frame">
@@ -46,7 +123,8 @@
 <button></button>
 
 {{data}}
-{% endblock %} {% block extra_js %}
+{% endblock %}
+{% block extra_js %}
 <script> let csrftoken = '{{ csrf_token }}'; </script>
 <script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}
