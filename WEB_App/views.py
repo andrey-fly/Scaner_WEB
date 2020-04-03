@@ -253,7 +253,8 @@ class ProductPage(View):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
-                self.context['img'] = image.file.url
+                images = Picture.objects.filter(target_good=good)
+                self.context['images'] = images
             else:
                 images = Picture.objects.filter(target_good=good)
                 self.context['images'] = images
@@ -314,7 +315,7 @@ class ProductPage(View):
                 print(exc.args)
             return render(request, self.template_name, context)
         elif request.POST.get('rating'):
-            new_photo_rate = RatePhotoForm(
+            new_photo_rate = RatePhoto(
                 rate=request.POST.get('rating'),
                 parent=request.POST.get('img_id')
             )
