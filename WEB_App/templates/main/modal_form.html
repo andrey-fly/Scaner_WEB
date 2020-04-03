@@ -1,3 +1,4 @@
+{% load socialaccount %}
 <div class="modal mt-5" id="signmodal">
     <div class="container-modal" id="container">
         <div class="form-container sign-up-container">
@@ -5,8 +6,8 @@
                 {% csrf_token %}
                 <h1 class="mb-2">Создание аккаунта</h1>
                 <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="{% provider_login_url 'vk' method='oauth2' %}" class="social"><i class="fab fa-vk"></i></a>
+                    <a href="{% provider_login_url 'google' method='oauth2' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <!-- <span>или используйте вашу почту для регистрации</span>  -->
