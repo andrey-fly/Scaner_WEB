@@ -63,7 +63,7 @@ class ChangeInfoForm(forms.Form):
                                        'placeholder': 'Ваше имя',
                                        'id': 'name'}
                                )
-    )
+                               )
     email = forms.EmailField(label='Электронная почта',
                              required=False,
                              widget=forms.EmailInput(
@@ -71,7 +71,7 @@ class ChangeInfoForm(forms.Form):
                                      'placeholder': 'Email',
                                      'id': 'email'}
                              )
-    )
+                             )
     old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput, required=False, initial=None)
     new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput, min_length=8, required=False,
                                    initial=None)
@@ -107,7 +107,11 @@ class FileForm(forms.Form):
 # class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
-#         fields = ('text', )
+#         fields = ('text',)
 #         widgets = {
 #             'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'width: auto !important; border-radius: 8px'}),
 #         }
+
+
+class RatePhotoForm(forms.Form):
+    rate = forms.ChoiceField(widget=forms.Select(), required=True)

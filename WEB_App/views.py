@@ -13,14 +13,15 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN, API_HEADERS
-from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate
+from WEB_App.forms import *
+from WEB_App.models import *
 
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django.http import HttpResponse
+
 
 
 def signup(request):
@@ -242,6 +243,15 @@ class ProductPage(View):
         context = {}
         try:
             context['name'] = good
+            image_id = request.GET.get('image')
+            if image_id:
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                context['img'] = image.file.url
+            else:
+                image = Picture.objects.filter(target_good=good)
+                context['img'] = image[0].file.url
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
@@ -277,6 +287,7 @@ class ProductPage(View):
         try:
             # comment_form = CommentForm(request.POST)
             # if comment_form.is_valid():
+            rate_form = RatePhotoForm(request.POST)
             if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
@@ -298,6 +309,12 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
+            if rate_form.is_valid():
+                new_photo_rate = RatePhoto(
+                    rate=rate_form.POST.get('rating_photo'),
+                    parent=Picture.objects.get(id)
+                )
+                new_photo_rate.save()
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
