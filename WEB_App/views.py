@@ -271,7 +271,8 @@ class ProductPage(View):
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
-        except Exception:
+        except Exception as exc:
+            print(exc)
             return render(request, '404.html', context)
 
     def post(self, request, good):
