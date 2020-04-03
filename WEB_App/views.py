@@ -168,7 +168,7 @@ def index(request):
                 new_user = reg_form.save(commit=False)
                 new_user.set_password(reg_form.cleaned_data['password2'])
                 new_user.save()
-                login(request, new_user)
+                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
         if request.POST.get('status') == 'SignIn':
             identification = request.POST.get('identification')
             password = request.POST.get('password')
@@ -183,7 +183,7 @@ def index(request):
             elif user.check_password(password) is False:
                 errors.append('Неправильный пароль!')
             else:
-                login(request, user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         if request.FILES:
             if not request.user.is_authenticated:
                 context['show_modal'] = 'true'

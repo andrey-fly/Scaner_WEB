@@ -6,9 +6,9 @@
                 {% csrf_token %}
                 <h1 class="mb-2">Создание аккаунта</h1>
                 <div class="social-container">
-                    <a href="{% provider_login_url 'vk' method='oauth2' %}" class="social"><i class="fab fa-vk"></i></a>
-                    <a href="{% provider_login_url 'google' method='oauth2' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="{% provider_login_url 'vk' %}" class="social"><i class="fab fa-vk"></i></a>
+                    <a href="{% provider_login_url 'google' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="{% provider_login_url 'facebook' %}" class="social"><i class="fab fa-facebook-f"></i></a>
                 </div>
                 <!-- <span>или используйте вашу почту для регистрации</span>  -->
                 {% if reg_form.errors %} {% if reg_form.errors.password2 %}
@@ -34,9 +34,9 @@
                 {% csrf_token %}
                 <h1>Войти</h1>
                 <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="{% provider_login_url 'vk' %}" class="social"><i class="fab fa-vk"></i></a>
+                    <a href="{% provider_login_url 'google' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="{% provider_login_url 'facebook' %}" class="social"><i class="fab fa-facebook-f"></i></a>
                 </div>
 <!--                <span>или использовать ваш аккаунт</span> -->
                 {% for error in login_errors %}

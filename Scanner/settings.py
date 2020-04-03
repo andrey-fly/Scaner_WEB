@@ -46,9 +46,13 @@ INSTALLED_APPS = [
     # include the providers you want to enable:
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 SITE_ID = 1
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+SOCIALACCOUNT_QUERY_EMAIL = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
