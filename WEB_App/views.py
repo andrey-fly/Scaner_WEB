@@ -253,20 +253,22 @@ class ProductPage(View):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
-                img = image.file.url
-            context['img'] = img
-            context['img_id'] = request.GET.get('image')
-            context['positives'] = response['positives']
-            context['negatives'] = response['negatives']
-            context['points'] = response['points']
-            context['categories'] = response['categories']
-            context['comments'] = Comment.objects.filter(good=good)
-            try:
-                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-            except Exception as exc:
-                print(exc.args)
-            return render(request, self.template_name, context)
+                self.context['img'] = image.file.url
+            else:
+                images = Picture.objects.filter(target_good=good)
+                self.context['images'] = images
+
+            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
+
+            self.context['comment_form'] = CommentForm()
+            self.context['positives'] = response['positives']
+            self.context['negatives'] = response['negatives']
+            self.context['points'] = response['points']
+            self.context['categories'] = response['categories']
+            self.context['comments'] = Comment.objects.filter(good=good)
+            return render(request, self.template_name, self.context)
         except Exception:
             return render(request, '404.html', context)
 
@@ -311,10 +313,10 @@ class ProductPage(View):
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
-        elif rate_form.is_valid():
-            new_photo_rate = RatePhoto(
-                rate=rate_form.POST.get('rating_photo'),
-                parent=Picture.objects.get(id)
+        elif request.POST.get('rating'):
+            new_photo_rate = RatePhotoForm(
+                rate=request.POST.get('rating'),
+                parent=request.POST.get('img_id')
             )
             new_photo_rate.save()
         except Exception:
