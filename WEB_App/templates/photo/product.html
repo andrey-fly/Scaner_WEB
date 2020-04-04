@@ -32,6 +32,7 @@
             <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
                data-target="#exampleModal">Загрузить новое фото</a>
         </label>
+
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 950px">
@@ -58,38 +59,28 @@
                         </div>
                         {% endif %}
                         <form id="content-group" method="POST" action="" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="main-content-frame-in-content-group">
-                                <p class="header-text-in-main-content-frame">
-                                    Добавьте вашу фотографию товара
-                                </p>
-                                <input id="file-input-for-label" type="file" accept="image/*" multiple
-                                       onchange="func_submit_btn();">
-                                <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label"
-                                       style="border: none; margin: 0 auto;">
-                                        <span class="text-in-photo-load-button">
-                                            Загрузить фото
-                                        </span>
-                                </label>
+                            <div>
+                                {% csrf_token %}
+                                <input type="hidden" name="good_name" value="{{name}}">
+                                <div class="main-content-frame-in-content-group">
+                                    <p class="header-text-in-main-content-frame">
+                                        Добавьте вашу фотографию товара
+                                    </p>
+                                    <input id="file-input-for-label" type="file" accept="image/*" multiple
+                                           onchange="func_submit_btn();" name="image">
+                                    <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label"
+                                           style="border: none; margin: 0 auto;">
+                                            <span class="text-in-photo-load-button">
+                                                Загрузить фото
+                                            </span>
+                                    </label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-outline-primary">Отправить на модерацию</button>
+                                </div>
                             </div>
-                            <input id="file-input-for-frame" type="file" accept="image/*" multiple
-                                   onchange="func_submit_area();">
-                            <label for="file-input-for-frame" id="photo-frame-in-content-group">
-                                <label for="file-input-for-frame">
-                                    <p class="main-text-in-photo-frame">
-                                        Можно перетащить сюда фотографию в формате jpeg
-                                    </p>
-                                    <p class="description-text-in-photo-frame">
-                                        Мы добавим вашу фотографию к списку других фото этого продукта и пользователи
-                                        смогут оценить ваши умения фотографа
-                                    </p>
-                                </label>
-                            </label>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-outline-primary">Отправить на модерацию</button>
                     </div>
                 </div>
             </div>
@@ -264,6 +255,4 @@ else
 {% endif %}
 
 
-</script>
-<!--    <script src="{% static 'js/product.js' %}"></script>-->
 {% endblock %}

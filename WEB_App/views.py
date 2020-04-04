@@ -14,7 +14,8 @@ from django.views.generic.base import View
 
 from Scanner.settings import API_TOKEN, API_HEADERS
 from WEB_App.forms import UserRegistrationForm, RecoveryPass, ChangeInfoForm, FileForm
-from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate
+from WEB_App.models import Recovery, UserPhoto, GoodsOnModeration, Picture, Comment, ChildrenComment, Rate, \
+    PictureOnModeration
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -240,6 +241,7 @@ class ProductPage(View):
 
     def get(self, request, good):
         context = {}
+
         try:
             context['name'] = good
 
@@ -253,11 +255,8 @@ class ProductPage(View):
                 image.target_good = good
                 image.save()
                 img = image.file.url
-
             context['img'] = img
-            print(request.GET.get('image'))
             context['img_id'] = request.GET.get('image')
-
             context['positives'] = response['positives']
             context['negatives'] = response['negatives']
             context['points'] = response['points']
@@ -274,9 +273,8 @@ class ProductPage(View):
 
     def post(self, request, good):
         context = {}
+        images = request.FILES.getlist('image')
         try:
-            # comment_form = CommentForm(request.POST)
-            # if comment_form.is_valid():
             if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
@@ -298,6 +296,15 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
+
+            if images:
+                target_good = request.POST.get('good_name')
+                for image in images:
+                    PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
+                context['status'] = 'ok'
+            else:
+                context['status'] = 'error'
+
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):

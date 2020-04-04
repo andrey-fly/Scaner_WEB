@@ -39,6 +39,20 @@ class Picture(models.Model):
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
 
 
+class PictureOnModeration(models.Model):
+    image = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos', null=True)
+    target_good = models.TextField(verbose_name='Товар', null=True)
+    STATUSES = [
+        (1, 'Принято на модерацию'),
+        (2, 'Одобрено'),
+        (3, 'Отклонено'),
+    ]
+    status = models.CharField(verbose_name='Статус', max_length=25,
+                              choices=STATUSES, default='Принято на модерацию')
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+
 class Comment(models.Model):
     text = models.TextField(verbose_name='Содержимое комментария', null=False)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
