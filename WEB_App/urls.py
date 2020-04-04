@@ -29,6 +29,7 @@ urlpatterns = [
     path('add_product/', login_required(AddProductPage.as_view())),
     path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
     path('admin/accept/', AcceptPage.as_view()),
+    path('admin/accept_photo/', AcceptPhotoPage.as_view()),
     path('admin/urls/', TemplateView.as_view(template_name='admin/links.html')),
     path('profile/', profile),
     path('change_info/', change_info),

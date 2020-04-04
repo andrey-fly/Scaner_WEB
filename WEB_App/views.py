@@ -274,6 +274,7 @@ class ProductPage(View):
     def post(self, request, good):
         context = {}
         images = request.FILES.getlist('image')
+        target_good = request.POST.get('good_name')
         try:
             if request.POST.get('comment'):
                 new_comment = Comment(
@@ -297,8 +298,7 @@ class ProductPage(View):
                 )
                 new_rating.save()
 
-            if images:
-                target_good = request.POST.get('good_name')
+            if images and target_good:
                 for image in images:
                     PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
                 context['status'] = 'ok'
@@ -588,3 +588,39 @@ class CategoryFirstPageView(TemplateView):
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
                                              headers={'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
+
+
+class AcceptPhotoPage(PermissionRequiredMixin, View):
+    template_name = 'admin/photo_accept.html'
+    permission_required = 'WEB_App.view'
+    login_url = '/login/'
+
+    def get(self, request):
+        context = self.get_context()
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        picture_id = request.POST.get('picture_id')
+        action = request.POST.get('action')
+        try:
+            picture_object = PictureOnModeration.objects.get(id=picture_id)
+            if action == 'deny':
+                picture_object.status = 'Отклонено'
+                picture_object.save()
+            elif action == 'accept':
+                picture_object.status = 'Одобрено'
+                picture_object.save()
+                new_picture = Picture(file=picture_object.image,
+                        user=picture_object.user,
+                        target_good=picture_object.target_good
+                        )
+                new_picture.save()
+        except Exception:
+            return render(request, '500.html')
+
+        context = self.get_context()
+        return render(request, self.template_name, context)
+
+    def get_context(self):
+        context = {'photo_data': PictureOnModeration.objects.filter(status='Принято на модерацию')}
+        return context
