@@ -262,25 +262,19 @@ class ProductPage(View):
 
         try:
             context['name'] = good
-            image_id = request.GET.get('image')
-            if image_id:
-                image = Picture.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                images = Picture.objects.filter(target_good=good)
-                context['images'] = images[1:]
-            else:
-                images = Picture.objects.filter(target_good=good)
-                context['images'] = images[1:]
 
             response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
             img = response['image']
-
-            print(request.GET.get('image'))
+            if request.GET.get('image'):
+                image_id = request.GET.get('image')
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                img = image.file.url
+            context['img'] = img
             context['img_id'] = request.GET.get('image')
-
             context['positives'] = response['positives']
             context['negatives'] = response['negatives']
             context['points'] = response['points']
@@ -292,8 +286,7 @@ class ProductPage(View):
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
-        except Exception as exc:
-            print(exc)
+        except Exception:
             return render(request, '404.html', context)
 
     def post(self, request, good):
@@ -312,8 +305,6 @@ class ProductPage(View):
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
         try:
-            # comment_form = CommentForm(request.POST)
-            # if comment_form.is_valid():
             if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
@@ -335,12 +326,6 @@ class ProductPage(View):
                     good=good
                 )
                 new_rating.save()
-            if request.POST.get('rating'):
-                new_photo_rate = RatePhoto(
-                    rate=request.POST.get('rating'),
-                    parent=request.POST.get('img_id')
-                )
-                new_photo_rate.save()
             if images and target_good:
                 for image in images:
                     PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
@@ -348,6 +333,24 @@ class ProductPage(View):
             else:
                 context['status'] = 'error'
 
+            context['name'] = good
+
+            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
+            img = response['image']
+            if request.GET.get('image'):
+                image_id = request.GET.get('image')
+                image = Picture.objects.get(id=image_id)
+                image.target_good = good
+                image.save()
+                img = image.file.url
+            context['img'] = img
+            context['img_id'] = request.GET.get('image')
+            context['positives'] = response['positives']
+            context['negatives'] = response['negatives']
+            context['points'] = response['points']
+            context['categories'] = response['categories']
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):

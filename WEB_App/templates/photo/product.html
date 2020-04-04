@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %} {% load static %} {% block title %}
-<title>Продукт</title>
+<title>{{name}}</title>
 {% endblock %}
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
@@ -22,7 +22,7 @@
     <div id="content-block">
         <div id="photo-block-in-content-block">
             <span class='zoom' id='ex1'>
-              <img class="image" src='{{images.0.file.url}}' alt='Image not found'>
+              <img class="image" src='{{img}}' alt='Image not found'>
             </span>
         </div>
         <label id="photo-load-label-in-photo-block">
@@ -153,7 +153,7 @@
             {% if not rated %}
             <legend class="rating_caption"> Ваша оценка:</legend>
             <div class="rating_group">
-                <form action="/product/{{name}}/?image={{img_id}}" method="POST">
+                <form action="" method="POST">
                     {% csrf_token %}
                     <span class="my-rating-9"></span>
                     <span class="live-rating"></span>
