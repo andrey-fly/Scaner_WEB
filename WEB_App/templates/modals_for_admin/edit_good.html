@@ -1,0 +1,48 @@
+<button type="button" class="btn btn-outline-primary mt-2" data-toggle="modal"
+        data-target="#edit_good{{good.id}}">
+    Редактировать товар
+</button>
+
+<div class="modal fade" id="edit_good{{good.id}}" tabindex="-1" role="dialog"
+     aria-labelledby="edit_good" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_good">Редактировать товар</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input name="type" value="good" type="hidden">
+                <input name="action" value="change" type="hidden">
+                <input type="hidden" name="good_id" value="{{good.id}}">
+                <div class="modal-body">
+                    <div>
+                        <p>Поменять фото для товара</p>
+                        <input type="file" accept="image/*" name="image">
+                    </div>
+                    <div>
+                        <p>Поменять название товара</p>
+                        <input type="text" placeholder="Новое навзание для товара" value="{{good.name}}"
+                               name="new_name">
+                    </div>
+                    <div>
+                        <p>Поменять баркод товара</p>
+                        <input type="text" value="{{good.barcode}}" name="new_barcode">
+                    </div>
+                    <div>
+                        <p>Изменить рейтинг росконтроля</p>
+                        <input type="text" pattern="[0-9]{,3}" placeholder="Рейтинг росконтроля"
+                               value="{{good.points_rusControl}}" name="new_points">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

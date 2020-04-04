@@ -4,25 +4,96 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/star-rating-svg.css'%}">
-{% endblock %}
-{% block content %}
+<style>
+    @media only screen and (max-width: 980px) {
+        #photo-frame-in-content-group {
+            display: none;
+        }
+        #content-group {
+            width: auto;
+        }
+    }
+
+
+</style>
+{% endblock %} {% block content %}
 <div id="content-block">
     <div id="photo-block-in-content-block">
-<!--        <div class="zoom" id="mask-group-in-photo-block ex1">-->
-<!--            &lt;!&ndash;                <div id="background-figure-in-mask-group">&ndash;&gt;-->
-<!--            {% if img %}-->
-<!--            <img src="{{img}}" data-zoom-image="{{img}}" id="photo-in-mask-group zoom_01">-->
-<!--            {%else%}-->
-<!--            <h5 class="text-center p-5">Image not found</h5>-->
-<!--            {%endif%}-->
-<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--        </div>-->
-        <span class='zoom' id='ex1'>
-          <img src='{{img}}' alt='Image not found' style="max-width: 630px">
-        </span>
+        <div id="mask-group-in-photo-block">
+            <div id="background-figure-in-mask-group">
+                {% if img %}
+                <img src="{{img}}" id="photo-in-mask-group">
+                {%else%}
+                <h5 class="text-center p-5">Image not found</h5>
+                {%endif%}
+            </div>
+        </div>
         <label id="photo-load-label-in-photo-block">
-            Загрузить новое фото
+            <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
+               data-target="#exampleModal">Загрузить новое фото</a>
         </label>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document" style="max-width: 950px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Добавьте ваше фото</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% if status == 'ok' %}
+                        <div class="card">
+                            <p>Фотография успешно отправлена на модерацию</p>
+                            <p>Вы можете добавить ещё одно фото</p>
+                            <a class="btn btn-outline-primary" href="/">Или вернуться на главную страницу</a>
+                        </div>
+                        {% endif %}
+                        {% if status == 'error' %}
+                        <div class="card">
+                            <p style="color: darkred">При отправке на модерацию произошла ошибка</p>
+                            <p>Убедитесь в том, что вы отправили правильный файл и попробуйте снова</p>
+                            <a class="btn btn-outline-primary" href="/">Или вернитесь на главную страницу</a>
+                        </div>
+                        {% endif %}
+                        <form id="content-group" method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="main-content-frame-in-content-group">
+                                <p class="header-text-in-main-content-frame">
+                                    Добавьте вашу фотографию товара
+                                </p>
+                                <input id="file-input-for-label" type="file" accept="image/*" multiple
+                                       onchange="func_submit_btn();">
+                                <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label"
+                                       style="border: none; margin: 0 auto;">
+                                        <span class="text-in-photo-load-button">
+                                            Загрузить фото
+                                        </span>
+                                </label>
+                            </div>
+                            <input id="file-input-for-frame" type="file" accept="image/*" multiple
+                                   onchange="func_submit_area();">
+                            <label for="file-input-for-frame" id="photo-frame-in-content-group">
+                                <label for="file-input-for-frame">
+                                    <p class="main-text-in-photo-frame">
+                                        Можно перетащить сюда фотографию в формате jpeg
+                                    </p>
+                                    <p class="description-text-in-photo-frame">
+                                        Мы добавим вашу фотографию к списку других фото этого продукта и пользователи
+                                        смогут оценить ваши умения фотографа
+                                    </p>
+                                </label>
+                            </label>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-primary">Отправить на модерацию</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="info-block-in-content-block">
         <ol class="breadcrumb">
@@ -105,12 +176,13 @@
                     <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
                 </div>
                 {% endif %}
-                </div>
+            </div>
         </fieldset>
         <form action="/product/{{name}}/?image={{img_id}}" method="post">
             {% csrf_token %}
             <h1>Прокомментируйте:</h1>
-            <textarea id="example" name="comment" placeholder="Описание" required style="transition: height 0.2s;width: auto !important; border-radius: 8px"></textarea>
+            <textarea id="example" name="comment" placeholder="Описание" required
+                      style="transition: height 0.2s;width: auto !important; border-radius: 8px"></textarea>
             <div>
                 <input type="submit" class="btn btn-outline-primary btn-md"
                        name="status" value="Отправить"
@@ -138,7 +210,8 @@
                 {% csrf_token %}
                 <h1>Ответить:</h1>
                 <input type="hidden" value="{{comment.id}}" name="comment_id">
-                <textarea id="example" name="response-to-comment" placeholder="Описание" required style="transition: height 0.2s;width: auto !important;"></textarea>
+                <textarea id="example" name="response-to-comment" placeholder="Описание" required
+                          style="transition: height 0.2s;width: auto !important;"></textarea>
                 <div>
                     <input type="submit" class="btn btn-outline-primary btn-md"
                            name="status" value="Отправить"
@@ -189,6 +262,8 @@ if ({{rated}} <= 3.5)
 else
     $('#average').css('color', '#10c46a');
 {% endif %}
+
+
 </script>
 <!--    <script src="{% static 'js/product.js' %}"></script>-->
 {% endblock %}

@@ -1,0 +1,50 @@
+<button type="button" class="btn btn-outline-warning mt-2" data-toggle="modal" data-target="#edit_negatives{{good.id}}">
+    Редактировать минусы
+</button>
+<div class="modal fade" id="edit_negatives{{good.id}}" tabindex="-1" role="dialog"
+     aria-labelledby="edit_negatives" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_negatives">Редактировать минусы товара</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <p>Удалить минус товара</p>
+                        <select name="negative_id" class="form-control form-control-sm ml-1 mt-2 row">
+                            <option value="None" disabled selected>Выбрать</option>
+                            {% for negative in negatives %}
+                            {% if negative.good == good.id %}
+                            <option value="{{negative.id}}">{{negative.value}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input name="type" value="negative" type="hidden">
+                        <input type="hidden" name="good_id" value="{{good.id}}">
+                        <input name="action" value="delete_negative" type="hidden">
+                        <button class="btn btn-outline-danger" type="submit">Удалить</button>
+                    </form>
+                </div>
+                <div>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input name="type" value="negative" type="hidden">
+                        <input type="hidden" name="good_id" value="{{good.id}}">
+                        <p>Добавить минус товара</p>
+                        <input name="action" value="add_negative" type="hidden">
+                        <input type="text" placeholder="Добавить плюс товара" name="negative">
+                        <button class="btn btn-success" type="submit">Добавить</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
