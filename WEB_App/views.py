@@ -297,7 +297,18 @@ class ProductPage(View):
             return render(request, '404.html', context)
 
     def post(self, request, good):
-        context = {}
+        context = {'name': good, 'img_id': request.GET.get('image')}
+        image_id = request.GET.get('image')
+        if image_id:
+            image = Picture.objects.get(id=image_id)
+            image.target_good = good
+            image.save()
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+        else:
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
         try:
