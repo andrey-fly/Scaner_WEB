@@ -70,18 +70,6 @@ class ChildrenComment(models.Model):
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
 
 
-class RatePhoto(models.Model):
-    RATE = ((1, _("Ужасно")),
-            (2, _("Плохо")),
-            (3, _("Нормально")),
-            (4, _("Хорошо")),
-            (5, _("Отлично"))
-            )
-    rate = models.IntegerField(choices=RATE,
-                               default=1)
-    parent = models.ForeignKey(Picture, verbose_name='Фото', null=False, on_delete=models.CASCADE)
-
-
 class Rate(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     rating = models.FloatField(verbose_name='Рейтинг')
