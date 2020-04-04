@@ -104,8 +104,10 @@
 
 .og-fullimg img {
 	display: inline-block;
-	max-height: 100%;
-	max-width: 100%;
+	/* max-height: 100%; */
+	max-width: 600px;
+	height: auto;
+	/* max-width: 100%; */
 }
 
 .og-details h3 {

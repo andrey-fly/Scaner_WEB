@@ -303,7 +303,6 @@ class ProductPage(View):
         try:
             # comment_form = CommentForm(request.POST)
             # if comment_form.is_valid():
-            rate_form = RatePhotoForm(request.POST)
             if request.POST.get('comment'):
                 new_comment = Comment(
                     text=request.POST.get('comment'),
@@ -345,12 +344,6 @@ class ProductPage(View):
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
-        elif request.POST.get('rating'):
-            new_photo_rate = RatePhoto(
-                rate=request.POST.get('rating'),
-                parent=request.POST.get('img_id')
-            )
-            new_photo_rate.save()
         except Exception:
             return render(request, '500.html', context)
 
