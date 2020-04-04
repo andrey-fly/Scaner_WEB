@@ -30,7 +30,7 @@ def signup(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password2'])
             new_user.save()
-            login(request, new_user)
+            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
             return render(request, 'main/index.html', {'username': user_form.data['username']})
     else:
         user_form = UserRegistrationForm()
@@ -78,7 +78,7 @@ def recovery_password(request):
                 target_user = User.objects.get(id=target_user)
                 target_user.set_password(new_pass)
                 target_user.save()
-                login(request, target_user)
+                login(request, target_user, backend='django.contrib.auth.backends.ModelBackend')
                 data_for_delete = Recovery.objects.filter(target_user=target_user)
                 for item in data_for_delete:
                     item.delete()
@@ -141,7 +141,7 @@ def change_info(request):
                 else:
                     current_user.set_password('{}'.format(form.data['new_password2']))
             current_user.save()
-            login(request, current_user)
+            login(request, current_user, backend='django.contrib.auth.backends.ModelBackend')
         else:
             return render(request, 'profile/change_info.html', context)
         if photo.is_valid():
