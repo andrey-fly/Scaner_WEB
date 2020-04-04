@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext as _
 
+
 class Recovery(models.Model):
     target_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     from_ip = models.CharField(max_length=15, null=False, default=None)

@@ -235,6 +235,25 @@ class PhotoPage(TemplateView):
             return redirect(to='/add_product/?image={}'.format(picture.id))
 
 
+class GalleryPage(View):
+    template_name = 'photo/gallery.html'
+
+    def get(self, request, good):
+        context = {'name': good}
+        image_id = request.GET.get('image')
+        if image_id:
+            image = Picture.objects.get(id=image_id)
+            image.target_good = good
+            image.save()
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+        else:
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+
+        return render(request, self.template_name, context)
+
+
 class ProductPage(View):
     template_name = 'photo/product.html'
 
@@ -257,7 +276,6 @@ class ProductPage(View):
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
 
-            print(request.GET.get('image'))
             context['img_id'] = request.GET.get('image')
 
             context['positives'] = response['positives']
