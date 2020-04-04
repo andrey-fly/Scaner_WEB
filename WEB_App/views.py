@@ -188,6 +188,7 @@ def index(request):
             if not request.user.is_authenticated:
                 context['show_modal'] = 'true'
             else:
+                #TODO: проверять, есть ли уже такая картинка перед загрузкой
                 picture = Picture(
                     user=request.user,
                     file=request.FILES['file'],
@@ -195,13 +196,16 @@ def index(request):
                 picture.save()
 
                 response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                        files={'file': picture.file},
+                                        files={'file': request.FILES['file']},
                                         params={'user': request.user.id,
                                                 'platform': 'web'},
                                         headers={'Authorization': '{}'.format(API_TOKEN)}
                                         ).json()
 
-                if response['status'] == 'ok':
+                # TODO: Перенести сохранение картинок в api
+
+
+                if response['status'] == 'ok': # TODO: добавить статус "без баркода" и перенаправлять пользователя на другую страницу, где ему будет предложено загрузить еще одну фотографию ( не забудьте в контесте хранить исходную первую фотоку так же добавлять ее к продукту )
                     return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
                 else:
                     return redirect(to='/add_product/?image={}'.format(picture.id))
