@@ -26,6 +26,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 72px 0px;
+    flex-flow: column;
 }
 
 /* ==================
@@ -106,7 +107,7 @@ body {
     top: 72px;
 
     flex: none;
-    order: 1;
+    /* order: 1; */
     align-self: flex-start;
 }
 
