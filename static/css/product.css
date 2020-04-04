@@ -95,10 +95,21 @@ body {
 /* ================
     Info block
    ================ */
+.image {
+    max-width: 630px;
+}
+
+
+@media only screen and (max-width: 650px) {
+    .image {
+        max-width: 360px;
+    }
+}
 
 #info-block-in-content-block {
     display: flex;
     flex-direction: column;
+    margin-top: 72px;
 
     position: static;
     width: 700px;
