@@ -120,11 +120,19 @@ main{
     flex: 1;
 }
 
+@media screen only and (max-width: 750px) {
+    img {
+        max-width: 350px;
+    }
+}
+
+
 img {
     border-style: none;
     display: inline-block;
     max-width: 100%;
     height: auto;
+    width: 100%;
     max-width: 720px;
     max-height: 720px;
 }
