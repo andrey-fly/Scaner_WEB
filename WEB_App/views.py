@@ -235,6 +235,25 @@ class PhotoPage(TemplateView):
             return redirect(to='/add_product/?image={}'.format(picture.id))
 
 
+class GalleryPage(View):
+    template_name = 'photo/gallery.html'
+
+    def get(self, request, good):
+        context = {'name': good}
+        image_id = request.GET.get('image')
+        if image_id:
+            image = Picture.objects.get(id=image_id)
+            image.target_good = good
+            image.save()
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+        else:
+            images = Picture.objects.filter(target_good=good)
+            context['images'] = images[1:]
+
+        return render(request, self.template_name, context)
+
+
 class ProductPage(View):
     template_name = 'photo/product.html'
 
@@ -258,30 +277,21 @@ class ProductPage(View):
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
             img = response['image']
-            if request.GET.get('image'):
-                image_id = request.GET.get('image')
-                image = Picture.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                images = Picture.objects.filter(target_good=good)
-                self.context['images'] = images[1:]
-            else:
-                images = Picture.objects.filter(target_good=good)
-                self.context['images'] = images[1:]
 
             print(request.GET.get('image'))
             context['img_id'] = request.GET.get('image')
-            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}
-                                    ).json()
 
-            self.context['comment_form'] = CommentForm()
-            self.context['positives'] = response['positives']
-            self.context['negatives'] = response['negatives']
-            self.context['points'] = response['points']
-            self.context['categories'] = response['categories']
-            self.context['comments'] = Comment.objects.filter(good=good)
-            return render(request, self.template_name, self.context)
+            context['positives'] = response['positives']
+            context['negatives'] = response['negatives']
+            context['points'] = response['points']
+            context['categories'] = response['categories']
+            context['comments'] = Comment.objects.filter(good=good)
+            try:
+                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+            except Exception as exc:
+                print(exc.args)
+            return render(request, self.template_name, context)
         except Exception as exc:
             print(exc)
             return render(request, '404.html', context)
