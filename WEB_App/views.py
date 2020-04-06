@@ -187,6 +187,21 @@ def index(request):
         if request.FILES:
             if not request.user.is_authenticated:
                 context['show_modal'] = 'true'
+                temporary = NotAuthUser(
+                    file=request.FILES['file']
+                )
+                temporary.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': temporary.file},
+                                        params={'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], temporary.id))
+                else:
+                    print('redirect')
+                    return redirect(to='add_user/?image={}'.format(temporary.id))
             else:
                 picture = Picture(
                     user=request.user,
@@ -210,6 +225,39 @@ def index(request):
     context['login_errors'] = errors
 
     return render(request, 'main/index.html', context)
+
+
+class AddUser(View):
+    template_name = 'registration/add_user.html'
+
+    def get(self, request):
+        context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
+                   'user_form': UserRegistrationForm, 'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        reg_form = UserRegistrationForm(request.POST)
+        if reg_form.is_valid():
+            new_user = reg_form.save(commit=False)
+            new_user.set_password(reg_form.cleaned_data['password2'])
+            new_user.save()
+            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+            good = GoodsOnModeration(
+                name=request.POST.get('name'),
+                image=NotAuthUser.objects.get(id=request.GET.get('image')).file,
+                user=new_user
+            )
+            response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
+                                    files={'file': good.image.file},
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
+
+            if response['status'] == 'ok':
+                good.barcode = response['barcode']
+            good.save()
+        return redirect('/thanks/')
+        # return render(request, self.template_name, context)
 
 
 class PhotoPage(TemplateView):

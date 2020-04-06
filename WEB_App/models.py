@@ -76,3 +76,8 @@ class Rate(models.Model):
     rating = models.FloatField(verbose_name='Рейтинг')
     good = models.TextField(verbose_name='Товар')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+
+
+class NotAuthUser(models.Model):
+    file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
