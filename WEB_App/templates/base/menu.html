@@ -32,8 +32,12 @@
                         </li>
                         {% if not user.is_authenticated %}
                         <li class="nav-item float-right">
-                            <a class="nav-link" type="button" id="modal_btn" data-toggle="modal"
-                               data-target="#signmodal">
+                            {% if page == 'main' %}
+                                <a class="nav-link" type="button" id="modal_btn" data-toggle="modal"
+                                   data-target="#signmodal">
+                            {% else %}
+                                <a class="nav-link" type="button" href="/login/">
+                            {% endif %}
                                 <i class="fas fa-user"></i>
                                 <span class="i-text">Вход</span>
                             </a>

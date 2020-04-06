@@ -22,7 +22,7 @@ from WEB_App.views import *
 
 urlpatterns = [
     path('', index),
-    path('registration/', signup),
+    path('login/', sign_in),
     path('recovery_password/', recovery_password),
     path('photo/', PhotoPage.as_view(template_name='photo/photo.html')),
     path('product/<str:good>/', ProductPage.as_view()),

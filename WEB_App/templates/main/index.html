@@ -148,7 +148,12 @@
 
 {% if show_modal %}
 <script>
-    $('#signmodal').show()
+if (window.innerWidth < 780) {
+    $('#signmodal_wrap').show()
+    }
+else {
+    $('#signmodal_standard').show()
+}
 </script>
 {% endif %}
 <script>

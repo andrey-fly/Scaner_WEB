@@ -23,18 +23,39 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse
 
 
-def signup(request):
+def sign_in(request):
+    context = {}
+    reg_form = UserRegistrationForm()
+    errors = []
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password2'])
-            new_user.save()
-            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, 'main/index.html', {'username': user_form.data['username']})
-    else:
-        user_form = UserRegistrationForm()
-    return render(request, 'registration/registration.html', {'user_form': user_form})
+        if request.POST.get('status') == 'SignUp':
+            reg_form = UserRegistrationForm(request.POST)
+            if reg_form.is_valid():
+                new_user = reg_form.save(commit=False)
+                new_user.set_password(reg_form.cleaned_data['password2'])
+                new_user.save()
+                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingUp')
+                return redirect('/')
+        if request.POST.get('status') == 'SignIn':
+            identification = request.POST.get('identification')
+            password = request.POST.get('password')
+            user = None
+            if User.objects.filter(username=identification):
+                user = User.objects.get(username=identification)
+            elif User.objects.filter(email=identification):
+                user = User.objects.get(email=identification)
+            if user is None:
+                errors.append('Пользователь не найден!')
+            elif user.check_password(password) is False:
+                errors.append('Неправильный пароль!')
+            else:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingIn')
+                return redirect('/')
+    context['reg_form'] = reg_form
+    context['login_errors'] = errors
+    return render(request, 'registration/login.html', context)
 
 
 def recovery_password(request):
@@ -158,7 +179,7 @@ def change_info(request):
 
 
 def index(request):
-    context = {'data': datetime.now()}
+    context = {'data': datetime.now(), 'page': 'main'}
     reg_form = UserRegistrationForm()
     errors = []
     if request.method == 'POST':
