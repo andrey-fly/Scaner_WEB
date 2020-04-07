@@ -342,6 +342,12 @@ class ProductPage(View):
                 image.target_good = good
                 image.save()
                 img = image.file.url
+                images = Picture.objects.filter(target_good=good)
+                context['images'] = images
+            else:
+                images = Picture.objects.filter(target_good=good)
+                context['images'] = images
+            print(context['images'])
             context['img'] = img
             context['img_id'] = request.GET.get('image')
             context['positives'] = response['positives']
@@ -528,6 +534,7 @@ class CategoryView(TemplateView):
             context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                                '{}'.format(context['category']),
                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            print(context['children'])
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
