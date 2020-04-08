@@ -2,71 +2,68 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="border-color: white">
     <div class="container">
         <div class="logo">
-            <a class="navbar-brand" href="#"><img src="/static/pics/logo_and_text.svg" title="logo"/></a></div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#"></a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <img src="/static/img/menu.png" title="menu"/>
         </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <nav class="top-nav">
-                    <ul class="navbar-nav top-nav">
-                        {% if request.user.is_superuser %}
-                        <li class="nav-item float-right">
-                            <a href="/admin/accept/">
-                                <i class="fas fa-home"></i>
-                                <span class="i-text">Админ-панель</span>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <nav class="top-nav">
+                <ul class="navbar-nav top-nav">
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="/admin/accept/">
+                            <i class="fas fa-home"></i>
+                            <span class="i-text">Админ-панель</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i>
+                            <span class="i-text">Главная</span>
+                        </a>
+                    </li>
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="/category/">
+                            <i class="fas fa-home"></i>
+                            <span class="i-text">Товары</span>
+                        </a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item float-right">
+                        <a class="nav-link" type="button" id="modal_btn" data-toggle="modal" data-target="#signmodal">
+                            <i class="fas fa-user"></i>
+                            <span class="i-text">Вход</span>
+                        </a>
+                    </li>
+                    {% endif %} {% if user.is_authenticated %}
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="/photo">
+                            <i class="fas fa-search"></i>
+                            <span class="i-text">Найдите товар</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span class="i-text">{{user.username}}</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/profile" style="text-align: left;">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="i-text">Профиль</span>
                             </a>
-                        </li>
-                        {% endif %}
-                        <li class="nav-item float-right">
-                            <a href="/">
-                                <i class="fas fa-home"></i>
-                                <span class="i-text">Главная</span>
+                            <a class="dropdown-item" href="/logout" style="text-align: left;">
+                                <i class="fas fa-user-times"></i>
+                                <span class="i-text">Выйти</span>
                             </a>
-                        </li>
-                        <li class="nav-item float-right">
-                            <a href="/category/">
-                                <i class="fas fa-home"></i>
-                                <span class="i-text">Товары</span>
-                            </a>
-                        </li>
-                        {% if not user.is_authenticated %}
-                        <li class="nav-item float-right">
-                            <a class="nav-link" type="button" id="modal_btn" data-toggle="modal"
-                               data-target="#signmodal">
-                                <i class="fas fa-user"></i>
-                                <span class="i-text">Вход</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <li class="nav-item float-right">
-                            <a class="nav-link" href="/photo">
-                                <i class="fas fa-search"></i>
-                                <span class="i-text">Найдите товар</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i>
-                                <span class="i-text">{{user.username}}</span>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="/profile" style="text-align: left;">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span class="i-text">Профиль</span>
-                                </a>
-                                <a class="dropdown-item" href="/logout" style="text-align: left;">
-                                    <i class="fas fa-user-times"></i>
-                                    <span class="i-text">Выйти</span>
-                                </a>
-                            </div>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
+    </div>
     </div>
 </nav>

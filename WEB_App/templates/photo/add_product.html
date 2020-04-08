@@ -1,34 +1,26 @@
 {% extends 'base/base.html' %} {% load static %} {% block title %}
 <title>Добавить продукт</title>
 {% endblock %} {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}">
-{% endblock %} {% block content %}
-<p id="header-text-in-form">
-    Добавить продукт
-</p>
-<div id="content-block">
-    <div id="mask-group-in-content-block">
-        <img src="{{img}}" id="photo-in-mask-group">
-        <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
-    </div>
-    <form id="product-name-form-in-content-group" action="", method="post">
-
-        <p id="description-text-in-form">
-            На этой странице вы можете отправить нашим модераторам название и
-            фотографию продукта, которого, скорее всего, наш сайт не смог опознать или
-            название которого не совпадает с настоящим.
-        </p>
-        <div id="product-name-input-block">
-            {% csrf_token %}
-            <input name="name" type="text" id="product-name-input" placeholder="Введите название продукта...">
+<link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}"> {% endblock %} {% block content %}
+<section class="section-md">
+    <div class="container">
+        <h3 id="header-text-in-form">Добавить продукт</h3>
+        <div class="row row-30">
+            <div class="col-lg-6 col-md-6">
+                <img src="{{img}}" class="product-img">
+                <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
+            </div>
+            <form class="col-lg-6 col-md-6" id="product-name-form-in-content-group" action="" , method="post">
+                <p>На этой странице вы можете отправить нашим модераторам название и фотографию продукта, которого, скорее всего, наш сайт не смог опознать или название которого не совпадает с настоящим.</p>
+                {% csrf_token %}
+                <input name="name" type="text" id="product-name-input" placeholder="Введите название продукта...">
+                <button class="btn" id="form-send-button-in-form" type="submit">
+                    <span id="text-in-form-send-button">Отправить на модерацию</span>
+                </button>
+            </form>
         </div>
-        <button id="form-send-button-in-form" type="submit">
-                <span id="text-in-form-send-button">
-                    Отправить на модерацию
-                </span>
-        </button>
-    </form>
-</div>
+    </div>
+</section>
 {% endblock %} {% block extra_js %}
 <!--    <script src="{% static 'js/add_product.js' %}"></script>-->
 {% endblock %}

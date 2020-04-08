@@ -108,24 +108,24 @@ body {
     background-color: #f8f9fa;
     webkit-tap-highlight-color: #222;
     color: #888;
-
     /* Для правильного закрепления футера внизу */
     display: flex;
     min-height: 100%;
     flex-direction: column;
 }
 
+
 /* Для правильного закрепления футера внизу */
-main{
+
+main {
     flex: 1;
 }
 
-@media screen only and (max-width: 750px) {
+@media only screen and (max-width: 750px) {
     img {
         max-width: 350px;
     }
 }
-
 
 img {
     border-style: none;
@@ -249,14 +249,21 @@ header {
     z-index: 100;
 }
 
+.navbar-light .navbar-toggler {
+    border: none;
+}
+
 .logo {
     float: left;
 }
 
 .logo a {
-    color: #FFF;
-    font-weight: 700;
+    display: block;
     margin-top: 1em;
+    width: 224px;
+    height: 48px;
+    background: url("/static/pics/logo_and_text.svg") no-repeat center;
+    background-size: 224px 48px;
 }
 
 .logo a:hover {
@@ -275,10 +282,6 @@ header {
     text-align: center;
     text-transform: uppercase;
     position: relative;
-}
-
-.logo a {
-    display: block;
 }
 
 .top-nav:before,
@@ -385,11 +388,8 @@ nav a#pull {
         color: #2C3E50;
         text-align: center !important;
     }
-    .top-nav ul li a .i-text::after{
-      display: none;
-    }
-  }
-}
+    .top-nav ul li a .i-text::after {
+        display: none;
     }
 }
 
@@ -407,6 +407,12 @@ nav a#pull {
     }
     .dropdown-item {
         text-align: center;
+    }
+    .logo a {
+        width: 52px;
+        height: 48px;
+        background: url("/static/pics/logo.svg") no-repeat center;
+        background-size: 52px 48px;
     }
 }
 
@@ -452,10 +458,10 @@ nav a#pull {
 }
 
 .error-reg {
- color: darkred;
- font-size: 0.8rem;
- margin-right: auto;
- margin-left: 0;
+    color: darkred;
+    font-size: 0.8rem;
+    margin-right: auto;
+    margin-left: 0;
 }
 
 .bt-ghost-in:active,
@@ -1172,6 +1178,10 @@ body::-webkit-scrollbar-thumb {
 
 .row-30 {
     margin-bottom: -30px;
+}
+
+.row-30>* {
+    margin-bottom: 30px;
 }
 
 *+.row,
