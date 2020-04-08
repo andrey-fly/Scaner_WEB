@@ -306,21 +306,46 @@ class PhotoPage(TemplateView):
 
 class GalleryPage(View):
     template_name = 'photo/gallery.html'
+    context = {}
 
     def get(self, request, good):
-        context = {'name': good}
+        self.context['name'] =  good
         image_id = request.GET.get('image')
         if image_id:
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
 
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, good):
+        picture_object = None
+        rate = request.POST.get('rate')
+        image_id = request.POST.get('image_id')
+        for item in self.context['images']:
+            print(item.id)
+            if int(item.id) == int(image_id):
+                print('reach it')
+                picture_object = item
+                rating = RatePhoto(
+                    user=request.user,
+                    picture=picture_object,
+                    rating=rate,
+                    good=good
+                )
+                rating.save()
+        print(RatePhoto.objects.all())
+        user = request.user
+
+        self.context['rated'] = image_id
+        # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
+        self.context['rating'] = 5
+        return render(request, self.template_name, self.context)
 
 
 class ProductPage(View):

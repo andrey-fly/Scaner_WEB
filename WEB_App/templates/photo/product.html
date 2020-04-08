@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="info-block-in-content-block">
+        <div id="info-block-in-content-block" style="margin-top: 15px;">
             <ol class="breadcrumb">
                 <!--                Молочные продукты > Сливочное масло-->
                 {% for category in categories %}
@@ -243,8 +243,7 @@
 {% endblock %}
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-<script type="text/javascript"
-        src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script src="{% static 'js/jquery.autosize.js' %}"></script>
 <script>
@@ -271,8 +270,11 @@ $(document).ready(function () {
 $(document).ready(function(){
     $('textarea').autosize();
 });
+
 $('#example').val('').trigger('autosize.resize');
+
 let rate = document.getElementById('rate')
+
 $(".my-rating-9").starRating({
     starSize: 25,
     {% if not rated %}

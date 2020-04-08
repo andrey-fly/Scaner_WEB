@@ -78,6 +78,14 @@ class Rate(models.Model):
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
 
 
+class RatePhoto(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    picture = models.ForeignKey(to=Picture, verbose_name='Картинка', on_delete=models.CASCADE)
+    rating = models.FloatField(verbose_name='Рейтинг')
+    good = models.TextField(verbose_name='Товар')
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+
+
 class NotAuthUser(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
