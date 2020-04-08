@@ -119,12 +119,63 @@
         </label>
     </label>
 </form>
-
-<button></button>
-
-{{data}}
+<!-- Модальное окно -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+    Модальное окно
+</button>
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ошибка в чтении</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="error-text-left text-danger">
+                                Произошла ошибка в чтении файла изображения, загрузите другое фото
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="file-input-for-label">
+                                <div class="icon-main icon-main-right">
+                                    <span class="icon-bf mdi-download"></span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBarcode">Или введите баркод</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="inputBarcode" placeholder=" " aria-describedby="question-barcode" pattern="^[0-9]{11,15}" required>
+                            <span class="input-group-append">
+                                <i data-toggle="tooltip" data-html="true" data-placement="right" data-title="Баркод - это набор чисел под изображением линий и пробелов.
+                                <img class='d-block m-1 mx-auto' src='/static/img/barcode.png'>"
+                                id="btn-tooltip" class="fas fa-question-circle" id="question-barcode"></i>
+                            </span>
+                        </div>
+                        <span class="form__error">Введены некорректные данные</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block extra_js %}
-<script> let csrftoken = '{{ csrf_token }}'; </script>
+<script>
+$('#btn-tooltip').tooltip();
+</script>
+<script>
+let csrftoken = '{{ csrf_token }}';
+</script>
 <script src="{% static 'js/photo.js' %}"></script>
 {% endblock %}
