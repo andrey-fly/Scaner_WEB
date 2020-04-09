@@ -14,14 +14,11 @@
                 {% csrf_token %} {{photo.file}}
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                        <label class="custom-file-label" for="inputGroupFile04">Выберите файл</label>
+                        <label class="custom-file-label text-wrap" for="inputGroupFile" id="ididid">
+                            <span id="chosed_file" class="text-wrap">Выберите файл</span>
+                        </label>
                     </div>
                 </div>
-                <!-- <label class="custom-file-label text-wrap" for="inputGroupFile" id="ididid">
-                        <span id="chosed_file" class="text-wrap">Выберите файл</span>
-                    </label> -->
-
                 <input type="submit" class="change-btn btn btn-md" id="inputGroupFileBtn" name="status" value="Обновить фото">
             </form>
         </div>
