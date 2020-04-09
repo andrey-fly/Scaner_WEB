@@ -212,27 +212,93 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-class PhotoPage(TemplateView):
+class PhotoPage(View):
     context = {}
+    context['modal_window'] = False
+    context['main_image'] = ''
+    template_name = 'photo/photo.html'
 
     def post(self, request):
-        picture = Picture(
-            user=request.user,
-            file=request.FILES['file'],
-        )
-        picture.save()
+        self.context['modal_window'] = False if request.POST.get('modal_check') == 'false' else True
 
-        response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                files={'file': picture.file},
-                                params={'user': request.user.id,
-                                        'platform': 'web'},
-                                headers={'Authorization': '{}'.format(API_TOKEN)}
-                                ).json()
+        # Страница без модального окна
+        if not self.context['modal_window']:
+            form = BarcodeForm()
+            self.context['form'] = form
+            picture = Picture(
+                user=request.user,
+                file=request.FILES['file'],
+            )
+            picture.save()
+            self.context['main_image'] = picture.file
+            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                    files={'file': picture.file},
+                                    params={'user': request.user.id,
+                                            'platform': 'web'},
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
 
-        if response['status'] == 'ok':
-            return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+            if response['status'] == 'ok':
+                return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+            else:
+                self.context['modal_window'] = True
+            return render(request, self.template_name, self.context)
+
+        # Страница с модальным окном
         else:
-            return redirect(to='/add_product/?image={}'.format(picture.id))
+            self.context['modal_window'] = False
+            form = BarcodeForm(request.POST)
+
+            # Пользователь отправил новый файл
+            if not ('barcode' in request.POST) or not (form.is_valid()):
+                picture = Picture(
+                    user=request.user,
+                    file=request.FILES['file'],
+                )
+                picture.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': picture.file},
+                                        params={'user': request.user.id,
+                                                'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                else:
+                    return redirect(to='/add_product/?image={}'.format(picture.id))
+
+            # Пользователь неверно ввёл баркод
+            elif not form.is_valid():
+                form = BarcodeForm()
+                self.context['form'] = form
+                self.context['form_errors'] = True
+
+            # Пользователь корректно ввёл баркод
+            else:
+                good = GoodsOnModeration(
+                    image=self.context['main_image'],
+                    user=request.user,
+                    barcode=request.POST.get('barcode')
+                )
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                # Обращение к api вызывает функцию класса GetByBarCode, которая не возвращает статус
+                # if response['status'] == 'ok':
+                #     good.name = response['name']
+
+                if response:
+                    good.name = response['name']
+                good.save()
+
+                return redirect('/thanks/')
+
+    def get(self, request):
+        self.context['modal_window'] = False
+        form = BarcodeForm()
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
 
 
 class GalleryPage(View):
@@ -282,7 +348,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -354,7 +421,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -657,9 +725,9 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 picture_object.status = 'Одобрено'
                 picture_object.save()
                 new_picture = Picture(file=picture_object.image,
-                        user=picture_object.user,
-                        target_good=picture_object.target_good
-                        )
+                                      user=picture_object.user,
+                                      target_good=picture_object.target_good
+                                      )
                 new_picture.save()
         except Exception:
             return render(request, '500.html')

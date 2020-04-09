@@ -24,7 +24,7 @@ urlpatterns = [
     path('', index),
     path('registration/', signup),
     path('recovery_password/', recovery_password),
-    path('photo/', login_required(PhotoPage.as_view(template_name='photo/photo.html'))),
+    path('photo/', login_required(PhotoPage.as_view())),
     path('product/<str:good>/', ProductPage.as_view()),
     path('gallery/<str:good>', GalleryPage.as_view()),
     path('add_product/', login_required(AddProductPage.as_view())),

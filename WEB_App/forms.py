@@ -104,6 +104,14 @@ class FileForm(forms.Form):
                                                          'aria-describedby': "inputGroupFileBtn"}))
 
 
+class BarcodeForm(forms.Form):
+    barcode = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputBarcode',
+        'placeholder': " ",
+        'aria-describedby': 'question-barcode',
+        'pattern': '^[0-9]{11,15}'
+    }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
