@@ -81,6 +81,19 @@
 .loaded .preloader {
   display: none;
 }
+
+#modal-group {
+    padding: 0;
+}
+
+.special-modal-body {
+    padding: 1rem 66px;
+}
+
+.special-input-group {
+    margin: auto;
+    width: 80%;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
 {% endblock %}
@@ -94,6 +107,7 @@
         <p class="description-text-in-main-content-frame">
             Мы расскажем вам о нем всё, что знаем
         </p>
+        <input id="secret-check" type="hidden" name="modal_check" value="false">
         <input class="files" id="file-input-for-label" type="file" accept="image/*" multiple onchange="func_submit_btn();">
         <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none; margin: 0 auto">
             <span class="text-in-photo-load-button">
@@ -113,21 +127,22 @@
         </label>
     </label>
 </form>
+
 <!-- Модальное окно -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
-    Модальное окно
-</button>
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+<div class="modal fade" id="another_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Ошибка в чтении</h5>
-                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="">
+
+        <form id="modal-group" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Ошибка в чтении</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" onclick="secret_change();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body special-modal-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="error-text-left text-danger">
@@ -144,23 +159,26 @@
                     </div>
                     <div class="form-group">
                         <label for="inputBarcode">Или введите баркод</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="inputBarcode" placeholder=" " aria-describedby="question-barcode" pattern="^[0-9]{11,15}" required>
+                        <div class="input-group mb-3 special-input-group">
+                            {{form.barcode}}
                             <span class="input-group-append">
                                 <i data-toggle="tooltip" data-html="true" data-placement="right" data-title="Баркод - это набор чисел под изображением линий и пробелов.
                                 <img class='d-block m-1 mx-auto' src='/static/img/barcode.png'>"
-                                id="btn-tooltip" class="fas fa-question-circle" id="question-barcode"></i>
+                                id="btn-tooltip" class="fas fa-question-circle"></i>
                             </span>
                         </div>
+                        {% if form_errors %}
                         <span class="form__error">Введены некорректные данные</span>
+                        {% endif %}
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Отправить</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="secret_change();">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Отправить</button>
             </div>
         </div>
+        </form>
+
     </div>
 </div>
 {% endblock %}
@@ -172,4 +190,16 @@ $('#btn-tooltip').tooltip();
 let csrftoken = '{{ csrf_token }}';
 </script>
 <script src="{% static 'js/photo.js' %}"></script>
+{% if modal_window %}
+<script>
+    $('#another_modal').modal('show');
+    document.getElementById('secret-check').value = 'true';
+</script>
+{% endif %}
+<script>
+    function secret_change(){
+        $('#another_modal').modal('hide');
+        document.getElementById('secret-check').value = 'false';
+    }
+</script>
 {% endblock %}
