@@ -65,6 +65,10 @@ input {
     list-style-type: disc;
 }
 
+.custom-file-label::after {
+    content: "Выбрать";
+}
+
 @media (max-width: 767px) {
     .main-frame {
         width: 70%;
