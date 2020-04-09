@@ -1,4 +1,6 @@
 from datetime import datetime
+from PIL import Image
+import imagehash
 import random
 import string
 
@@ -191,8 +193,10 @@ def index(request):
                 picture = Picture(
                     user=request.user,
                     file=request.FILES['file'],
+                    hash=imagehash.average_hash(Image.open(request.FILES['file']))
                 )
                 picture.save()
+                print(Picture.objects.get(id=picture.id).hash)
 
                 response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
                                         files={'file': picture.file},
@@ -219,6 +223,7 @@ class PhotoPage(TemplateView):
         picture = Picture(
             user=request.user,
             file=request.FILES['file'],
+            hash=imagehash.average_hash(Image.open(request.FILES['file']))
         )
         picture.save()
 
@@ -282,7 +287,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -354,7 +360,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -374,7 +381,7 @@ class AddProductPage(View):
         good = GoodsOnModeration(
             name=request.POST.get('name'),
             image=Picture.objects.get(id=request.GET.get('image')).file,
-            user=request.user
+            user=request.user,
         )
         response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
                                 files={'file': good.image.file},
@@ -657,9 +664,10 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 picture_object.status = 'Одобрено'
                 picture_object.save()
                 new_picture = Picture(file=picture_object.image,
-                        user=picture_object.user,
-                        target_good=picture_object.target_good
-                        )
+                                      user=picture_object.user,
+                                      target_good=picture_object.target_good,
+                                      hash=imagehash.average_hash(Image.open(request.FILES['file']))
+                                      )
                 new_picture.save()
         except Exception:
             return render(request, '500.html')
