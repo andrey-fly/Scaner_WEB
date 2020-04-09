@@ -1,4 +1,6 @@
-{% extends 'base/base.html' %} {% load static %} {% block content %}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -93,7 +95,9 @@
         </div>
     </div>
 </section>
-{% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
+{% include 'main/modal_form.html' %}
+{% endblock %}
+{% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 <script>
     $('#num').animate({

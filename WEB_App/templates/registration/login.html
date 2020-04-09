@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block title %}
 <title>Вход</title>
 {% endblock %}
@@ -6,6 +7,7 @@
 {% include '../main/modal_form.html' %}
 {% endblock %}
 {% block extra_js %}
+<script src="{% static 'js/button.js' %}"></script>
 <script>
 if (window.innerWidth < 780) {
     $('#signmodal_wrap').show()
@@ -13,10 +15,11 @@ if (window.innerWidth < 780) {
     }
 else {
     $('#signmodal_standard').show()
-    $('#signmodal_standard').css('margin-top', '150px')
+    $('#signmodal_standard').css('position', 'relative')
+<!--    $('#signmodal_standard').css('margin-top', '150px')-->
     $('#signmodal_standard').removeClass('mt-5')
-    $('footer').css('margin-top', '550px')
-    $('body').css('overflow-y', 'hidden')
+<!--    $('footer').css('margin-top', '550px')-->
+    $('body').css('overflow-y', 'scroll')
 }
 
 </script>
