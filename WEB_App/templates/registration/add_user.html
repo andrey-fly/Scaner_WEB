@@ -5,18 +5,25 @@
 {% endblock %}
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}">
+<style>
+    @media only screen and (max-width: 750px){
+        #mask-group-in-content-block {
+            max-width: calc(100vw - 20px) !important;
+        }
+    }
+</style>
 {% endblock %}
 {% block content %}
-<div>
+<div style="text-align: center">
     <p id="header-text-in-form">
             Добавить продукт и зарегистрироваться
         </p>
     <p style="text-align: center; margin: 0 20px;">На этой странице вы можете отправить нашим модераторам название и
                 фотографию продукта, которого, скорее всего, наш сайт не смог опознать или
                 название которого не совпадает с настоящим.</p>
-    <div id="content-block">
-        <div id="mask-group-in-content-block" style="max-width: 720px;">
-            <img src="{{img}}" id="photo-in-mask-group" style="max-width: none">
+    <div id="content-block" style="display: flex; flex-wrap: wrap">
+        <div id="mask-group-in-content-block" style="max-width: 720px; margin: 0 auto;">
+            <img src="{{img}}" id="photo-in-mask-group" style="max-width: inherit">
             <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
         </div>
 <!--        <form id="product-name-form-in-content-group" action="" method="post" style="max-width: 360px">-->
