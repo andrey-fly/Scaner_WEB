@@ -307,9 +307,10 @@ class PhotoPage(TemplateView):
 class GalleryPage(View):
     template_name = 'photo/gallery.html'
     context = {}
+    rated_previously = []
 
     def get(self, request, good):
-        self.context['name'] =  good
+        self.context['name'] = good
         image_id = request.GET.get('image')
         if image_id:
             image = Picture.objects.get(id=image_id)
@@ -339,10 +340,11 @@ class GalleryPage(View):
                     good=good
                 )
                 rating.save()
+                self.rated_previously.append(item.id)
         print(RatePhoto.objects.all())
         user = request.user
 
-        self.context['rated'] = image_id
+        self.context['rated'] = self.rated_previously
         # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
         self.context['rating'] = 5
         return render(request, self.template_name, self.context)
@@ -368,10 +370,10 @@ class ProductPage(View):
                 image.save()
                 img = image.file.url
                 images = Picture.objects.filter(target_good=good)
-                context['images'] = images
+                context['images'] = images[0], images[1], images[2]
             else:
                 images = Picture.objects.filter(target_good=good)
-                context['images'] = images
+                context['images'] = images[0], images[1], images[2]
             print(context['images'])
             context['img'] = img
             context['img_id'] = request.GET.get('image')
@@ -382,7 +384,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -397,10 +400,10 @@ class ProductPage(View):
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
 
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
@@ -454,7 +457,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -758,9 +762,9 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 picture_object.status = 'Одобрено'
                 picture_object.save()
                 new_picture = Picture(file=picture_object.image,
-                        user=picture_object.user,
-                        target_good=picture_object.target_good
-                        )
+                                      user=picture_object.user,
+                                      target_good=picture_object.target_good
+                                      )
                 new_picture.save()
         except Exception:
             return render(request, '500.html')

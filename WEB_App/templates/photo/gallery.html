@@ -46,8 +46,12 @@
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script>
 let csrf_token = '{{ csrf_token }}'
+let data = []
 rated = {{rated}}
 rating_value = {{rating}}
+{% for rate_id in rated %}
+data.push({{rate_id}})
+{% endfor %}
 $(function() {
     // Call Gridder
     $('.gridder').gridderExpander({
@@ -108,35 +112,33 @@ $(function() {
                         rate_star.value = currentRating;
                     }
                 });
-                if (rated === parseInt($('#move_to > .move').attr('value'))) {
-                    console.log('yesss')
-                    $('.rating_caption').remove()
-                    $('.rating').append('<legend>Средняя оценка всеми пользователями:</legend>')
-                    $('.rating > legend').css('color', '#fff')
-                    $('.rating > legend').append('<div></div>')
-                    $('.rating > legend > div').css('display', 'flex')
-                    $('.rating > legend > div').append('<span></span>')
-                    $('.rating > legend > div > span').addClass('my-rating-9')
-                    $('.rating > legend > div').append('<p>' + rating_value + '</p>')
-                    $('.rating > legend > div > p').attr('id', 'average')
-                    $('.rating > legend > div > p').css({'color': '#10c46a',
-                                                         'margin-left': '10px',
-                                                          'font-size': '20px',
-                                                          'margin-top': '5px'})
-                    $(".my-rating-9").starRating({
-                        starSize: 25,
-                        initialRating : rating_value,
-                        readOnly : true,});
+                for (item of rated) {
+                    if (item === parseInt($('#move_to > .move').attr('value'))) {
+                        console.log('yesss')
+                        $('.rating_caption').remove()
+                        $('.rating').append('<legend>Средняя оценка всеми пользователями:</legend>')
+                        $('.rating > legend').css('color', '#fff')
+                        $('.rating > legend').append('<div></div>')
+                        $('.rating > legend > div').css('display', 'flex')
+                        $('.rating > legend > div').append('<span></span>')
+                        $('.rating > legend > div > span').addClass('my-rating-9')
+                        $('.rating > legend > div').append('<p>' + rating_value + '</p>')
+                        $('.rating > legend > div > p').attr('id', 'average')
+                        $('.rating > legend > div > p').css({'color': '#10c46a',
+                                                             'margin-left': '10px',
+                                                              'font-size': '20px',
+                                                              'margin-top': '5px'})
+                        $(".my-rating-9").starRating({
+                            starSize: 25,
+                            initialRating : rating_value,
+                            readOnly : true,});
+                        }
                     }
-
             if (parseFloat($('.live-rating').html()) > 3.5) {
                 $('.live-rating').css('color','#19e037');
             } else {
                 $('.live-rating').css('color','#e01919');
             }
-<!--                    <div style="display: inline-flex">-->
-<!--                        <span class="my-rating-9"></span>-->
-<!--                        <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>-->
         },
         onClosed: function(){
             //Gridder Closed
