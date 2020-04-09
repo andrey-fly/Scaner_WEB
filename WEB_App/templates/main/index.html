@@ -151,16 +151,8 @@
     btn.addEventListener('click', function() {
         if (window.innerWidth < 780) {
             $('#signmodal_wrap').modal('show')
-            $('.button').data('target', 'singmodal_wrap')
-            btn.removeAttr('data-target')
-            btn.addAttr('data-target', '#singmodal_wrap')
-            btn.dataset.target = '#singmodal_wrap'
         } else {
             $('#signmodal_standard').modal('show')
-            $('.button').data('target', 'singmodal_standard')
-            btn.removeAttr('data-target')
-            btn.addAttr('data-target', '#singmodal_standard')
-            btn.dataset.target = '#singmodal_standard'
         }
     })
 </script>
