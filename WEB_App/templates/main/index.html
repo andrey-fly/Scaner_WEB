@@ -1,6 +1,4 @@
-{% extends 'base/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block content %}
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -135,8 +133,7 @@
     }, 10);
     container.classList.remove("right-panel-active")
 </script>
-{% endif %}
-{% if reg_form.errors %}
+{% endif %} {% if reg_form.errors %}
 <script>
     window.setTimeout(function() {
         modal_btn.click()
@@ -144,9 +141,7 @@
     container.classList.add("right-panel-active")
 </script>
 
-{% endif %}
-
-{% if show_modal %}
+{% endif %} {% if show_modal %}
 <script>
     $('#signmodal').show()
 </script>
@@ -155,17 +150,17 @@
     let btn = document.getElementById('modal_btn');
     btn.addEventListener('click', function() {
         if (window.innerWidth < 780) {
-        $('#signmodal_wrap').modal('show')
-    <!--    $('.button').data('target', 'singmodal_wrap')-->
-    <!--        btn.removeAttr('data-target')-->
-    <!--        btn.addAttr('data-target', '#singmodal_wrap')-->
-    <!--        btn.dataset.target = '#singmodal_wrap'-->
+            $('#signmodal_wrap').modal('show')
+            $('.button').data('target', 'singmodal_wrap')
+            btn.removeAttr('data-target')
+            btn.addAttr('data-target', '#singmodal_wrap')
+            btn.dataset.target = '#singmodal_wrap'
         } else {
-        $('#signmodal_standard').modal('show')
-    <!--    $('.button').data('target', 'singmodal_standard')-->
-    <!--        btn.removeAttr('data-target')-->
-    <!--        btn.addAttr('data-target', '#singmodal_standard')-->
-    <!--        btn.dataset.target = '#singmodal_standard'-->
+            $('#signmodal_standard').modal('show')
+            $('.button').data('target', 'singmodal_standard')
+            btn.removeAttr('data-target')
+            btn.addAttr('data-target', '#singmodal_standard')
+            btn.dataset.target = '#singmodal_standard'
         }
     })
 </script>

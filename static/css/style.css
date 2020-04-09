@@ -253,6 +253,10 @@ header {
     border: none;
 }
 
+.navbar-light .navbar-toggler:focus {
+    outline: none;
+}
+
 .logo {
     float: left;
 }
@@ -262,7 +266,7 @@ header {
     margin-top: 1em;
     width: 224px;
     height: 48px;
-    background: url("./static/pics/logo_and_text.svg") no-repeat center;
+    background: url("/static/pics/logo_and_text.svg") no-repeat center;
     background-size: 224px 48px;
 }
 
@@ -411,7 +415,7 @@ nav a#pull {
     .logo a {
         width: 52px;
         height: 48px;
-        background: url("./static/pics/logo.svg") no-repeat center;
+        background: url("/static/pics/logo.svg") no-repeat center;
         background-size: 52px 48px;
     }
 }
@@ -441,6 +445,7 @@ nav a#pull {
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
+    outline: none;
 }
 
 .bt-ghost-in,
@@ -448,6 +453,14 @@ nav a#pull {
     border: 1px solid #3B84F1;
     background-color: #3B84F1;
     color: #FFFFFF;
+    outline: none;
+}
+
+.bt-ghost-in:focus,
+.bt-ghost-up-acc:focus,
+.bt-ghost-up:focus,
+.bt-ghost-in-acc:focus {
+    outline: none;
 }
 
 .bt-ghost-up,
@@ -455,6 +468,7 @@ nav a#pull {
     background-color: transparent;
     border-color: #FFFFFF;
     color: rgb(255, 255, 255);
+    outline: none;
 }
 
 .error-reg {
@@ -462,6 +476,7 @@ nav a#pull {
     font-size: 0.8rem;
     margin-right: auto;
     margin-left: 0;
+    text-align: start;
 }
 
 .bt-ghost-in:active,
@@ -469,6 +484,7 @@ nav a#pull {
 .bt-ghost-in-acc:active,
 .bt-ghost-up-acc:active {
     transform: scale(0.95);
+    outline: none;
 }
 
 .modal form {
@@ -488,6 +504,7 @@ nav a#pull {
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
+    border-radius: 3px;
 }
 
 .container-modal {
@@ -498,7 +515,7 @@ nav a#pull {
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 620px;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;

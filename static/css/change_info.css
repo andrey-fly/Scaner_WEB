@@ -36,12 +36,12 @@ input {
 
 .change-btn {
     height: 42px;
-    margin: 15px;
     background: #3B84F1;
+    margin-bottom: 12px;
 }
 
 .change-btn:hover {
-    background: #002f55;
+    background: #055fa8;
 }
 
 .btn {
@@ -54,6 +54,15 @@ input {
 .btn:hover {
     color: #FFFFFF;
     font-weight: bold;
+}
+
+.my-image {
+    display: block;
+    margin: auto;
+}
+
+.errorlist li {
+    list-style-type: disc;
 }
 
 @media (max-width: 767px) {
