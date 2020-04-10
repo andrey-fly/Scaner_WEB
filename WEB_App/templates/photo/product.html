@@ -172,7 +172,7 @@
         <form action="/product/{{name}}/?image={{img_id}}" method="post">
             {% csrf_token %}
             <h1>Прокомментируйте:</h1>
-            <textarea id="example" name="comment" placeholder="Описание" required
+            <textarea id="comment_text_input" name="comment" placeholder="Описание" required
                       style="transition: height 0.2s;width: auto !important; border-radius: 8px"></textarea>
             <div>
                 <input type="submit" class="btn btn-outline-primary btn-md"
@@ -201,7 +201,7 @@
                 {% csrf_token %}
                 <h1>Ответить:</h1>
                 <input type="hidden" value="{{comment.id}}" name="comment_id">
-                <textarea id="example" name="response-to-comment" placeholder="Описание" required
+                <textarea id="child_comment_text_input" name="response-to-comment" placeholder="Описание" required
                           style="transition: height 0.2s;width: auto !important;"></textarea>
                 <div>
                     <input type="submit" class="btn btn-outline-primary btn-md"
