@@ -1,10 +1,11 @@
 /* logo */
+
 .logo {
-position: absolute;
-width: 224px;
-height: 48px;
-left: 228px;
-top: calc(50% - 48px/2 + 0px);
+    position: absolute;
+    width: 224px;
+    height: 48px;
+    left: 228px;
+    top: calc(50% - 48px/2 + 0px);
 }
 
 
@@ -16,8 +17,6 @@ right: 76.79%;
 top: 0%;
 bottom: 0%;
 
-
-
 /* Rectangle 3 */
 
 position: absolute;
@@ -27,8 +26,8 @@ top: 0%;
 bottom: 0%;
 
 /* main-blue */
-background: #3B84F1;
 
+background: #3B84F1;
 
 /* Intersect */
 
@@ -39,8 +38,8 @@ top: 0%;
 bottom: 0%;
 
 /* main-blue */
-background: #3B84F1;
 
+background: #3B84F1;
 
 /* Ellipse 1 */
 
@@ -49,55 +48,49 @@ left: 1.79%;
 right: 76.79%;
 top: -2.08%;
 bottom: -2.08%;
-
 background: #C4C4C4;
 
-
 /* Rectangle 4 */
-.rectangle4 {
-position: absolute;
-left: 1.79%;
-right: 76.79%;
-top: 0%;
-bottom: 0%;
 
-background: #5780E9;
+.rectangle4 {
+    position: absolute;
+    left: 1.79%;
+    right: 76.79%;
+    top: 0%;
+    bottom: 0%;
+    background: #5780E9;
 }
 
 .p {
-position: absolute;
-left: 0%;
-right: 78.57%;
-top: 0%;
-bottom: 0%;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: 900;
-font-size: 32px;
-line-height: 37px;
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #FFFFFF;
+    position: absolute;
+    left: 0%;
+    right: 78.57%;
+    top: 0%;
+    bottom: 0%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 37px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
 }
 
 .prodoved {
-position: absolute;
-left: 28.57%;
-right: 0%;
-top: 22.92%;
-bottom: 20.83%;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: bold;
-font-size: 28px;
-line-height: 33px;
-display: flex;
-align-items: center;
-letter-spacing: 0.02em;
-
-color: #000000;
+    position: absolute;
+    left: 28.57%;
+    right: 0%;
+    top: 22.92%;
+    bottom: 20.83%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 33px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.02em;
+    color: #000000;
 }

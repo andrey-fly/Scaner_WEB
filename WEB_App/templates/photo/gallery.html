@@ -6,39 +6,144 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/component.css' %}">
 <script src="{% static 'js/modernizr.custom.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.gridder.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/star-rating-svg.css'%}">
 {% endblock %}
 {% block content %}
-<ul id="og-grid" class="og-grid">
-<!--    <li>-->
-<!--        <a href="http://cargocollective.com/jaimemartinez/" data-largesrc="{% static 'images/1.jpg' %}" data-title="Azuki bean"-->
-<!--           data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">-->
-<!--            <img src="{% static 'images/thumbs/1.jpg' %}" alt="img01"/>-->
-<!--        </a>-->
-<!--    </li>-->
-<!--    <li>-->
-<!--        <a href="http://cargocollective.com/jaimemartinez/" data-largesrc="{% static 'images/2.jpg' %}"-->
-<!--           data-title="Veggies sunt bona vobis"-->
-<!--           data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">-->
-<!--            <img src="{% static 'images/thumbs/2.jpg' %}" alt="img02"/>-->
-<!--        </a>-->
-<!--    </li>-->
-  {% for image in images %}
-    <li>
-        <a href="#" data-largesrc="{{image.file.url}}"
-           data-title="{{ name }}"
-           data-description="Автор фото: {{ image.user }}. Фото загружено {{ image.created }}.">
-            <img src="{{image.file.url}}" alt="img02" style="max-height: 250px; max-width: 500px;"/>
-        </a>
+<!-- Gridder navigation -->
+<ul class="gridder">
+    <!-- You can load specify which content is loaded by specifying the #ID of the div where the content is  -->
+    {% for image in images %}
+    <li class="gridder-list" data-griddercontent="#content{{image.id}}" value="{{image}}"
+        style="width: 350px; height: 250px; margin-bottom: 1%; margin-right: 1%;">
+        <img src="{{image.file.url}}" style="width: inherit; height: inherit"/>
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
+
+<!-- Gridder content -->
+{% for image in images %}
+<div id="content{{image.id}}" class="gridder-content">
+    <input class="move" type="hidden" name="image" value="{{image.id}}">
+    <div class="row" style="background-color: #999">
+        <div class="col-sm-5">
+            <img src="{{image.file.url}}"/>
+        </div>
+        <div>
+            <fieldset id="rating">
+                <p style="color: white">Автор фото: {{ image.user }}. Фото загружено {{ image.created }}.</p>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
 {% block extra_js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="{% static 'js/grid.js' %}"></script>
+<script src="{% static 'js/jquery.gridder.min.js'%}"></script>
+<script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script>
+let csrf_token = '{{ csrf_token }}'
+let data = []
+rated = {{rated}}
+rating_value = {{rating}}
+{% for rate_id in rated %}
+data.push({{rate_id}})
+{% endfor %}
 $(function() {
-    Grid.init();
+    // Call Gridder
+    $('.gridder').gridderExpander({
+        scroll: true,
+        scrollOffset: 30,
+        scrollTo: "listitem",                  // panel or listitem
+        animationSpeed: 400,
+        animationEasing: "easeInOutExpo",
+<!--        showNav: true,                      // Show Navigation-->
+<!--        nextText: "Next",                   // Next button text-->
+<!--        prevText: "Previous",               // Previous button text-->
+<!--        closeText: "Close",                 // Close button text-->
+        onStart: function(){
+            //Gridder Inititialized
+        },
+        onContent: function(){
+            $('.gridder-navigation').remove()
+                $('.gridder-show').css('margin', '10px 30px')
+                $('.gridder-expanded-content > input').attr('name', 'image_id')
+                $('.gridder-expanded-content > .row > div > #rating').addClass('rating')
+                $('.rating').append('<legend> Ваша оценка:</legend>')
+                $('.rating > legend').addClass('rating_caption')
+                $('.rating_caption').append('<div></div>')
+                $('.rating_caption > div').addClass('rating_group')
+                $('.rating_group').append('<form></form>')
+                $('.rating_group > form').attr('id', 'move_to')
+                $('.rating_group > form').attr('action', '')
+                $('.rating_group > form').attr('method', 'POST')
+                $('.rating_group > form').append('<input></input>')
+                $('.rating_group > form > input').attr('type', 'hidden')
+                $('.rating_group > form > input').attr('name', 'csrfmiddlewaretoken')
+                $('.rating_group > form > input').attr('value', csrf_token)
+                $('.rating_group > form').append('<span></span>')
+                $('.rating_group > form > span').addClass('my-rating-9')
+                $('.rating_group > form').append('<span></span>')
+                $('.rating_group > form > span').last().addClass('live-rating')
+                $('.rating_group > form').append('<input></input>')
+                $('.rating_group > form > input').last().addClass('rate')
+                $('.rating_group > form > .rate').attr('id', 'rate_star')
+                $('.rating_group > form > .rate').attr('type', 'hidden')
+                $('.rating_group > form > .rate').last().attr('name', 'rate')
+                $('.rating_group > form > .rate').last().attr('value', 0)
+                $('.rating_group > form').append('<button>Оценить</button>')
+                $('.rating_group > form > button').attr('type', 'submit')
+                $('.rating_group > form > button').addClass('btn btn-outline-primary ml-3')
+                $('.gridder-expanded-content > .move').appendTo('#move_to')
+                $(".my-rating-9").starRating({
+                    starSize: 25,
+                    disableAfterRate: false,
+                    onHover: function(currentIndex, currentRating, $el){
+                      $('.live-rating').text(currentIndex);
+                    },
+                    onLeave: function(currentIndex, currentRating, $el){
+                      $('.live-rating').text(currentRating);
+                    },
+                    callback: function(currentRating, $el){
+                        // make a server call here
+                        rate_star.value = currentRating;
+                    }
+                });
+                for (item of rated) {
+                    if (item === parseInt($('#move_to > .move').attr('value'))) {
+                        console.log('yesss')
+                        $('.rating_caption').remove()
+                        $('.rating').append('<legend>Средняя оценка всеми пользователями:</legend>')
+                        $('.rating > legend').css('color', '#fff')
+                        $('.rating > legend').append('<div></div>')
+                        $('.rating > legend > div').css('display', 'flex')
+                        $('.rating > legend > div').append('<span></span>')
+                        $('.rating > legend > div > span').addClass('my-rating-9')
+                        $('.rating > legend > div').append('<p>' + rating_value + '</p>')
+                        $('.rating > legend > div > p').attr('id', 'average')
+                        $('.rating > legend > div > p').css({'color': '#10c46a',
+                                                             'margin-left': '10px',
+                                                              'font-size': '20px',
+                                                              'margin-top': '5px'})
+                        $(".my-rating-9").starRating({
+                            starSize: 25,
+                            initialRating : rating_value,
+                            readOnly : true,});
+                        }
+                    }
+            if (parseFloat($('.live-rating').html()) > 3.5) {
+                $('.live-rating').css('color','#19e037');
+            } else {
+                $('.live-rating').css('color','#e01919');
+            }
+        },
+        onClosed: function(){
+            //Gridder Closed
+        }
+    });
 });
 </script>
 {% endblock %}

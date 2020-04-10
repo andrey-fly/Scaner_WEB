@@ -85,12 +85,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css'%}">
 {% endblock %}
 {% block content %}
-<div class="preloader" style="display: none">
-  <div class="preloader__row">
-    <div class="preloader__item"></div>
-    <div class="preloader__item"></div>
-  </div>
-</div>
 <form id="content-group" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="main-content-frame-in-content-group">
@@ -119,10 +113,6 @@
         </label>
     </label>
 </form>
-
-<button></button>
-
-{{data}}
 {% endblock %}
 {% block extra_js %}
 <script> let csrftoken = '{{ csrf_token }}'; </script>

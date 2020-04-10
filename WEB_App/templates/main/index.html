@@ -95,7 +95,9 @@
         </div>
     </div>
 </section>
-{% include 'main/modal_form.html' %} {% endblock %} {% block extra_js %}
+{% include 'main/modal_form.html' %}
+{% endblock %}
+{% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 <script>
     $('#num').animate({
@@ -135,8 +137,7 @@
     }, 10);
     container.classList.remove("right-panel-active")
 </script>
-{% endif %}
-{% if reg_form.errors %}
+{% endif %} {% if reg_form.errors %}
 <script>
     window.setTimeout(function() {
         modal_btn.click()
@@ -144,28 +145,23 @@
     container.classList.add("right-panel-active")
 </script>
 
-{% endif %}
-
-{% if show_modal %}
+{% endif %} {% if show_modal %}
 <script>
-    $('#signmodal').show()
+if (window.innerWidth < 780) {
+    $('#signmodal_wrap').show()
+    }
+else {
+    $('#signmodal_standard').show()
+}
 </script>
 {% endif %}
 <script>
     let btn = document.getElementById('modal_btn');
     btn.addEventListener('click', function() {
         if (window.innerWidth < 780) {
-        $('#signmodal_wrap').modal('show')
-    <!--    $('.button').data('target', 'singmodal_wrap')-->
-    <!--        btn.removeAttr('data-target')-->
-    <!--        btn.addAttr('data-target', '#singmodal_wrap')-->
-    <!--        btn.dataset.target = '#singmodal_wrap'-->
+            $('#signmodal_wrap').modal('show')
         } else {
-        $('#signmodal_standard').modal('show')
-    <!--    $('.button').data('target', 'singmodal_standard')-->
-    <!--        btn.removeAttr('data-target')-->
-    <!--        btn.addAttr('data-target', '#singmodal_standard')-->
-    <!--        btn.dataset.target = '#singmodal_standard'-->
+            $('#signmodal_standard').modal('show')
         }
     })
 </script>

@@ -1,6 +1,4 @@
 from datetime import datetime
-from PIL import Image
-import imagehash
 import random
 import string
 
@@ -25,18 +23,39 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse
 
 
-def signup(request):
+def sign_in(request):
+    context = {}
+    reg_form = UserRegistrationForm()
+    errors = []
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password2'])
-            new_user.save()
-            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, 'main/index.html', {'username': user_form.data['username']})
-    else:
-        user_form = UserRegistrationForm()
-    return render(request, 'registration/registration.html', {'user_form': user_form})
+        if request.POST.get('status') == 'SignUp':
+            reg_form = UserRegistrationForm(request.POST)
+            if reg_form.is_valid():
+                new_user = reg_form.save(commit=False)
+                new_user.set_password(reg_form.cleaned_data['password2'])
+                new_user.save()
+                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingUp')
+                return redirect('/')
+        if request.POST.get('status') == 'SignIn':
+            identification = request.POST.get('identification')
+            password = request.POST.get('password')
+            user = None
+            if User.objects.filter(username=identification):
+                user = User.objects.get(username=identification)
+            elif User.objects.filter(email=identification):
+                user = User.objects.get(email=identification)
+            if user is None:
+                errors.append('Пользователь не найден!')
+            elif user.check_password(password) is False:
+                errors.append('Неправильный пароль!')
+            else:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingIn')
+                return redirect('/')
+    context['reg_form'] = reg_form
+    context['login_errors'] = errors
+    return render(request, 'registration/login.html', context)
 
 
 def recovery_password(request):
@@ -160,7 +179,7 @@ def change_info(request):
 
 
 def index(request):
-    context = {'data': datetime.now()}
+    context = {'data': datetime.now(), 'page': 'main'}
     reg_form = UserRegistrationForm()
     errors = []
     if request.method == 'POST':
@@ -189,35 +208,39 @@ def index(request):
         if request.FILES:
             if not request.user.is_authenticated:
                 context['show_modal'] = 'true'
+                temporary = NotAuthUser(
+                    file=request.FILES['file']
+                )
+                temporary.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': temporary.file},
+                                        params={'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], temporary.id))
+                else:
+                    print('redirect')
+                    return redirect(to='add_user/?image={}'.format(temporary.id))
             else:
                 picture = Picture(
                     user=request.user,
                     file=request.FILES['file'],
-                    hash=imagehash.average_hash(Image.open(request.FILES['file']))
                 )
-                # TODO: как обратиться к полю объекта без превращения ее в строчку? (нужно убрать костыль в условии)
-                hashes_list = list(Picture.objects.values_list('hash', flat=True))
-                hash_value = str(picture.hash)
-                if hash_value not in hashes_list:
-                    picture.save()
-                    # print(Picture.objects.get(id=picture.id).hash)
-                    # print(list(Picture.objects.values_list('hash', flat=True)))
-                    response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                            files={'file': picture.file},
-                                            params={'user': request.user.id,
-                                                    'platform': 'web'},
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}
-                                            ).json()
+                picture.save()
 
-                    if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
-                    else:
-                        return redirect(to='/add_product/?image={}'.format(picture.id))
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': picture.file},
+                                        params={'user': request.user.id,
+                                                'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
                 else:
-                    # TODO: здесь можно передать значение true для всплывающего окна (надпись: повторно загрузите фото)
-                    context['show_modal'] = 'true'
-                    # return redirect(to='/product/{}/?image={}'.format(str(picture.target_good),
-                    #                                                   hashes_list.index(hash_value)))
+                    return redirect(to='/add_product/?image={}'.format(picture.id))
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
@@ -225,55 +248,106 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-class PhotoPage(TemplateView):
+class AddUser(View):
+    template_name = 'registration/add_user.html'
+
+    def get(self, request):
+        context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
+                   'user_form': UserRegistrationForm, 'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
+        return render(request, self.template_name, context)
 
     def post(self, request):
         context = {}
-        picture = Picture(
-            user=request.user,
-            file=request.FILES['file'],
-            hash=imagehash.average_hash(Image.open(request.FILES['file']))
-        )
-        # TODO: как обратиться к полю объекта без превращения ее в строчку? (нужно убрать костыль в условии)
-        hashes_list = list(Picture.objects.values_list('hash', flat=True))
-        hash_value = str(picture.hash)
-        if hash_value not in hashes_list:
-            picture.save()
-
-            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                    files={'file': picture.file},
-                                    params={'user': request.user.id,
-                                            'platform': 'web'},
+        reg_form = UserRegistrationForm(request.POST)
+        if reg_form.is_valid():
+            new_user = reg_form.save(commit=False)
+            new_user.set_password(reg_form.cleaned_data['password2'])
+            new_user.save()
+            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+            good = GoodsOnModeration(
+                name=request.POST.get('name'),
+                image=NotAuthUser.objects.get(id=request.GET.get('image')).file,
+                user=new_user
+            )
+            response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
+                                    files={'file': good.image.file},
                                     headers={'Authorization': '{}'.format(API_TOKEN)}
                                     ).json()
 
             if response['status'] == 'ok':
-                return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
-            else:
-                return redirect(to='/add_product/?image={}'.format(picture.id))
+                good.barcode = response['barcode']
+            good.save()
+        return redirect('/thanks/')
+        # return render(request, self.template_name, context)
+
+
+class PhotoPage(TemplateView):
+    context = {}
+
+    def post(self, request):
+        picture = Picture(
+            user=request.user,
+            file=request.FILES['file'],
+        )
+        picture.save()
+
+        response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                files={'file': picture.file},
+                                params={'user': request.user.id,
+                                        'platform': 'web'},
+                                headers={'Authorization': '{}'.format(API_TOKEN)}
+                                ).json()
+
+        if response['status'] == 'ok':
+            return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
         else:
-            # TODO: здесь можно передать значение true для всплывающего окна (надпись: повторно загрузите фото)
-            context['show_modal'] = 'true'
-            # return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+            return redirect(to='/add_product/?image={}'.format(picture.id))
 
 
 class GalleryPage(View):
     template_name = 'photo/gallery.html'
+    context = {}
+    rated_previously = []
 
     def get(self, request, good):
-        context = {'name': good}
+        self.context['name'] = good
         image_id = request.GET.get('image')
         if image_id:
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
 
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, good):
+        picture_object = None
+        rate = request.POST.get('rate')
+        image_id = request.POST.get('image_id')
+        for item in self.context['images']:
+            print(item.id)
+            if int(item.id) == int(image_id):
+                print('reach it')
+                picture_object = item
+                rating = RatePhoto(
+                    user=request.user,
+                    picture=picture_object,
+                    rating=rate,
+                    good=good
+                )
+                rating.save()
+                self.rated_previously.append(item.id)
+        print(RatePhoto.objects.all())
+        user = request.user
+
+        self.context['rated'] = self.rated_previously
+        # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
+        self.context['rating'] = 5
+        return render(request, self.template_name, self.context)
 
 
 class ProductPage(View):
@@ -295,6 +369,12 @@ class ProductPage(View):
                 image.target_good = good
                 image.save()
                 img = image.file.url
+                images = Picture.objects.filter(target_good=good)
+                context['images'] = images[0], images[1], images[2]
+            else:
+                images = Picture.objects.filter(target_good=good)
+                context['images'] = images[0], images[1], images[2]
+            print(context['images'])
             context['img'] = img
             context['img_id'] = request.GET.get('image')
             context['positives'] = response['positives']
@@ -320,10 +400,10 @@ class ProductPage(View):
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
 
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
@@ -398,7 +478,7 @@ class AddProductPage(View):
         good = GoodsOnModeration(
             name=request.POST.get('name'),
             image=Picture.objects.get(id=request.GET.get('image')).file,
-            user=request.user,
+            user=request.user
         )
         response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
                                 files={'file': good.image.file},
@@ -483,6 +563,7 @@ class CategoryView(TemplateView):
             context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                                '{}'.format(context['category']),
                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            print(context['children'])
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
@@ -682,8 +763,7 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 picture_object.save()
                 new_picture = Picture(file=picture_object.image,
                                       user=picture_object.user,
-                                      target_good=picture_object.target_good,
-                                      hash=imagehash.average_hash(Image.open(request.FILES['file']))
+                                      target_good=picture_object.target_good
                                       )
                 new_picture.save()
         except Exception:

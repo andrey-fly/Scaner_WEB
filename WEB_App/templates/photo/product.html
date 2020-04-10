@@ -13,222 +13,268 @@
             width: auto;
         }
     }
+    @media only screen and (max-width: 1275px) {
+        #content-block {
+            flex-wrap: wrap !important;
+        }
+    }
+
+#gallery_01 img {
+    border: 2px solid white;
+}
+
+/*Change the colour*/
+.active img {
+    border: 2px solid #333 !important;
+}
 
 
 </style>
 {% endblock %}
 {% block content %}
 <div style="display: flex; flex-wrap: wrap;">
-    <div id="content-block">
+    <div id="content-block" style="flex-flow: row">
         <div id="photo-block-in-content-block">
-            <span class='zoom' id='ex1'>
-              <img class="image" src='{{img}}' alt='Image not found'>
-            </span>
-        </div>
-        <label id="photo-load-label-in-photo-block">
-            <a href="/gallery/{{name}}">Посмотрите все фото продукта</a>
-        </label>
-        <label id="photo-load-label-in-photo-block">
-            <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
-               data-target="#exampleModal">Или загрузить новое фото</a>
-        </label>
+            <a class="elevatezoom-gallery active" href="#" data-image="{{images.0.file.url}}"
+               data-zoom-image="{{images.0.file.url}}" style=" margin-bottom: 10px">
+                <img style="width: 480px !important;" id="zoom_03" src="{{images.0.file.url}}"/>
+            </a>
+            <div id="gallery_01" style="width: 480px">
+                {% for image in images %}
+                <a class="elevatezoom-gallery" href="#" data-image="{{image.file.url}}"
+                   data-zoom-image="{{image.file.url}}">
+                    <img id="zoom_03" src="{{image.file.url}}" style="max-width:144px"/>
+                </a>
+                {% endfor %}
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document" style="max-width: 950px">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Добавьте ваше фото</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        {% if status == 'ok' %}
-                        <div class="card">
-                            <p>Фотография успешно отправлена на модерацию</p>
-                            <p>Вы можете добавить ещё одно фото</p>
-                            <a class="btn btn-outline-primary" href="/">Или вернуться на главную страницу</a>
+            </div>
+            <label id="photo-load-label-in-photo-block">
+                <a href="/gallery/{{name}}">Посмотрите все фото продукта</a>
+            </label>
+            <label id="photo-load-label-in-photo-block">
+                <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
+                   data-target="#exampleModal">Или загрузить новое фото</a>
+            </label>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document" style="max-width: 950px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Добавьте ваше фото</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        {% endif %}
-                        {% if status == 'error' %}
-                        <div class="card">
-                            <p style="color: darkred">При отправке на модерацию произошла ошибка</p>
-                            <p>Убедитесь в том, что вы отправили правильный файл и попробуйте снова</p>
-                            <a class="btn btn-outline-primary" href="/">Или вернитесь на главную страницу</a>
-                        </div>
-                        {% endif %}
-                        <form id="content-group" method="POST" action="" enctype="multipart/form-data">
-                            <div>
-                                {% csrf_token %}
-                                <input type="hidden" name="good_name" value="{{name}}">
-                                <div class="main-content-frame-in-content-group">
-                                    <p class="header-text-in-main-content-frame">
-                                        Добавьте вашу фотографию товара
-                                    </p>
-                                    <input id="file-input-for-label" type="file" accept="image/*" multiple
-                                           onchange="func_submit_btn();" name="image">
-                                    <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label"
-                                           style="border: none; margin: 0 auto;">
+                        <div class="modal-body">
+                            {% if status == 'ok' %}
+                            <div class="card">
+                                <p>Фотография успешно отправлена на модерацию</p>
+                                <p>Вы можете добавить ещё одно фото</p>
+                                <a class="btn btn-outline-primary" href="/">Или вернуться на главную страницу</a>
+                            </div>
+                            {% endif %}
+                            {% if status == 'error' %}
+                            <div class="card">
+                                <p style="color: darkred">При отправке на модерацию произошла ошибка</p>
+                                <p>Убедитесь в том, что вы отправили правильный файл и попробуйте снова</p>
+                                <a class="btn btn-outline-primary" href="/">Или вернитесь на главную страницу</a>
+                            </div>
+                            {% endif %}
+                            <form id="content-group" method="POST" action="" enctype="multipart/form-data">
+                                <div>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="good_name" value="{{name}}">
+                                    <div class="main-content-frame-in-content-group">
+                                        <p class="header-text-in-main-content-frame">
+                                            Добавьте вашу фотографию товара
+                                        </p>
+                                        <input id="file-input-for-label" type="file" accept="image/*" multiple
+                                               onchange="func_submit_btn();" name="image">
+                                        <label class="photo-load-button-in-main-content-frame btn-md"
+                                               for="file-input-for-label"
+                                               style="border: none; margin: 0 auto;">
                                             <span class="text-in-photo-load-button">
                                                 Загрузить фото
                                             </span>
-                                    </label>
+                                        </label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-outline-primary">Отправить на модерацию
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary">Отправить на модерацию</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="info-block-in-content-block">
-        <ol class="breadcrumb">
-            <!--                Молочные продукты > Сливочное масло-->
-            {% for category in categories %}
-            <li class="breadcrumb-item"><a href="/category/{{category}}">{{category}}</a></li>
-            {% endfor %}
-        </ol>
-        <p id="product-name-in-info-block">
-            {{name}}
-        </p>
-        <div id="score-block-in-info-block">
-            <!--                Like or unlike block-->
-            <div id="recommendation-block-in-score-block">
-                <img src="{% static 'pics/like.svg'%}" id="image-recommendation-in-recommendation-block">
-                <p id="text-recommendation-in-recommendation-block">
-                    Можно брать
-                </p>
-            </div>
-            <!--                Score in number block-->
-            <div id="numbered-score-block-in-score-block">
-                <div id="numbered-score-figure-in-numbered-score-block">
-                    <label id="score-number-in-numbered-score-figure">
-                        {{points}}
-                    </label>
-                </div>
-                <p id="numbered-score-description-in-numbered-score-block">
-                    Оценка Росконтроль
-                </p>
-            </div>
-        </div>
-        <div id="adv-list-block-in-info-block">
-            <p id="adv-list-name-in-adv-list-block">Достоинства</p>
-            <ul id="adv-list-in-adv-list-block">
-                {% if positives %}
-                {% for positive in positives %}
-                <li><em>+</em><span>{{positive}}</span></li>
+        <div id="info-block-in-content-block" style="margin-top: 15px;">
+            <ol class="breadcrumb">
+                <!--                Молочные продукты > Сливочное масло-->
+                {% for category in categories %}
+                <li class="breadcrumb-item"><a href="/category/{{category}}">{{category}}</a></li>
                 {% endfor %}
-                {% else %}
-                <li><em>+</em><span>Отсутствуют</span></li>
-                {% endif %}
-                <!--                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>-->
-                <!--                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>-->
-                <!--                    <li><em>+</em><span>Соответствует указанной в маркировке массовой доле жира</span></li>-->
-                <!--                    <li><em>+</em><span>Не содержит немолочного жира</span></li>-->
-                <!--                    <li><em>+</em><span>Безопасное</span></li>-->
-            </ul>
-        </div>
-        <div id="disadv-list-block-in-info-block">
-            <p id="disadv-list-name-in-adv-list-block">Недостатки</p>
-            <ul id="disadv-list-in-adv-list-block">
-                {% if negatives %}
-                {% for negative in negatives %}
-                <li><em>–</em><span>{{negative}}</span></li>
-                {% endfor %}
-                {% else %}
-                <li><em>–</em><span>Отсутствуют</span></li>
-                {% endif %}
-            </ul>
+            </ol>
+            <p id="product-name-in-info-block">
+                {{name}}
+            </p>
+            <div id="score-block-in-info-block">
+                <!--                Like or unlike block-->
+                <div id="recommendation-block-in-score-block">
+                    <img src="{% static 'pics/like.svg'%}" id="image-recommendation-in-recommendation-block">
+                    <p id="text-recommendation-in-recommendation-block">
+                        Можно брать
+                    </p>
+                </div>
+                <!--                Score in number block-->
+                <div id="numbered-score-block-in-score-block">
+                    <div id="numbered-score-figure-in-numbered-score-block">
+                        <label id="score-number-in-numbered-score-figure">
+                            {{points}}
+                        </label>
+                    </div>
+                    <p id="numbered-score-description-in-numbered-score-block">
+                        Оценка Росконтроль
+                    </p>
+                </div>
+            </div>
+            <div id="adv-list-block-in-info-block">
+                <p id="adv-list-name-in-adv-list-block">Достоинства</p>
+                <ul id="adv-list-in-adv-list-block">
+                    {% if positives %}
+                    {% for positive in positives %}
+                    <li><em>+</em><span>{{positive}}</span></li>
+                    {% endfor %}
+                    {% else %}
+                    <li><em>+</em><span>Отсутствуют</span></li>
+                    {% endif %}
+                    <!--                    <li><em>+</em><span>Хорошие органолептические показатели</span></li>-->
+                    <!--                    <li><em>+</em><span>Соответствует наименованию "сливочное масло"</span></li>-->
+                    <!--                    <li><em>+</em><span>Соответствует указанной в маркировке массовой доле жира</span></li>-->
+                    <!--                    <li><em>+</em><span>Не содержит немолочного жира</span></li>-->
+                    <!--                    <li><em>+</em><span>Безопасное</span></li>-->
+                </ul>
+            </div>
+            <div id="disadv-list-block-in-info-block">
+                <p id="disadv-list-name-in-adv-list-block">Недостатки</p>
+                <ul id="disadv-list-in-adv-list-block">
+                    {% if negatives %}
+                    {% for negative in negatives %}
+                    <li><em>–</em><span>{{negative}}</span></li>
+                    {% endfor %}
+                    {% else %}
+                    <li><em>–</em><span>Отсутствуют</span></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-<div id="comment-main-block">
-    <div id="add-comment-block">
-        <fieldset id="rating">
-            {% if not rated %}
-            <legend class="rating_caption"> Ваша оценка:</legend>
-            <div class="rating_group">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <span class="my-rating-9"></span>
-                    <span class="live-rating"></span>
-                    <input id="rate" type="hidden" value="0" name="rating">
-                    <button type="submit" class="btn btn-outline-primary ml-3">Оценить</button>
-                </form>
-                {% else %}
-                <p>Средняя оценка всеми пользователями:</p>
-                <div style="display: inline-flex">
-                    <span class="my-rating-9"></span>
-                    <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+    <div id="comment-main-block">
+        <div id="add-comment-block">
+            <fieldset id="rating">
+                {% if not rated %}
+                <legend class="rating_caption"> Ваша оценка:</legend>
+                <div class="rating_group">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <span class="my-rating-9"></span>
+                        <span class="live-rating"></span>
+                        <input id="rate" type="hidden" value="0" name="rating">
+                        <button type="submit" class="btn btn-outline-primary ml-3">Оценить</button>
+                    </form>
+                    {% else %}
+                    <p>Средняя оценка всеми пользователями:</p>
+                    <div style="display: inline-flex">
+                        <span class="my-rating-9"></span>
+                        <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+                    </div>
                 </div>
                 {% endif %}
-            </div>
-        </fieldset>
-        <form action="/product/{{name}}/?image={{img_id}}" method="post">
-            {% csrf_token %}
-            <h1>Прокомментируйте:</h1>
-            <textarea id="example" name="comment" placeholder="Описание" required
-                      style="transition: height 0.2s;width: auto !important; border-radius: 8px"></textarea>
-            <div>
-                <input type="submit" class="btn btn-outline-primary btn-md"
-                       name="status" value="Отправить"
-                       style="margin-top: 5px"/>
-            </div>
-        </form>
-    </div>
-    <div id="comment-list-block">
-        {% for comment in comments %}
-        <div id="comment-block">
-            <div id="comment-head-block">
-                <p>Пользователь: {{comment.user}}(Создано {{comment.created}})</p>
-                <p id="comment-text" style="margin-left: 15px;">{{comment.text}}</p>
-            </div>
-
-            {% for sub_comment in comment.get_children %}
-            <div id="sub_comment-block">
-                <div id="sub_comment-head-block">
-                    <p>Пользователь: {{sub_comment.user}}(Создано {{sub_comment.created}})</p>
-                </div>
-                <p style="margin-left: 15px;">{{sub_comment.text}}</p>
-            </div>
-            {% endfor %}
+            </fieldset>
             <form action="/product/{{name}}/?image={{img_id}}" method="post">
                 {% csrf_token %}
-                <h1>Ответить:</h1>
-                <input type="hidden" value="{{comment.id}}" name="comment_id">
-                <textarea id="example" name="response-to-comment" placeholder="Описание" required
-                          style="transition: height 0.2s;width: auto !important;"></textarea>
+                <h1>Прокомментируйте:</h1>
+                <textarea id="example" name="comment" placeholder="Описание" required
+                          style="transition: height 0.2s;width: auto !important; border-radius: 8px"></textarea>
                 <div>
                     <input type="submit" class="btn btn-outline-primary btn-md"
                            name="status" value="Отправить"
-                           style="margin-top: 5px;"/>
+                           style="margin-top: 5px"/>
                 </div>
             </form>
         </div>
-        {% endfor %}
+        <div id="comment-list-block">
+            {% for comment in comments %}
+            <div id="comment-block">
+                <div id="comment-head-block">
+                    <p>Пользователь: {{comment.user}}(Создано {{comment.created}})</p>
+                    <p id="comment-text" style="margin-left: 15px;">{{comment.text}}</p>
+                </div>
+
+                {% for sub_comment in comment.get_children %}
+                <div id="sub_comment-block">
+                    <div id="sub_comment-head-block">
+                        <p>Пользователь: {{sub_comment.user}}(Создано {{sub_comment.created}})</p>
+                    </div>
+                    <p style="margin-left: 15px;">{{sub_comment.text}}</p>
+                </div>
+                {% endfor %}
+                <form action="/product/{{name}}/?image={{img_id}}" method="post">
+                    {% csrf_token %}
+                    <h1>Ответить:</h1>
+                    <input type="hidden" value="{{comment.id}}" name="comment_id">
+                    <textarea id="example" name="response-to-comment" placeholder="Описание" required
+                              style="transition: height 0.2s;width: auto !important;"></textarea>
+                    <div>
+                        <input type="submit" class="btn btn-outline-primary btn-md"
+                               name="status" value="Отправить"
+                               style="margin-top: 5px;"/>
+                    </div>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-<script src="{% static 'js/jquery.zoom.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script src="{% static 'js/jquery.autosize.js' %}"></script>
 <script>
-$('#ex1').zoom({
-    magnify: 1
+$(document).ready(function () {
+    $("#zoom_03").ezPlus({
+        constrainType: 'height',
+        constrainSize: 274,
+        zoomType: 'lens',
+        containLensZoom: true,
+        gallery: 'gallery_01',
+        cursor: 'pointer',
+        galleryActiveClass: 'active',
+        scrollZoom: true,
+        lensFadeIn: 500,
+        lensFadeOut: 500,
+    });
+    $("#zoom_03").bind("click", function (e) {
+        var ez = $('#zoom_03').data('ezPlus');
+        $.fancyboxPlus(ez.getGalleryList());
+        return false;
+    });
 });
+
 $(document).ready(function(){
     $('textarea').autosize();
 });
+
 $('#example').val('').trigger('autosize.resize');
+
 let rate = document.getElementById('rate')
+
 $(".my-rating-9").starRating({
     starSize: 25,
     {% if not rated %}
@@ -254,6 +300,8 @@ if ({{rated}} <= 3.5)
 else
     $('#average').css('color', '#10c46a');
 {% endif %}
+
+
 </script>
 
 {% endblock %}

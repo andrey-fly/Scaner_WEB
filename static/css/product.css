@@ -653,7 +653,8 @@ Comments
     border: none;
 }
 
-#rating_caption{
+.rating_caption{
+    color: #fff;
     margin-bottom: 0.5em;
     padding: 0;
 }
