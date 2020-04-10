@@ -105,9 +105,12 @@
 {% endblock %}
 {% block extra_js %}
 <script>
-    if (!$('.card-body > p').last().html()) {
-        $('.card-body > p').last().html('Товар с баркодом')
-        $('.card-body > p').last().css('color', 'red')
+let data = $('.card-body > p')
+for (item of data) {
+    if (!item.innerHTML) {
+       item.innerHTML = 'Товар с баркодом'
+       item.style.color = 'red'
     }
+}
 </script>
 {% endblock %}
