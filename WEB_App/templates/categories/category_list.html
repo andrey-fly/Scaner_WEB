@@ -48,9 +48,11 @@
     <h5 class="text-wrap p-5">Image not found</h5>
     {%endif%}
     <div class="card-body">
-        <h5 class="card-title text-center">{{good.name}}</h5>
-        <a href="/product/{{good.name}}/" class="btn btn-primary">Перейти</a>
-
+        {% for image in images %}
+        {% if image.0.target_good == good.name %}
+        <h5 class="card-title text-center"><a href="/product/{{good.name}}/?image={{ image.0.id }}" style="font-size: inherit">{{good.name}}</a></h5>
+        {% endif %}
+        {% endfor %}
         {% if user.is_superuser %}
         {% include '../modals_for_admin/edit_good.html' %}
         {% include '../modals_for_admin/edit_positives.html' %}

@@ -629,10 +629,15 @@ class CategoryView(TemplateView):
             context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                                '{}'.format(context['category']),
                                                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-            print(context['children'])
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            data = context['goods']
+            temporary = []
+            for item in data:
+                images = Picture.objects.filter(target_good=item['name']).distinct('target_good')
+                temporary.append(images)
+            context['images'] = temporary
 
             if request.user.is_superuser:
                 context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
