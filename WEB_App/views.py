@@ -436,10 +436,10 @@ class ProductPage(View):
                 image.save()
                 context['default_img'] = img
                 img = image.file.url
-                images = Picture.objects.filter(target_good=good)[:3]
+                images = Picture.objects.filter(target_good=good)[:2]
                 context['images'] = images
             else:
-                images = Picture.objects.filter(target_good=good)[:3]
+                images = Picture.objects.filter(target_good=good)[:2]
                 context['images'] = images
             print(context['images'])
             context['img'] = img
