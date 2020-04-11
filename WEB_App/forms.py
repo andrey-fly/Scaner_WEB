@@ -110,7 +110,6 @@ class BarcodeForm(forms.Form):
         'id': 'inputBarcode',
         'placeholder': " ",
         'aria-describedby': 'question-barcode',
-        'pattern': '^[0-9]{11,15}'
     }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:
