@@ -35,11 +35,15 @@
 <div style="display: flex; flex-wrap: wrap;">
     <div id="content-block" style="flex-flow: row">
         <div id="photo-block-in-content-block">
-            <a class="elevatezoom-gallery active" href="#" data-image="{{images.0.file.url}}"
-               data-zoom-image="{{images.0.file.url}}" style=" margin-bottom: 10px">
-                <img style="width: auto; height: 274px; max-width: " id="zoom_03" src="{{images.0.file.url}}"/>
+            <a class="elevatezoom-gallery active" href="#" data-image="{{img}}"
+               data-zoom-image="{{img}}" style=" margin-bottom: 10px">
+                <img style="width: auto; height: 274px; max-width: " id="zoom_03" src="{{img}}"/>
             </a>
             <div id="gallery_01" style="width: 480px">
+                <a class="elevatezoom-gallery" href="#" data-image="{{img}}"
+                   data-zoom-image="{{img}}">
+                    <img id="zoom_03" src="{{img}}" style="max-width:144px"/>
+                </a>
                 {% for image in images %}
                 <a class="elevatezoom-gallery" href="#" data-image="{{image.file.url}}"
                    data-zoom-image="{{image.file.url}}">
