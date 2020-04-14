@@ -1,6 +1,6 @@
 # Created by https://www.gitignore.io/api/venv,linux,macos,django,python,images,android,windows,database,pycharm+all
 # Edit at https://www.gitignore.io/?templates=venv,linux,macos,django,python,images,android,windows,database,pycharm+all
-
+.vscode/
 ### Android ###
 # Built application files
 *.apk

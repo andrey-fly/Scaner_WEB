@@ -23,18 +23,39 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse
 
 
-def signup(request):
+def sign_in(request):
+    context = {}
+    reg_form = UserRegistrationForm()
+    errors = []
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password2'])
-            new_user.save()
-            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, 'main/index.html', {'username': user_form.data['username']})
-    else:
-        user_form = UserRegistrationForm()
-    return render(request, 'registration/registration.html', {'user_form': user_form})
+        if request.POST.get('status') == 'SignUp':
+            reg_form = UserRegistrationForm(request.POST)
+            if reg_form.is_valid():
+                new_user = reg_form.save(commit=False)
+                new_user.set_password(reg_form.cleaned_data['password2'])
+                new_user.save()
+                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingUp')
+                return redirect('/')
+        if request.POST.get('status') == 'SignIn':
+            identification = request.POST.get('identification')
+            password = request.POST.get('password')
+            user = None
+            if User.objects.filter(username=identification):
+                user = User.objects.get(username=identification)
+            elif User.objects.filter(email=identification):
+                user = User.objects.get(email=identification)
+            if user is None:
+                errors.append('Пользователь не найден!')
+            elif user.check_password(password) is False:
+                errors.append('Неправильный пароль!')
+            else:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingIn')
+                return redirect('/')
+    context['reg_form'] = reg_form
+    context['login_errors'] = errors
+    return render(request, 'registration/login.html', context)
 
 
 def recovery_password(request):
@@ -158,7 +179,7 @@ def change_info(request):
 
 
 def index(request):
-    context = {'data': datetime.now()}
+    context = {'data': datetime.now(), 'page': 'main'}
     reg_form = UserRegistrationForm()
     errors = []
     if request.method == 'POST':
@@ -187,6 +208,21 @@ def index(request):
         if request.FILES:
             if not request.user.is_authenticated:
                 context['show_modal'] = 'true'
+                temporary = NotAuthUser(
+                    file=request.FILES['file']
+                )
+                temporary.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': temporary.file},
+                                        params={'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], temporary.id))
+                else:
+                    print('redirect')
+                    return redirect(to='add_user/?image={}'.format(temporary.id))
             else:
                 #TODO: проверять, есть ли уже такая картинка перед загрузкой
                 picture = Picture(
@@ -216,46 +252,172 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-class PhotoPage(TemplateView):
-    context = {}
+class AddUser(View):
+    template_name = 'registration/add_user.html'
+
+    def get(self, request):
+        context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
+                   'user_form': UserRegistrationForm, 'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
+        return render(request, self.template_name, context)
 
     def post(self, request):
-        picture = Picture(
-            user=request.user,
-            file=request.FILES['file'],
-        )
-        picture.save()
+        context = {}
+        reg_form = UserRegistrationForm(request.POST)
+        if reg_form.is_valid():
+            new_user = reg_form.save(commit=False)
+            new_user.set_password(reg_form.cleaned_data['password2'])
+            new_user.save()
+            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+            good = GoodsOnModeration(
+                name=request.POST.get('name'),
+                image=NotAuthUser.objects.get(id=request.GET.get('image')).file,
+                user=new_user
+            )
+            response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
+                                    files={'file': good.image.file},
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
 
-        response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                files={'file': picture.file},
-                                params={'user': request.user.id,
-                                        'platform': 'web'},
-                                headers={'Authorization': '{}'.format(API_TOKEN)}
-                                ).json()
+            if response['status'] == 'ok':
+                good.barcode = response['barcode']
+            good.save()
+        return redirect('/thanks/')
+        # return render(request, self.template_name, context)
 
-        if response['status'] == 'ok':
-            return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+
+class PhotoPage(TemplateView):
+    context = {}
+    context['modal_window'] = False
+    context['main_image'] = ''
+    template_name = 'photo/photo.html'
+
+    def post(self, request):
+        self.context['modal_window'] = False if request.POST.get('modal_check') == 'false' else True
+
+        # Страница без модального окна
+        if not self.context['modal_window']:
+            form = BarcodeForm()
+            self.context['form'] = form
+            picture = Picture(
+                user=request.user,
+                file=request.FILES['file'],
+            )
+            picture.save()
+            self.context['main_image'] = picture.file
+            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                    files={'file': picture.file},
+                                    params={'user': request.user.id,
+                                            'platform': 'web'},
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                                    ).json()
+
+            if response['status'] == 'ok':
+                return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+            else:
+                self.context['modal_window'] = True
+            return render(request, self.template_name, self.context)
+
+        # Страница с модальным окном
         else:
-            return redirect(to='/add_product/?image={}'.format(picture.id))
+            self.context['modal_window'] = False
+            form = BarcodeForm(request.POST)
+
+            # Пользователь отправил новый файл
+            if not ('barcode' in request.POST) or not (form.is_valid()):
+                picture = Picture(
+                    user=request.user,
+                    file=request.FILES['file'],
+                )
+                picture.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': picture.file},
+                                        params={'user': request.user.id,
+                                                'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                else:
+                    return redirect(to='/add_product/?image={}'.format(picture.id))
+
+            # Пользователь неверно ввёл баркод
+            elif not form.is_valid():
+                form = BarcodeForm()
+                self.context['form'] = form
+                self.context['form_errors'] = True
+
+            # Пользователь корректно ввёл баркод
+            else:
+                good = GoodsOnModeration(
+                    image=self.context['main_image'],
+                    user=request.user,
+                    barcode=request.POST.get('barcode')
+                )
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                # Обращение к api вызывает функцию класса GetByBarCode, которая не возвращает статус
+                # if response['status'] == 'ok':
+                #     good.name = response['name']
+
+                if response:
+                    good.name = response['name']
+                good.save()
+
+                return redirect('/thanks/')
+
+    def get(self, request):
+        self.context['modal_window'] = False
+        form = BarcodeForm()
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
 
 
 class GalleryPage(View):
     template_name = 'photo/gallery.html'
+    context = {}
+    rated_previously = []
 
     def get(self, request, good):
-        context = {'name': good}
+        self.context['name'] = good
         image_id = request.GET.get('image')
         if image_id:
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            self.context['images'] = images[1:]
 
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, good):
+        picture_object = None
+        rate = request.POST.get('rate')
+        image_id = request.POST.get('image_id')
+        for item in self.context['images']:
+            print(item.id)
+            if int(item.id) == int(image_id):
+                print('reach it')
+                picture_object = item
+                rating = RatePhoto(
+                    user=request.user,
+                    picture=picture_object,
+                    rating=rate,
+                    good=good
+                )
+                rating.save()
+                self.rated_previously.append(item.id)
+        print(RatePhoto.objects.all())
+        user = request.user
+
+        self.context['rated'] = self.rated_previously
+        # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
+        self.context['rating'] = 5
+        return render(request, self.template_name, self.context)
 
 
 class ProductPage(View):
@@ -276,7 +438,14 @@ class ProductPage(View):
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
+                context['default_img'] = img
                 img = image.file.url
+                images = Picture.objects.filter(target_good=good)[:1]
+                context['images'] = images
+            else:
+                images = Picture.objects.filter(target_good=good)[:2]
+                context['images'] = images
+            print(context['images'])
             context['img'] = img
             context['img_id'] = request.GET.get('image')
             context['positives'] = response['positives']
@@ -286,7 +455,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -301,10 +471,10 @@ class ProductPage(View):
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[1:]
+            context['images'] = images[0], images[1], images[2]
 
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
@@ -358,7 +528,8 @@ class ProductPage(View):
             context['comments'] = Comment.objects.filter(good=good)
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                    context['rated'] = str(
+                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
             except Exception as exc:
                 print(exc.args)
             return render(request, self.template_name, context)
@@ -466,6 +637,12 @@ class CategoryView(TemplateView):
             context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
                                             '{}'.format(context['category']),
                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            data = context['goods']
+            temporary = []
+            for item in data:
+                images = Picture.objects.filter(target_good=item['name']).distinct('target_good')
+                temporary.append(images)
+            context['images'] = temporary
 
             if request.user.is_superuser:
                 context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
@@ -661,9 +838,9 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 picture_object.status = 'Одобрено'
                 picture_object.save()
                 new_picture = Picture(file=picture_object.image,
-                        user=picture_object.user,
-                        target_good=picture_object.target_good
-                        )
+                                      user=picture_object.user,
+                                      target_good=picture_object.target_good
+                                      )
                 new_picture.save()
         except Exception:
             return render(request, '500.html')

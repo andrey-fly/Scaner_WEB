@@ -7,17 +7,17 @@ from WEB_App.models import Comment, ChildrenComment
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль',
-                               widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Пароль'}),
+                               widget=forms.PasswordInput(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Пароль'}),
                                min_length=8)
     password2 = forms.CharField(label='Повторите',
-                                widget=forms.PasswordInput(attrs={'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
+                                widget=forms.PasswordInput(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = User
         fields = ('username', 'email')
         widgets = {
-            'username': Input(attrs={'class': 'mb-2', 'placeholder': 'Имя'}),
-            'email': Input(attrs={'class': 'mb-2', 'placeholder': 'Почта'}),
+            'username': Input(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Имя'}),
+            'email': Input(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Почта'}),
         }
 
     def clean_password2(self):
@@ -104,6 +104,13 @@ class FileForm(forms.Form):
                                                          'aria-describedby': "inputGroupFileBtn"}))
 
 
+class BarcodeForm(forms.Form):
+    barcode = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputBarcode',
+        'placeholder': " ",
+        'aria-describedby': 'question-barcode',
+    }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment

@@ -1,25 +1,26 @@
 body {
     overflow-x: hidden !important;
 }
-.main-name {
-        font-size: 7vh;
-        font-style: normal;
-        font-weight: lighter;
-        line-height: 180%;
-        color: #000000;
-        font-family: Roboto-Regular;
-    }
 
-.section-name{
-        font-size: 5vh;
-        font-weight: bold;
-        line-height: 180%;
-        color: #888;
+.main-name {
+    font-size: 7vh;
+    font-style: normal;
+    font-weight: lighter;
+    line-height: 180%;
+    color: #000000;
+    font-family: Roboto-Regular;
 }
 
-.my-image{
-    height: 130px;
-    width: 130px;
+.section-name {
+    font-size: 5vh;
+    font-weight: bold;
+    line-height: 180%;
+    color: #888;
+}
+
+.my-image {
+    max-height: 130px;
+    max-width: 130px;
     margin: 0 auto;
 }
 
@@ -50,7 +51,7 @@ body {
     align-self: center;
 }
 
-#carouselProducts{
+#carouselProducts {
     width: 100%;
     max-width: 720px;
     height: auto;
@@ -72,10 +73,10 @@ body {
 }
 
 @media only screen and (max-width: 800px) {
-    #carouselProducts{
+    #carouselProducts {
         max-width: 480px;
     }
-    #carouselRates{
+    #carouselRates {
         max-width: 480px;
     }
     .photo {
@@ -84,16 +85,16 @@ body {
     .comment-scroll {
         max-width: 500px;
     }
-    .comment-card{
+    .comment-card {
         max-width: 480px;
     }
 }
 
 @media only screen and (max-width: 760px) {
-    #carouselProducts{
+    #carouselProducts {
         max-width: 240px;
     }
-    #carouselRates{
+    #carouselRates {
         max-width: 240px;
     }
     .photo {
@@ -102,28 +103,29 @@ body {
     .comment-scroll {
         max-width: 260px;
     }
-    .comment-card{
+    .comment-card {
         max-width: 240px;
     }
-    .ratingTitle{
+    .ratingTitle {
         display: none;
     }
-    .ratingText{
+    .ratingText {
         display: none;
     }
 }
 
-.special-container ~.card-title{
+.special-container~.card-title {
     text-align: center;
     color: #888;
     font-weight: bold !important;
     padding: 20px
 }
 
-.special-container ~.card-text {
+.special-container~.card-text {
     padding: 10px;
     color: #888;
-    font-size: 2rem;;
+    font-size: 2rem;
+    ;
 }
 
 .comment-card {
@@ -138,30 +140,30 @@ body {
     height: auto;
 }
 
-.comment-card-body > .date {
+.comment-card-body>.date {
     position: absolute;
     bottom: 10%;
 }
 
-.comment-card-body > .text {
+.comment-card-body>.text {
     margin-bottom: 25px;
 }
 
-.comment-card-body > .card-title {
+.comment-card-body>.card-title {
     color: #888;
     font-size: 32px;
 }
 
 .comment-scroll {
-    height:50vh;
+    height: 50vh;
     overflow-y: scroll;
-    padding:10px;
+    padding: 10px;
     margin: 0 auto;
     width: 740px;
 }
 
 .comment-image {
-    position:relative;
+    position: relative;
     width: 100%;
     max-width: 240px;
     height: auto;
@@ -170,6 +172,8 @@ body {
     background-position-x: 50%;
     background-position-y: 50%;
 }
+
+
 /*
 .rating-area {
 	overflow: hidden;
@@ -212,11 +216,9 @@ body {
 } */
 
 @media (max-width: 767px) {
-
     .main-name {
         font-size: 5vh;
     }
-
     .change-btn {
         width: 70%;
         position: static;
@@ -235,30 +237,27 @@ body {
         height: 50vh;
         position: relative;
     }
-
     .comment-card-body {
         position: relative;
         height: 50vh;
     }
     .comment-image {
-        position:relative;
+        position: relative;
         height: 20vh;
         background-repeat: no-repeat;
         background-size: cover;
         background-position-x: 50%;
         background-position-y: 50%;
     }
-
-    .comment-card-body > .card-title {
+    .comment-card-body>.card-title {
         color: #888;
         font-size: 20px;
     }
-
-    .comment-card-body > .card-text {
+    .comment-card-body>.card-text {
         color: #888;
         font-size: 18px;
     }
-    .comment-card-body > .date {
+    .comment-card-body>.date {
         position: relative;
         top: 10%;
     }
