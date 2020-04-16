@@ -358,10 +358,10 @@ class PhotoPage(TemplateView):
                 #     good.name = response['name']
 
                 if response:
-                    good.name = response['name']
+                    good.name = response[0]['name']
                 good.save()
 
-                return redirect('/thanks/')
+                return redirect(to='/product/{}'.format(response[0]['name']))
 
     def get(self, request):
         self.context['modal_window'] = False
