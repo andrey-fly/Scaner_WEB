@@ -258,27 +258,64 @@ class AddUser(View):
 
     def post(self, request):
         context = {}
-        reg_form = UserRegistrationForm(request.POST)
-        if reg_form.is_valid():
-            new_user = reg_form.save(commit=False)
-            new_user.set_password(reg_form.cleaned_data['password2'])
-            new_user.save()
-            login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-            good = GoodsOnModeration(
-                name=request.POST.get('name'),
-                image=NotAuthUser.objects.get(id=request.GET.get('image')).file,
-                user=new_user
-            )
-            response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
-                                    files={'file': good.image.file},
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}
-                                    ).json()
+        reg_form = UserRegistrationForm()
+        errors = []
+        if request.POST.get('status') == 'SignUp':
+            reg_form = UserRegistrationForm(request.POST)
+            if reg_form.is_valid():
+                new_user = reg_form.save(commit=False)
+                new_user.set_password(reg_form.cleaned_data['password2'])
+                new_user.save()
+                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+                good = GoodsOnModeration(
+                    name=request.POST.get('name'),
+                    image=NotAuthUser.objects.get(id=request.GET.get('image')).file,
+                    user=new_user
+                )
+                response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
+                                        files={'file': good.image.file},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
 
-            if response['status'] == 'ok':
-                good.barcode = response['barcode']
-            good.save()
-        return redirect('/thanks/')
-        # return render(request, self.template_name, context)
+                if response['status'] == 'ok':
+                    good.barcode = response['barcode']
+                good.save()
+                return redirect('/thanks/')
+            else:
+                context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
+                           'user_form': reg_form,
+                           'image': NotAuthUser.objects.get(id=request.GET.get('image')).id,
+                           'show_modal': False}
+                return render(request, self.template_name, context)
+
+        if request.POST.get('status') == 'SignIn':
+            identification = request.POST.get('identification')
+            password = request.POST.get('password')
+            user = None
+            if User.objects.filter(username=identification):
+                user = User.objects.get(username=identification)
+            elif User.objects.filter(email=identification):
+                user = User.objects.get(email=identification)
+            if user is None:
+                errors.append('Пользователь не найден!')
+            elif user.check_password(password) is False:
+                errors.append('Неправильный пароль!')
+            else:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                print('SingIn')
+                picture = Picture(
+                    user=user,
+                    file=NotAuthUser.objects.get(id=request.GET.get('image')).file,
+                )
+                picture.save()
+                return redirect(
+                    to='/add_product/?image={}'.format(picture.id))
+        context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
+                   'user_form': reg_form,
+                   'image': NotAuthUser.objects.get(id=request.GET.get('image')).id,
+                   'login_errors': errors,
+                   'show_modal': True}
+        return render(request, self.template_name, context)
 
 
 class PhotoPage(TemplateView):
