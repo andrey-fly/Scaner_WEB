@@ -383,10 +383,10 @@ class GalleryPage(View):
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            self.context['images'] = images[1:]
+            self.context['images'] = images
         else:
             images = Picture.objects.filter(target_good=good)
-            self.context['images'] = images[1:]
+            self.context['images'] = images
 
         return render(request, self.template_name, self.context)
 
@@ -436,10 +436,10 @@ class ProductPage(View):
                 image.save()
                 context['default_img'] = img
                 img = image.file.url
-                images = Picture.objects.filter(target_good=good)[:1]
+                images = Picture.objects.filter(target_good=good)[:3]
                 context['images'] = images
             else:
-                images = Picture.objects.filter(target_good=good)[:2]
+                images = Picture.objects.filter(target_good=good)[:3]
                 context['images'] = images
             print(context['images'])
             context['img'] = img
@@ -466,11 +466,11 @@ class ProductPage(View):
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
-            images = Picture.objects.filter(target_good=good)
-            context['images'] = images[0], images[1], images[2]
+            images = Picture.objects.filter(target_good=good)[:1]
+            context['images'] = images
         else:
-            images = Picture.objects.filter(target_good=good)
-            context['images'] = images[0], images[1], images[2]
+            images = Picture.objects.filter(target_good=good)[:1]
+            context['images'] = images
 
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')

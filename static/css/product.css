@@ -25,7 +25,7 @@ body {
 #content-block {
     display: flex;
     flex-wrap: wrap;
-    margin: 72px 0px;
+    margin: 15px 0px;
     flex-flow: column;
 }
 
@@ -37,7 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-right: 72px;
-    margin-left: 20px;
+    margin-left: 10px;
 
     /* position: static;
     width: 360px; */
