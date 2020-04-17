@@ -7,6 +7,14 @@
 
 {% block extra_css%}
 <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css'%}">
+<style>
+    .btn-back {
+        margin: 30px auto;
+        width: 200px;
+        font-size: 1.5rem;
+        display: block;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -76,8 +84,14 @@
 {% endif %}
 
 </div>
+<button type="button" class="btn btn-outline-primary btn-lg btn-back" onclick="go_back();"><span class="text-center">Назад</span></button>
 
 {% endblock %}
 
 {% block extra_js%}
+<script>
+    function go_back(){
+        window.location.replace("{{prev}}");
+    }
+</script>
 {% endblock %}

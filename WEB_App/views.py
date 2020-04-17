@@ -662,8 +662,16 @@ class AcceptPage(PermissionRequiredMixin, View):
 
 
 class CategoryView(TemplateView):
+    prev_category = ''
+
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+
+        # Этот код для кнопки перехода "назад" работает только при последовательном переходе к товару
+        # (в обратную сторону не работает, зацикливает переход)
+        context['prev'] = '/category/' + CategoryView.prev_category
+        CategoryView.prev_category = context['category']
+
         try:
             context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                                '{}'.format(context['category']),
@@ -695,6 +703,8 @@ class CategoryView(TemplateView):
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
+        context['prev'] = '/category/' + CategoryView.prev_category
+        CategoryView.prev_category = context['category']
         payload = {}
         image = request.FILES.get('image')
 
