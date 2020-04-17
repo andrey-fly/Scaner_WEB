@@ -367,7 +367,7 @@
                 <p>Средняя оценка всеми пользователями:</p>
                 <div style="display: inline-flex">
                     <span class="my-rating-9"></span>
-                    <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+                    <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{%if rated%}{{rated}}{%else%}0{%endif%}</p>
                 </div>
             </div>
         </fieldset>

@@ -90,3 +90,4 @@ class RatePhoto(models.Model):
 class NotAuthUser(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+    target_good = models.TextField(verbose_name='Товар', null=True)
