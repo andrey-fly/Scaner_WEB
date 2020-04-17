@@ -497,17 +497,17 @@ class ProductPage(View):
             return render(request, '404.html', context)
 
     def post(self, request, good):
-        context = {'name': good, 'img_id': request.GET.get('image')}
+        context = {'name': good, 'img_id': request.GET.get('image'), 'show_thanks': False}
         image_id = request.GET.get('image')
         if image_id:
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[0], images[1], images[2]
+            context['images'] = images
         else:
             images = Picture.objects.filter(target_good=good)
-            context['images'] = images[0], images[1], images[2]
+            context['images'] = images
 
         images = request.FILES.getlist('image')
         target_good = request.POST.get('good_name')
@@ -537,6 +537,7 @@ class ProductPage(View):
                 for image in images:
                     PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
                 context['status'] = 'ok'
+                context['show_thanks'] = True
             else:
                 context['status'] = 'error'
 
