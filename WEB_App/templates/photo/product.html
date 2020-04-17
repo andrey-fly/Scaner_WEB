@@ -36,8 +36,8 @@
 {% endblock %}
 {% block content %}
 <div style="display: flex; flex-wrap: wrap;">
-    <div id="content-block" style="flex-flow: column">
-        <div style="display: flex; flex-wrap: wrap">
+    <div id="content-block" style="flex-flow: column; margin: 10px auto;">
+        <div style="display: flex; flex-flow: column">
             <div id="photo-block-in-content-block" style="max-width: calc(100vw - 20px); width: 480px">
                 {% if default_img %}
                 <a id="zoom" href="{{default_img}}" class="MagicZoom"
@@ -125,7 +125,7 @@
         </label>
         {% endif %}
     </div>
-    <div id="info-block-in-content-block" style="margin-top: 15px; max-width: calc(100vw - 10px);">
+    <div id="info-block-in-content-block" style="margin: 15px auto; max-width: calc(100vw - 10px);">
         <ol class="breadcrumb">
             <!--                Молочные продукты > Сливочное масло-->
             {% for category in categories %}
