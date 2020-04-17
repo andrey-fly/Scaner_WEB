@@ -30,6 +30,12 @@
                             <span class="i-text">Товары</span>
                         </a>
                     </li>
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="/photo">
+                            <i class="fas fa-search"></i>
+                            <span class="i-text">Найдите товар</span>
+                        </a>
+                    </li>
                     {% if not user.is_authenticated %}
                     <li class="nav-item float-right">
                         {% if page == 'main' %}
@@ -42,13 +48,8 @@
                             <span class="i-text">Вход</span>
                         </a>
                     </li>
-                    {% endif %} {% if user.is_authenticated %}
-                    <li class="nav-item float-right">
-                        <a class="nav-link" href="/photo">
-                            <i class="fas fa-search"></i>
-                            <span class="i-text">Найдите товар</span>
-                        </a>
-                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user"></i>
