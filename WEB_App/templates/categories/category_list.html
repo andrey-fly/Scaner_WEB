@@ -36,7 +36,7 @@
 
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="action" value="category_delete">
                 <input type="hidden" name="category_id" value="{{category.id}}">
                 <input name="type" value="category" type="hidden">
                 <button type="submit" class="btn btn-block btn-outline-danger mt-3">Удалить</button>

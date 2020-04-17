@@ -754,9 +754,9 @@ class CategoryView(TemplateView):
         CategoryView.prev_category = context['category']
         payload = {}
         image = request.FILES.get('image')
+        category_id = request.POST.get('category_id')
 
         if request.POST.get('type') == 'category':
-            category_id = request.POST.get('category_id')
             payload['name'] = request.POST.get('new_name')
             payload['url_name'] = request.POST.get('new_url')
             payload['parent'] = request.POST.get('parent')
@@ -764,10 +764,25 @@ class CategoryView(TemplateView):
             url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
             try:
-                if request.POST.get('action') == 'delete':
+                if request.POST.get('action') == 'category_delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
-                elif request.POST.get('action') == 'change':
+                elif request.POST.get('action') == 'category_change':
                     requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                elif request.POST.get('action') == 'add_good':
+                    payload['category'] = request.POST.get('category_id')
+                    payload['barcode'] = request.POST.get('barcode')
+                    payload['points_rusControl'] = request.POST.get('points_rusControl')
+                    requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
+                                  files={'file': image}, data=payload, headers=API_HEADERS)
+                elif request.POST.get('action') == 'create_category':
+                    payload['url_name'] = request.POST.get('url_name')
+                    payload['parent'] = request.POST.get('parent') or None
+                    image = request.FILES.get('image') or None
+                    try:
+                        requests.post('http://api.scanner.savink.in/api/v1/category/create/',
+                                      files={'file': image}, data=payload, headers=API_HEADERS)
+                    except ValueError:
+                        return render(request, self.template_name, context)
             except ValueError:
                 return render(request, self.template_name, context)
 
@@ -782,29 +797,10 @@ class CategoryView(TemplateView):
             try:
                 if request.POST.get('action') == 'delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
-                elif request.POST.get('action') == 'change':
+                elif request.POST.get('action') == 'edit_good':
                     requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
             except ValueError:
                 return render(request, self.template_name, context)
-
-        elif request.POST.get('type') == 'create_category':
-            payload['name'] = request.POST.get('name')
-            payload['url_name'] = request.POST.get('url_name')
-            payload['parent'] = request.POST.get('parent') or None
-            image = request.FILES.get('image') or None
-            try:
-                requests.post('http://api.scanner.savink.in/api/v1/category/create/',
-                              files={'file': image}, data=payload, headers=API_HEADERS)
-            except ValueError:
-                return render(request, self.template_name, context)
-
-        elif request.POST.get('type') == 'add_good':
-            payload['name'] = request.POST.get('new_name')
-            payload['category'] = request.POST.get('category_id')
-            payload['barcode'] = request.POST.get('barcode')
-            payload['points_rusControl'] = request.POST.get('points_rusControl')
-            requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
-                          files={'file': image}, data=payload, headers=API_HEADERS)
 
         elif request.POST.get('type') == 'positive':
             payload['value'] = request.POST.get('positive')
@@ -880,18 +876,17 @@ class CategoryFirstPageView(TemplateView):
         url = 'http://api.scanner.savink.in/api/v1/category/detail/{}/'.format(category_id)
 
         try:
-            if request.POST.get('type') == 'delete':
+            if request.POST.get('action') == 'category_delete':
                 requests.request("DELETE", url, headers=API_HEADERS)
-            elif request.POST.get('type') == 'change':
+            elif request.POST.get('action') == 'category_change':
                 requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
-            elif request.POST.get('type') == 'add_good':
+            elif request.POST.get('action') == 'add_good':
                 payload['category'] = request.POST.get('category_id')
                 payload['barcode'] = request.POST.get('barcode')
                 payload['points_rusControl'] = request.POST.get('points_rusControl')
                 requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
                               files={'file': image}, data=payload, headers=API_HEADERS)
-            elif request.POST.get('type') == 'create_category':
-                payload['name'] = request.POST.get('name')
+            elif request.POST.get('action') == 'create_category':
                 payload['url_name'] = request.POST.get('url_name')
                 payload['parent'] = request.POST.get('parent') or None
                 image = request.FILES.get('image') or None
