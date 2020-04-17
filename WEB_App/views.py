@@ -251,10 +251,11 @@ def index(request):
                         return redirect(to='/add_product/?image={}'.format(picture.id))
                 else:
                     # TODO: здесь можно передать значение true для всплывающего окна (надпись: повторно загрузите фото)
-                    # context['show_modal'] = 'true'
-                    return redirect(to='/')
-                    # return redirect(to='/product/{}/?image={}'.format(str(picture.target_good),
-                    #                                                   hashes_list.index(hash_value)))
+                    picture = Picture.objects.get(hash=hash_value)
+                    if picture.target_good:
+                        return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                    else:
+                        context['show_modal'] = 'true'
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
