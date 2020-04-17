@@ -7,6 +7,14 @@
 
 {% block extra_css%}
 <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css'%}">
+<style>
+    .btn-back {
+        margin: 30px auto;
+        width: 200px;
+        font-size: 1.5rem;
+        display: block;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +23,7 @@
     {% for category in children %}
     <div class="card">
         {%if category.file%}
-        <img src="{{category.file}}" class="card-img-top" alt="{{category.name}}">
+        <a href="/category/{{category.url_name}}"><img src="{{category.file}}" class="card-img-top" alt="{{category.name}}"></a>
         {%else%}
         <h5 class="text-wrap p-5">Image not found</h5>
         {%endif%}
@@ -43,13 +51,13 @@
 {% for good in goods %}
 <div class="card">
     {%if good.file%}
-    <img src="{{good.file}}" class="card-img-top" alt="{{good.name}}">
+    <a href="/product/{{good.name}}/"><img src="{{good.file}}" class="card-img-top" alt="{{good.name}}"></a>
     {%else%}
     <h5 class="text-wrap p-5">Image not found</h5>
     {%endif%}
     <div class="card-body">
-        <h5 class="card-title text-center">{{good.name}}</h5>
-        <a href="/product/{{good.name}}/" class="btn btn-primary">Перейти</a>
+
+        <h5 class="card-title text-center"><a href="/product/{{good.name}}/" style="font-size: inherit">{{good.name}}</a></h5>
 
         {% if user.is_superuser %}
         {% include '../modals_for_admin/edit_good.html' %}
@@ -76,8 +84,14 @@
 {% endif %}
 
 </div>
+<button type="button" class="btn btn-outline-primary btn-lg btn-back" onclick="go_back();"><span class="text-center">Назад</span></button>
 
 {% endblock %}
 
 {% block extra_js%}
+<script>
+    function go_back(){
+        window.location.replace("{{prev}}");
+    }
+</script>
 {% endblock %}
