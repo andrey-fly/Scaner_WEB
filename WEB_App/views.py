@@ -233,25 +233,27 @@ def index(request):
                 )
                 hashes_list = list(Picture.objects.values_list('hash', flat=True))
                 hash_value = str(picture.hash)
-                if hash_value not in hashes_list:
-                    picture.save()
-                    response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                            files={'file': picture.file},
-                                            params={'user': request.user.id,
-                                                    'platform': 'web'},
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}
-                                            ).json()
 
-                    if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                for hash in hashes_list:
+                    if abs(hash - hash_value) > 15:
+                        picture.save()
+                        response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                                files={'file': picture.file},
+                                                params={'user': request.user.id,
+                                                        'platform': 'web'},
+                                                headers={'Authorization': '{}'.format(API_TOKEN)}
+                                                ).json()
+
+                        if response['status'] == 'ok':
+                            return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        else:
+                            return redirect(to='/add_product/?image={}'.format(picture.id))
                     else:
-                        return redirect(to='/add_product/?image={}'.format(picture.id))
-                else:
-                    picture = Picture.objects.get(hash=hash_value)
-                    if picture.target_good:
-                        return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
-                    else:
-                        context['show_modal'] = 'true'
+                        picture = Picture.objects.get(hash=hash_value)
+                        if picture.target_good:
+                            return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                        else:
+                            context['show_modal'] = 'true'
 
     context['reg_form'] = reg_form
     context['login_errors'] = errors
@@ -370,25 +372,26 @@ class PhotoPage(TemplateView):
                 )
                 hashes_list = list(Picture.objects.values_list('hash', flat=True))
                 hash_value = str(picture.hash)
-                if hash_value not in hashes_list:
-                    picture.save()
-                    response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                            files={'file': picture.file},
-                                            params={'user': request.user.id,
-                                                    'platform': 'web'},
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}
-                                            ).json()
+                for hash in hashes_list:
+                    if abs(hash - hash_value) > 15:
+                        picture.save()
+                        response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                                files={'file': picture.file},
+                                                params={'user': request.user.id,
+                                                        'platform': 'web'},
+                                                headers={'Authorization': '{}'.format(API_TOKEN)}
+                                                ).json()
 
-                    if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        if response['status'] == 'ok':
+                            return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        else:
+                            return redirect(to='/add_product/?image={}'.format(picture.id))
                     else:
-                        return redirect(to='/add_product/?image={}'.format(picture.id))
-                else:
-                    picture = Picture.objects.get(hash=hash_value)
-                    if picture.target_good:
-                        return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
-                    else:
-                        self.context['show_modal'] = 'true'
+                        picture = Picture.objects.get(hash=hash_value)
+                        if picture.target_good:
+                            return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                        else:
+                            context['show_modal'] = 'true'
 
         # Страница с модальным окном
         else:
