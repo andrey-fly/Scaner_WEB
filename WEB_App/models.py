@@ -35,7 +35,7 @@ class GoodsOnModeration(models.Model):
 class Picture(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     hash = models.TextField(verbose_name='Хэш фото', null=True)
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')

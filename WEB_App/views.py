@@ -231,13 +231,10 @@ def index(request):
                     file=request.FILES['file'],
                     hash=imagehash.average_hash(Image.open(request.FILES['file']))
                 )
-                # TODO: как обратиться к полю объекта без превращения ее в строчку? (нужно убрать костыль в условии)
                 hashes_list = list(Picture.objects.values_list('hash', flat=True))
                 hash_value = str(picture.hash)
                 if hash_value not in hashes_list:
                     picture.save()
-                    # print(Picture.objects.get(id=picture.id).hash)
-                    # print(list(Picture.objects.values_list('hash', flat=True)))
                     response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
                                             files={'file': picture.file},
                                             params={'user': request.user.id,
@@ -250,7 +247,6 @@ def index(request):
                     else:
                         return redirect(to='/add_product/?image={}'.format(picture.id))
                 else:
-                    # TODO: здесь можно передать значение true для всплывающего окна (надпись: повторно загрузите фото)
                     picture = Picture.objects.get(hash=hash_value)
                     if picture.target_good:
                         return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
@@ -346,24 +342,53 @@ class PhotoPage(TemplateView):
         if not self.context['modal_window']:
             form = BarcodeForm()
             self.context['form'] = form
-            picture = Picture(
-                user=request.user,
-                file=request.FILES['file'],
-            )
-            picture.save()
-            self.context['main_image'] = picture.file
-            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                    files={'file': picture.file},
-                                    params={'user': request.user.id,
-                                            'platform': 'web'},
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}
-                                    ).json()
 
-            if response['status'] == 'ok':
-                return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+            if not request.user.is_authenticated:
+                self.context['show_modal'] = 'true'
+                temporary = NotAuthUser(
+                    file=request.FILES['file']
+                )
+                temporary.save()
+                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                        files={'file': temporary.file},
+                                        params={'platform': 'web'},
+                                        headers={'Authorization': '{}'.format(API_TOKEN)}
+                                        ).json()
+
+                if response['status'] == 'ok':
+                    return redirect(to='/product/{}/?image={}'.format(response['good'], temporary.id))
+                else:
+                    print('redirect')
+                    return redirect(to='add_user/?image={}'.format(temporary.id))
+
             else:
-                self.context['modal_window'] = True
-            return render(request, self.template_name, self.context)
+
+                picture = Picture(
+                    user=request.user,
+                    file=request.FILES['file'],
+                    hash=imagehash.average_hash(Image.open(request.FILES['file']))
+                )
+                hashes_list = list(Picture.objects.values_list('hash', flat=True))
+                hash_value = str(picture.hash)
+                if hash_value not in hashes_list:
+                    picture.save()
+                    response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
+                                            files={'file': picture.file},
+                                            params={'user': request.user.id,
+                                                    'platform': 'web'},
+                                            headers={'Authorization': '{}'.format(API_TOKEN)}
+                                            ).json()
+
+                    if response['status'] == 'ok':
+                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                    else:
+                        return redirect(to='/add_product/?image={}'.format(picture.id))
+                else:
+                    picture = Picture.objects.get(hash=hash_value)
+                    if picture.target_good:
+                        return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                    else:
+                        self.context['show_modal'] = 'true'
 
         # Страница с модальным окном
         else:
