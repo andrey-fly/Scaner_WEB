@@ -360,6 +360,19 @@
     </div>
 </div>
 {% else %}
+<div id="comment-main-block">
+    <div id="add-comment-block">
+        <fieldset id="rating">
+            <div class="rating_group">
+                <p>Средняя оценка всеми пользователями:</p>
+                <div style="display: inline-flex">
+                    <span class="my-rating-9"></span>
+                    <p id="average" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
 <div style="display: flex; flex-direction: column; text-align: center; max-width: calc(100vw - 10px)">
     <a href="/login/">Если вы хотите оставить ваше мнение или оценку для продукта, не забудьте войти</a>
     <a href="/login/" class="btn btn-outline-primary" style="max-width: 240px; align-self: center">Или зарегестрироваться</a>
