@@ -11,55 +11,150 @@
             max-width: calc(100vw - 20px) !important;
         }
     }
+
+    #reg-input {
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 15px 0;
+        width: 100%;
+        border-radius: 3px;
+    }
+
+    .reg-form-info {
+        font-size: 1.2rem;
+        text-align: justify;
+    }
+
+    .reg-form{
+        text-align: center;
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .reg-form-button{
+        width: 220px;
+        margin-top: 10px;
+        padding: 15px 20px;
+        font-size: 13px;
+    }
+
+    .reg-form-error{
+        color: darkred;
+        text-align: left;
+    }
+
+    .reg-h{
+        padding: 10px;
+    }
+
+    .modal form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+    }
+
+    .modal-content-sign-in {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-clip: padding-box;
+        outline: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-sign-in-container {
+        left: 0;
+        z-index: 2;
+        margin: 0 auto;
+    }
+
+    .sign-in-container-modal {
+        position: relative;
+        overflow: hidden;
+        width: 768px;
+        max-width: 100%;
+        padding: 0 40px 20px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .modal-dialog-special {
+        position: relative;
+        width: auto;
+        pointer-events: none;
+    }
+
+    .modal-h1 {
+        margin-bottom: 20px;
+    }
+
+    .modal-header {
+        border-bottom: none !important;
+    }
+
+    .modal-error-text {
+        font-size: 20px;
+    }
+    @media (min-width: 576px){
+        .modal-dialog-special {
+            max-width: 500px;
+            margin: 20vh auto;
+        }
+    }
+    @media (max-width: 450px) {
+        .modal-form {
+            padding: 0 !important;
+        }
+        .reg-form {
+            width: 80%;
+        }
+    }
+
 </style>
 {% endblock %}
 {% block content %}
-<div style="text-align: center">
-    <p id="header-text-in-form">
-            Добавить продукт и зарегистрироваться
-        </p>
-    <p style="text-align: center; margin: 0 20px;">На этой странице вы можете отправить нашим модераторам название и
-                фотографию продукта, которого, скорее всего, наш сайт не смог опознать или
-                название которого не совпадает с настоящим.</p>
-    <div id="content-block" style="display: flex; flex-wrap: wrap">
-        <div id="mask-group-in-content-block" style="max-width: 720px; margin: 0 auto;">
-            <img src="{{img}}" id="photo-in-mask-group" style="max-width: inherit">
-            <!--                        <img src="{{img_url}}" id="photo-in-mask-group">-->
-        </div>
-<!--        <form id="product-name-form-in-content-group" action="" method="post" style="max-width: 360px">-->
-<!--            <div id="product-name-input-block">-->
-<!--                {% csrf_token %}-->
-
-<!--            </div>-->
-<!--            <button id="form-send-button-in-form" type="submit">-->
-<!--                <span id="text-in-form-send-button">-->
-<!--                    Отправить на модерацию-->
-<!--                </span>-->
-<!--            </button>-->
-<!--        </form>-->
-<!--    </div>-->
-    <div class="card mt-3 mb-3 border-primary"
-         style="width: 25%; min-width: 300px; margin: 0 auto;">
-        <div class="card-title text-center mt-3 mb-0">Регистрация</div>
-        <div class="card-body text-center ">
-            <div class="card-text">
-                <form action="/add_user/?image={{image}}" method="POST">
+<section class="section-md">
+    <div class="container">
+        <h3 id="header-text-in-form">Добавить продукт и зарегистрироваться</h3>
+        <div class="row row-30">
+            <div class="col-lg-6 col-md-6">
+                <img src="{{img}}" class="product-img">
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <p class="reg-form-info">На этой странице вы можете отправить нашим модераторам название и фотографию продукта,
+                    которого, скорее всего, наш сайт не смог опознать или название которого не совпадает с настоящим. </p>
+                <p class="reg-form-info">Для отправки товара на модерацию необходимо войти в аккаунт или зарегистрироваться.</p>
+                <button class="bt-ghost-in reg-form-button" type="button" data-toggle="modal" data-target="#sign-in-modal">Войти в аккаунт</button>
+                <hr>
+             <form class="reg-form" action="/add_user/?image={{image}}" method="POST">
+                    <h1 class="mb-2 reg-h">Регистрация</h1>
                     {% csrf_token %}
-                    <hr>
+
                     {% if user_form.errors %}
                     <div class="row mt-0">
                         {% if user_form.errors.password2 %}
-                        <div class="col-12">
+                        <div class="col-12 reg-form-error">
                             {{user_form.errors.password2}}
                         </div>
                         {%endif%}
                         {% if user_form.errors.username %}
-                        <div class="col-12">
+                        <div class="col-12 reg-form-error">
                             {{user_form.errors.username}}
                         </div>
                         {%endif%}
                         {% if user_form.errors.email %}
-                        <div class="col-12">
+                        <div class="col-12 reg-form-error">
                             {{user_form.errors.email}}
                         </div>
                         {%endif%}
@@ -67,40 +162,15 @@
                     {%endif%}
                     <div class="row mt-0">
                         <div class="col-12 text-center">
-                            {{user_form.username.label}}
-                        </div>
-                        <div class="col-12 text-center">
                             {{user_form.username}}
                         </div>
                     </div>
                     <div class="row mt-0">
                         <div class="col-12 text-center">
-                            {{user_form.first_name.label}}
-                        </div>
-                        <div class="col-12 text-center">
-                            {{user_form.first_name}}
-                        </div>
-                    </div>
-                    <div class="row mt-0">
-                        <div class="col-12 text-center">
-                            {{user_form.last_name.label}}
-                        </div>
-                        <div class="col-12 text-center">
-                            {{user_form.last_name}}
-                        </div>
-                    </div>
-                    <div class="row mt-0">
-                        <div class="col-12 text-center">
-                            {{user_form.email.label}}
-                        </div>
-                        <div class="col-12 text-center">
                             {{user_form.email}}
                         </div>
                     </div>
                     <div class="row mt-0">
-                        <div class="col-12 text-center">
-                            {{user_form.password.label}}
-                        </div>
                         <div class="col-12 text-center">
                             {{user_form.password}}
                         </div>
@@ -108,28 +178,69 @@
 
                     <div class="row mt-0">
                         <div class="col-12 text-center">
-                            {{user_form.password2.label}}
-                        </div>
-                        <div class="col-12 text-center">
                             {{user_form.password2}}
                         </div>
                     </div>
                     <div class="row mt-0">
                         <div class="col-12 text-center">
-                            Введите название продукта
-                        </div>
-                        <div class="col-12 text-center">
                             <input class="mt-3 mb-3" name="name" type="text" id="product-name-input" placeholder="Введите название продукта">
                         </div>
                     </div>
+                    <input type="hidden" value="SignUp" name="status">
                     <div class="row mt-0">
                         <div class="col-12 text-center">
-                            <button type="submit" style="border-radius: 15px" class="btn btn-outline-primary btn-md btn-block">Создать аккаунт</button>
+                            <button class="bt-ghost-in reg-form-button" type="submit">Создать аккаунт</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</section>
+
+<div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-special" role="document">
+    <div class="modal-content-sign-in">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="sign-in-container-modal">
+            <div class="modal-sign-in-container">
+                <form action="#" method="POST" class="modal-form">
+                    {% csrf_token %}
+                    <h1 class="modal-h1">Войти</h1>
+
+                    <div class="row mt-0">
+                    {% for error in login_errors %}
+                    <div class="col-12 reg-form-error">
+                        <p class="modal-error-text"><b>{{error}}</b></p>
+                    </div>
+                    {% endfor %}
+                    </div>
+
+                    <input class="mb-2" type="text" placeholder="Имя или почта" name="identification" required
+                           autofocus>
+                    <input class="mb-2" type="password" placeholder="Пароль" name="password" required>
+
+                    <input type="hidden" name="status" value="SignIn">
+                    <a href="/recovery_password">Забыли пароль?</a>
+                    <button class="bt-ghost-in" type="submit">Вход</button>
+                </form>
+            </div>
+      </div>
+    </div>
+    </div>
 </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if show_modal %}
+<script>
+    $('#sign-in-modal').modal('show');
+</script>
+{% endif %}
 {% endblock %}

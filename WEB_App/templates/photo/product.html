@@ -21,17 +21,101 @@
         }
     }
 
-<!--#gallery_01 img {-->
-<!--    border: 2px solid white;-->
-<!--}-->
+<!--    #gallery_01 img {-->
+<!--        border: 2px solid white;-->
+<!--    }-->
 
-<!--/*Change the colour*/-->
-<!--.active img {-->
-<!--    border: 2px solid #333 !important;-->
-<!--}-->
+<!--    /*Change the colour*/-->
+<!--    .active img {-->
+<!--        border: 2px solid #333 !important;-->
+<!--    }-->
 
+    .status-card {
+        padding: 20px;
+    }
 
+    .modal form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+    }
 
+    .modal-content-thanks {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-clip: padding-box;
+        outline: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-thanks-container {
+        left: 0;
+        z-index: 2;
+        margin: 0 auto;
+    }
+
+    .thanks-container-modal {
+        position: relative;
+        overflow: hidden;
+        width: 768px;
+        max-width: 100%;
+        padding: 0 40px 20px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .modal-dialog-special {
+        position: relative;
+        width: auto;
+        pointer-events: none;
+    }
+
+    .modal-header {
+        border-bottom: none !important;
+    }
+
+    .thanks-text {
+        font-family: Roboto-Regular;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 2rem;
+        line-height: 120%;
+        color: #007bff;
+        text-align: center;
+    }
+
+    #timer-description {
+        margin: 50px 0px 40px 0px;
+        text-align: center;
+        font-family: Roboto-Regular;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 120%;
+    }
+
+    @media (min-width: 576px){
+        .modal-dialog-special {
+            max-width: 500px;
+            margin: 20vh auto;
+        }
+    }
+    @media (max-width: 450px) {
+        .modal-form {
+            padding: 0 !important;
+        }
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -60,10 +144,9 @@
             </label>
             <label id="photo-load-label-in-photo-block">
                 <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
-                   data-target="#exampleModal">Или загрузить новое фото</a>
+                   data-target="#modal-add">Или загрузить новое фото</a>
             </label>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
+            <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document" style="max-width: 950px">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -74,14 +157,14 @@
                         </div>
                         <div class="modal-body">
                             {% if status == 'ok' %}
-                            <div class="card">
+                            <div class="card status-card">
                                 <p>Фотография успешно отправлена на модерацию</p>
                                 <p>Вы можете добавить ещё одно фото</p>
                                 <a class="btn btn-outline-primary" href="/">Или вернуться на главную страницу</a>
                             </div>
                             {% endif %}
                             {% if status == 'error' %}
-                            <div class="card">
+                            <div class="card status-card">
                                 <p style="color: darkred">При отправке на модерацию произошла ошибка</p>
                                 <p>Убедитесь в том, что вы отправили правильный файл и попробуйте снова</p>
                                 <a class="btn btn-outline-primary" href="/">Или вернитесь на главную страницу</a>
@@ -117,6 +200,29 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="thanksModal" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-special" role="document">
+                <div class="modal-content-thanks">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="thanks-container-modal">
+                        <div class="modal-thanks-container">
+                            <h2 class="thanks-text">Спасибо за ваше фото!</h2>
+                            <p id="timer-description">
+                                Окно закроется через <span id="timer">5</span> секунд...
+                            </p>
+                        </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
         </div>
         {% else %}
         <label id="photo-load-label-in-photo-block" style="text-align: center; margin: 5px;">
@@ -261,6 +367,40 @@
 {% endif %}
 {% endblock %}
 {% block extra_js %}
+
+<!--Не переставляйте код, он перестанет работать!-->
+
+<script>
+    function closeThanks(){
+        setTimeout(() => $("#thanksModal [data-dismiss=modal]").trigger({ type: "click" }), 1000)
+    };
+
+    $('#thanksModal').on('shown.bs.modal', function (e) {
+        i = 5;
+        var count = setInterval(function() {
+            document.getElementById("timer").innerHTML = i;
+            if (i == 0) {
+                closeThanks();
+            }
+            if (i > 0) {
+                i = i - 1;
+            }
+        }, 1000);
+    })
+</script>
+
+{% if show_thanks %}
+<script>
+        $('#thanksModal').modal('show');
+</script>
+{% endif %}
+
+{% if status == 'error' %}
+<script>
+    $('#add-modal').modal('show');
+</script>
+{% endif %}
+
 <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
 <!--<script type="text/javascript"-->
 <!--        src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>-->
@@ -310,7 +450,6 @@ var mzOptions = {
     hint: 'always'
 };
 
-
-
 </script>
+
 {% endblock %}
