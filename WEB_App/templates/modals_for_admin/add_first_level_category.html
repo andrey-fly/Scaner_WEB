@@ -18,21 +18,16 @@
                         {% csrf_token %}
                         <p>Добавить фото для категории</p>
                         <input type="file" accept="image/*" name="image">
-                        <input type="hidden" name="type" value="change">
-                        <input type="hidden" name="category_id" value="{{category.id}}">
-                        <!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
+                        <input type="hidden" name="type" value="category">
+                        <input type="hidden" name="action" value="create_category">
                     </div>
                     <div>
                         <p>Добавить название категории</p>
-                        <input type="text" placeholder="Новое навзание для категории"
-                               value="{{category.name}}" name="new_name">
-                        <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                        <input type="text" placeholder="Наименование" name="new_name">
                     </div>
                     <div>
                         <p>Добавить ссылку категории</p>
-                        <input type="text" placeholder="Новое навзание для категории"
-                               value="{{category.url_name}}" name="new_url">
-                        <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
+                        <input type="text" placeholder="Хвост ссылки" name="new_url">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

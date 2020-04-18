@@ -7,6 +7,14 @@
 
 {% block extra_css%}
 <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css'%}">
+<style>
+    .btn-back {
+        margin: 30px auto;
+        width: 200px;
+        font-size: 1.5rem;
+        display: block;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +36,7 @@
 
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="action" value="category_delete">
                 <input type="hidden" name="category_id" value="{{category.id}}">
                 <input name="type" value="category" type="hidden">
                 <button type="submit" class="btn btn-block btn-outline-danger mt-3">Удалить</button>
@@ -76,8 +84,14 @@
 {% endif %}
 
 </div>
+<button type="button" class="btn btn-outline-primary btn-lg btn-back" onclick="go_back();"><span class="text-center">Назад</span></button>
 
 {% endblock %}
 
 {% block extra_js%}
+<script>
+    function go_back(){
+        window.location.replace("{{prev}}");
+    }
+</script>
 {% endblock %}

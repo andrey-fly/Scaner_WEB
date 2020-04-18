@@ -13,30 +13,27 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/category/" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div>
                         {% csrf_token %}
                         <p>Поменять фото для категории</p>
                         <input type="file" accept="image/*" name="image">
-                        <input type="hidden" name="type" value="change">
+                        <input type="hidden" name="type" value="category">
+                        <input type="hidden" name="action" value="category_change">
                         <input type="hidden" name="category_id" value="{{category.id}}">
-                        <!--                                      <button type="" class="btn btn-outline-primary">Сменить фото</button>-->
                     </div>
                     <div>
                         <p>Поменять название категории</p>
-                        <input type="text" placeholder="Новое навзание для категории"
+                        <input type="text" placeholder="Новое название категории"
                                value="{{category.name}}" name="new_name">
-                        <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
                     </div>
                     <div>
                         <p>Поменять ссылку категории</p>
-                        <input type="text" placeholder="Новое навзание для категории"
+                        <input type="text" placeholder="Новый хвост ссылки"
                                value="{{category.url_name}}" name="new_url">
-                        <!--                                <button class="btn btn-outline-primary">Сменить название</button>-->
                     </div>
                     <div>
                         <p>Поменять родителя категории</p>
-                        <!--                                <input type="text" readonly value="генерить список детей">-->
                         <select name="parent" class="form-control form-control-sm ml-1 mt-2 row">
                             <option disabled selected>Select category</option>
                             {% for parent in categories %}

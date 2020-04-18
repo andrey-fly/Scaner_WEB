@@ -27,9 +27,9 @@
             {% include 'modals_for_admin/add_child_category.html' %}
             {% include 'modals_for_admin/add_good_in_category.html' %}
             {% include 'modals_for_admin/add_first_level_category.html' %}
-            <form action="/category/" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="hidden" name="type" value="delete">
+                <input type="hidden" name="action" value="category_delete">
                 <input type="hidden" name="category_id" value="{{category.id}}">
                 <button type="submit" class="btn btn-block btn-outline-danger mt-4">Удалить</button>
             </form>

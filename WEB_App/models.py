@@ -34,7 +34,8 @@ class GoodsOnModeration(models.Model):
 
 class Picture(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    hash = models.TextField(verbose_name='Хэш фото', null=True)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
@@ -89,3 +90,5 @@ class RatePhoto(models.Model):
 class NotAuthUser(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+    target_good = models.TextField(verbose_name='Товар', null=True)
+    hash = models.TextField(verbose_name='Хэш фото', null=True)
