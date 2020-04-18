@@ -435,6 +435,7 @@ class PhotoPage(TemplateView):
                 good.save()
 
                 return redirect(to='/product/{}'.format(response[0]['name']))
+        return render(request, self.template_name, self.context)
 
     def get(self, request):
         self.context['modal_window'] = False
