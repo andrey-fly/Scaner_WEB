@@ -540,7 +540,7 @@ Comments
     display: flex;
     flex-direction: column;
     margin: 60px 5%;
-    margin-right: 25%;
+    /* margin-right: 25%; */
 }
 
 #add-comment-block label {
@@ -557,7 +557,7 @@ Comments
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-    margin-left: 10%;
+    margin: 0 10%;
 }
 
 #comment-list-block textarea {

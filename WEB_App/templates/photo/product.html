@@ -36,8 +36,8 @@
 {% endblock %}
 {% block content %}
 <div style="display: flex; flex-wrap: wrap;">
-    <div id="content-block" style="flex-flow: column; margin: 10px auto;">
-        <div style="display: flex; flex-flow: column">
+    <div id="content-block" style="flex-flow: column; margin: 10px auto; max-width: calc(100vw - 10px);">
+        <div style="display: flex; flex-flow: column; max-width: calc(100vw - 10px);">
             <div id="photo-block-in-content-block" style="max-width: calc(100vw - 20px); width: 480px">
                 {% if default_img %}
                 <a id="zoom" href="{{default_img}}" class="MagicZoom"
@@ -132,10 +132,10 @@
             <li class="breadcrumb-item"><a href="/category/{{category}}">{{category}}</a></li>
             {% endfor %}
         </ol>
-        <p id="product-name-in-info-block">
+        <p id="product-name-in-info-block" style="max-width: inherit;">
             {{name}}
         </p>
-        <div id="score-block-in-info-block">
+        <div id="score-block-in-info-block" style="max-width: inherit;">
             <!--                Like or unlike block-->
             <div id="recommendation-block-in-score-block">
                 <img src="{% static 'pics/like.svg'%}" id="image-recommendation-in-recommendation-block">
@@ -144,7 +144,7 @@
                 </p>
             </div>
             <!--                Score in number block-->
-            <div id="numbered-score-block-in-score-block">
+            <div id="numbered-score-block-in-score-block" style="max-width: inherit;">
                 <div id="numbered-score-figure-in-numbered-score-block">
                     <label id="score-number-in-numbered-score-figure">
                         {{points}}
@@ -155,7 +155,7 @@
                 </p>
             </div>
         </div>
-        <div id="adv-list-block-in-info-block">
+        <div id="adv-list-block-in-info-block" style="max-width: inherit;">
             <p id="adv-list-name-in-adv-list-block">Достоинства</p>
             <ul id="adv-list-in-adv-list-block">
                 {% if positives %}
@@ -172,7 +172,7 @@
                 <!--                    <li><em>+</em><span>Безопасное</span></li>-->
             </ul>
         </div>
-        <div id="disadv-list-block-in-info-block">
+        <div id="disadv-list-block-in-info-block" style="max-width: inherit;">
             <p id="disadv-list-name-in-adv-list-block">Недостатки</p>
             <ul id="disadv-list-in-adv-list-block">
                 {% if negatives %}
@@ -191,7 +191,7 @@
     <div id="add-comment-block">
         <fieldset id="rating">
             {% if not rated %}
-            <legend class="rating_caption"> Ваша оценка:</legend>
+            <legend class="rating_caption" style="color: inherit;"> Ваша оценка:</legend>
             <div class="rating_group">
                 <form action="" method="POST">
                     {% csrf_token %}
