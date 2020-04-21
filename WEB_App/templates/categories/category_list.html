@@ -14,6 +14,7 @@
         font-size: 1.5rem;
         display: block;
     }
+
 </style>
 {% endblock %}
 
@@ -23,12 +24,14 @@
     {% for category in children %}
     <div class="card">
         {%if category.file%}
-        <a href="/category/{{category.url_name}}"><img src="{{category.file}}" class="card-img-top" alt="{{category.name}}"></a>
+        <a href="/category/{{category.url_name}}"><img src="{{category.file}}" class="card-img-top"
+                                                       alt="{{category.name}}"></a>
         {%else%}
         <h5 class="text-wrap p-5">Image not found</h5>
         {%endif%}
         <div class="card-body" style="width: inherit;">
-            <h5 class="card-title text-center"><a href="/category/{{category.url_name}}" style="font-size: inherit">{{category.name}}</a></h5>
+            <h5 class="card-title text-center"><a href="/category/{{category.url_name}}" style="font-size: inherit">{{category.name}}</a>
+            </h5>
             {% if user.is_superuser %}
             {% include 'modals_for_admin/edit_category.html' %}
             {% include 'modals_for_admin/add_child_category.html' %}
@@ -46,45 +49,62 @@
     </div>
 
 
-{% endfor %}
+    {% endfor %}
 
-{% for good in goods %}
-<div class="card">
-    {%if good.file%}
-    <a href="/product/{{good.name}}/"><img src="{{good.file}}" class="card-img-top" alt="{{good.name}}"></a>
-    {%else%}
-    <h5 class="text-wrap p-5">Image not found</h5>
-    {%endif%}
-    <div class="card-body">
+    {% for product in goods %}
+    <div class="card">
+        {%if product.file%}
+        <a href="/product/{{product.name}}/"><img src="{{product.file}}" class="card-img-top" alt="{{product.name}}"></a>
+        {%else%}
+        <h5 class="text-wrap p-5">Image not found</h5>
+        {%endif%}
+        <div class="card-body">
+            {% for rate in rated %}
+                {% for item in rate %}
+                    <p style="margin: 0 auto;">Ваша оценка:</p>
+                    {% if item.good == product.name %}
+                        <p id="average-{{item.good}}" style="color: #10c46a; margin: 0 auto; font-size: 20px;">{{item.rating}}</p>
+                        <script>
+                            if ($('#average-{{item.good}}').html() <= 3.5)
+                                $('#average').css('color', '#bf0704');
+                            else
+                                $('#average').css('color', '#10c46a');
+                        </script>
+                    {% else %}
+                    <p style="margin: 5px auto; text-align: center; font-size: 17px">Кажется, вы ещё не оценили этот товар</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <h5 class="card-title text-center"><a href="/product/{{product.name}}/" style="font-size: inherit">{{product.name}}</a>
+            </h5>
 
-        <h5 class="card-title text-center"><a href="/product/{{good.name}}/" style="font-size: inherit">{{good.name}}</a></h5>
+            {% if user.is_superuser %}
+            {% include '../modals_for_admin/edit_good.html' %}
+            {% include '../modals_for_admin/edit_positives.html' %}
+            {% include '../modals_for_admin/edit_negatives.html' %}
 
-        {% if user.is_superuser %}
-        {% include '../modals_for_admin/edit_good.html' %}
-        {% include '../modals_for_admin/edit_positives.html' %}
-        {% include '../modals_for_admin/edit_negatives.html' %}
-
-        <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="good_id" value="{{good.id}}">
+                <input type="hidden" name="good_id" value="{{product.id}}">
                 <input name="type" value="good" type="hidden">
                 <button type="submit" class="btn btn-block btn-outline-danger mt-4">Удалить</button>
             </form>
 
-        {% endif %}
+            {% endif %}
 
+        </div>
     </div>
+    {% endfor %}
+
+
+    {% if not children and not goods %}
+    <h3 class="p-5 text-danger">Элементы не найдены</h3>
+    {% endif %}
+
 </div>
-{% endfor %}
-
-
-{% if not children and not goods %}
-<h3 class="p-5 text-danger">Элементы не найдены</h3>
-{% endif %}
-
-</div>
-<button type="button" class="btn btn-outline-primary btn-lg btn-back" onclick="go_back();"><span class="text-center">Назад</span></button>
+<button type="button" class="btn btn-outline-primary btn-lg btn-back" onclick="go_back();"><span class="text-center">Назад</span>
+</button>
 
 {% endblock %}
 

@@ -10,7 +10,7 @@ from django.contrib.auth import login
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.db.models import Avg, Q
+from django.db.models import Avg, Q, QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
@@ -733,6 +733,11 @@ class CategoryView(TemplateView):
                 images = Picture.objects.filter(target_good=item['name']).distinct('target_good')
                 temporary.append(images)
             context['images'] = temporary
+            rate = []
+            for item in data:
+                rate.append(Rate.objects.filter(Q(good=item['name']) & Q(user=request.user)))
+            print(rate)
+            context['rated'] = rate
 
             if request.user.is_superuser:
                 context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',

@@ -14,7 +14,7 @@ services:
     volumes:
       - ./:/web
     ports:
-      - "80:80"
+      - "800:800"
     depends_on:
       - web_db
 
