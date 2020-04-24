@@ -24,6 +24,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django.http import HttpResponse
 
+from Modules.requests import *
+
 
 class UserAuth:
     def __init__(self, request, template_name):
@@ -62,6 +64,9 @@ class UserAuth:
             self.sign_in()
         return self.reg_form, self.errors
 
+#         if not request.user.is_authenticated:
+#             context['reg_form'], context['login_errors'] = self.check_auth(request)
+
 
 class BaseView(View):
     template_name = 'main/index.html'
@@ -80,8 +85,8 @@ class BaseView(View):
 
 
 class BaseTemplateView(TemplateView):
-    def get(self, request):
-        context = {}
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -93,39 +98,85 @@ class BaseTemplateView(TemplateView):
         return auth.check_auth()
 
 
-def sign_in(request):
-    context = {}
-    reg_form = UserRegistrationForm()
-    errors = []
-    if request.method == 'POST':
-        if request.POST.get('status') == 'SignUp':
-            reg_form = UserRegistrationForm(request.POST)
-            if reg_form.is_valid():
-                new_user = reg_form.save(commit=False)
-                new_user.set_password(reg_form.cleaned_data['password2'])
-                new_user.save()
-                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-                print('SingUp')
-                return redirect('/')
-        if request.POST.get('status') == 'SignIn':
-            identification = request.POST.get('identification')
-            password = request.POST.get('password')
-            user = None
-            if User.objects.filter(username=identification):
-                user = User.objects.get(username=identification)
-            elif User.objects.filter(email=identification):
-                user = User.objects.get(email=identification)
-            if user is None:
-                errors.append('Пользователь не найден!')
-            elif user.check_password(password) is False:
-                errors.append('Неправильный пароль!')
+class IndexPage(BaseTemplateView):
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        if not request.user.is_authenticated:
+            context['reg_form'], context['login_errors'] = self.check_auth(request)
+        if request.FILES:
+            image = request.FILES.get('file')
+            # if request.user.is_authenticated:
+            #     user = request.user
+            # else:
+            #     user = None
+            status_code, response = get_product(image)
+            if response['status'] == 'ok':
+                return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
             else:
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                print('SingIn')
-                return redirect('/')
-    context['reg_form'] = reg_form
-    context['login_errors'] = errors
-    return render(request, 'registration/login.html', context)
+                return redirect(to='/add_product/?image={}'.format(response['image_hash']))
+
+            # hashes_list = list(Picture.objects.values_list('hash', flat=True))
+            # own_hash = imagehash.average_hash(Image.open(request.FILES['file'])),
+            # picture = Picture(
+            #     file=request.FILES['file'],
+            #     hash=imagehash.average_hash(Image.open(request.FILES['file'])),
+            #     user=user
+            # )
+            # own_hash = str(picture.hash)
+            # if str(own_hash) not in hashes_list:
+            #     pass
+
+                # if response['status'] == 'ok':
+                #     print(response)
+                # else:
+                #     pass
+            # else:
+            #     picture = Picture.objects.get(hash=own_hash)
+            #     if picture.target_good:
+            #         return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+            #     else:
+            #         context['show_modal'] = 'true'
+        return render(request, self.template_name, context)
+
+
+class AddProductPage(BaseView):
+    template_name = 'photo/add_product.html'
+
+    def get_image_url(self, request):
+        own_hash = request.GET.get('image')
+        status_code, response = get_by_hash(own_hash)
+        return response['file']
+
+    def get(self, request):
+        context = {'img': self.get_image_url(request)}
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {'img': self.get_image_url(request)}
+        if not request.user.is_authenticated:
+            context['reg_form'], context['login_errors'] = self.check_auth(request)
+            context['show_modal'] = True
+            return render(request, self.template_name, context)
+
+        image = download_by_hash(request.GET.get('image'))
+        barcode = get_barcode(image.content)
+        own_hash = request.GET.get('image')
+        name = request.POST.get('name')
+        status_code, response = create_moderation_good_with_hash(own_hash, name, barcode)
+        if status_code == 200:
+            return redirect('/thanks/')
+        else:
+            return redirect('500.html')
 
 
 def recovery_password(request):
@@ -246,84 +297,6 @@ def change_info(request):
     if request.POST.get('status'):
         return redirect('/profile')
     return render(request, 'profile/change_info.html', context)
-
-
-def index(request):
-    context = {'data': datetime.now(), 'page': 'main'}
-    reg_form = UserRegistrationForm()
-    errors = []
-    if request.method == 'POST':
-        if request.POST.get('status') == 'SignUp':
-            reg_form = UserRegistrationForm(request.POST)
-            if reg_form.is_valid():
-                new_user = reg_form.save(commit=False)
-                new_user.set_password(reg_form.cleaned_data['password2'])
-                new_user.save()
-                login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-        if request.POST.get('status') == 'SignIn':
-            identification = request.POST.get('identification')
-            password = request.POST.get('password')
-
-            user = None
-            if User.objects.filter(username=identification):
-                user = User.objects.get(username=identification)
-            elif User.objects.filter(email=identification):
-                user = User.objects.get(email=identification)
-            if user is None:
-                errors.append('Пользователь не найден!')
-            elif user.check_password(password) is False:
-                errors.append('Неправильный пароль!')
-            else:
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        if request.FILES:
-            if not request.user.is_authenticated:
-                context['show_modal'] = 'true'
-                picture = NotAuthUser(
-                    file=request.FILES['file'],
-                    hash=imagehash.average_hash(Image.open(request.FILES['file']))
-                )
-                hashes_list = list(NotAuthUser.objects.values_list('hash', flat=True))
-            else:
-                picture = Picture(
-                    user=request.user,
-                    file=request.FILES['file'],
-                    hash=imagehash.average_hash(Image.open(request.FILES['file']))
-                )
-                hashes_list = list(Picture.objects.values_list('hash', flat=True))
-            hash_value = str(picture.hash)
-            if hash_value not in hashes_list:
-                picture.save()
-                response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_product/',
-                                        files={'file': picture.file},
-                                        params={'user': request.user.id,
-                                                'platform': 'web'},
-                                        headers={'Authorization': '{}'.format(API_TOKEN)}
-                                        ).json()
-                if not request.user.is_authenticated:
-                    if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
-                    else:
-                        print('redirect')
-                        return redirect(to='add_user/?image={}'.format(picture.id))
-                else:
-                    if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
-                    else:
-                        return redirect(to='/add_product/?image={}'.format(picture.id))
-            else:
-                if request.user.is_authenticated:
-                    picture = Picture.objects.get(hash=hash_value)
-                else:
-                    picture = NotAuthUser.objects.get(hash=hash_value)
-                if picture.target_good:
-                    return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
-                else:
-                    context['show_modal'] = 'true'
-
-    context['reg_form'] = reg_form
-    context['login_errors'] = errors
-
-    return render(request, 'main/index.html', context)
 
 
 class AddUser(View):
@@ -692,33 +665,6 @@ class ProductPage(View):
             return render(request, self.template_name, context)
         except Exception:
             return render(request, '500.html', context)
-
-
-class AddProductPage(View):
-    template_name = 'photo/add_product.html'
-    context = {}
-
-    def get(self, request):
-        self.context['img'] = Picture.objects.get(id=request.GET.get('image')).file.url
-        return render(request, self.template_name, self.context)
-
-    def post(self, request):
-        good = GoodsOnModeration(
-            name=request.POST.get('name'),
-            image=Picture.objects.get(id=request.GET.get('image')).file,
-            user=request.user
-        )
-        response = requests.get('http://api.scanner.savink.in/api/v1/getbarcode/',
-                                files={'file': good.image.file},
-                                headers={'Authorization': '{}'.format(API_TOKEN)}
-                                ).json()
-
-        if response['status'] == 'ok':
-            good.barcode = response['barcode']
-
-        good.save()
-
-        return redirect('/thanks/')
 
 
 class AcceptPage(PermissionRequiredMixin, View):

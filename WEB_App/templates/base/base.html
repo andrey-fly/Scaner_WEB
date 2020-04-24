@@ -147,10 +147,10 @@
 {% endif %} {% if show_modal %}
 <script>
 if (window.innerWidth < 780) {
-    $('#signmodal_wrap').show()
+    $('#signmodal_wrap').modal('show')
     }
 else {
-    $('#signmodal_standard').show()
+    $('#signmodal_standard').modal('show')
 }
 </script>
 {% endif %}

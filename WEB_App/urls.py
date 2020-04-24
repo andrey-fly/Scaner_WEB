@@ -21,13 +21,12 @@ from WEB_App.views import *
 
 
 urlpatterns = [
-    path('', index),
-    path('login/', sign_in),
+    path('', IndexPage.as_view(template_name='main/index.html')),
     path('recovery_password/', recovery_password),
     path('photo/', PhotoPage.as_view(template_name='photo/photo.html')),
     path('product/<str:good>/', ProductPage.as_view()),
     path('gallery/<str:good>', GalleryPage.as_view()),
-    path('add_product/', login_required(AddProductPage.as_view())),
+    path('add_product/', AddProductPage.as_view()),
     path('add_user/', AddUser.as_view()),
     path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
     path('admin/accept/', AcceptPage.as_view()),
