@@ -130,9 +130,9 @@
                 {% endif %}
                 <div class="selectors" style="display: flex; flex-flow: row; max-width: 480px">
                     {% for image in images %}
-                    <a data-zoom-id="zoom" href="{{image}}" data-image="{{image.file.url}}" title="..."
+                    <a data-zoom-id="zoom" href="{{image}}" data-image="{{image}}" title="..."
                        data-options="cssClass: no-expand-thumbnails" style="margin: 5px;"><img
-                            src="{{image.file.url}}"/></a>
+                            src="{{image}}"/></a>
                     {% endfor %}
                 </div>
 
@@ -143,7 +143,7 @@
                 <a href="/gallery/{{name}}">Посмотрите все фото продукта</a>
             </label>
             <label id="photo-load-label-in-photo-block">
-                <a name="add_photo" href="#" id="modal_btn" data-toggle="modal"
+                <a name="add_photo" id="modal_btn_2" data-toggle="modal"
                    data-target="#modal-add">Или загрузить новое фото</a>
             </label>
             <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -235,7 +235,7 @@
         <ol class="breadcrumb">
             <!--                Молочные продукты > Сливочное масло-->
             {% for category in categories %}
-            <li class="breadcrumb-item"><a href="/category/{{category}}">{{category}}</a></li>
+            <li class="breadcrumb-item"><a href="/category/{{category.0}}">{{category.1}}</a></li>
             {% endfor %}
         </ol>
         <p id="product-name-in-info-block" style="max-width: inherit;">
@@ -315,7 +315,7 @@
             </div>
             {% endif %}
         </fieldset>
-        <form action="/product/{{name}}/?image={{img_id}}" method="post">
+        <form action="" method="post">
             {% csrf_token %}
             <h1>Прокомментируйте:</h1>
             <textarea id="example" name="comment" placeholder="Описание" required
@@ -343,7 +343,7 @@
                 <p style="margin-left: 15px;">{{sub_comment.text}}</p>
             </div>
             {% endfor %}
-            <form action="/product/{{name}}/?image={{img_id}}" method="post">
+            <form action="" method="post">
                 {% csrf_token %}
                 <h1>Ответить:</h1>
                 <input type="hidden" value="{{comment.id}}" name="comment_id">
@@ -374,13 +374,24 @@
     </div>
 </div>
 <div style="display: flex; flex-direction: column; text-align: center; max-width: calc(100vw - 10px)">
-    <a href="/login/">Если вы хотите оставить ваше мнение или оценку для продукта, не забудьте войти</a>
-    <a href="/login/" class="btn btn-outline-primary" style="max-width: 240px; align-self: center">Или зарегестрироваться</a>
+    <a onclick="open_modal();">Если вы хотите оставить ваше мнение или оценку для продукта, не забудьте войти</a>
+    <a onclick="open_modal();" class="btn btn-outline-primary" style="max-width: 240px; align-self: center">Или зарегестрироваться</a>
 </div>
 {% endif %}
 {% endblock %}
 {% block extra_js %}
+<script>
+    function open_modal()
+    {
+        if (window.innerWidth < 780) {
+            $('#signmodal_wrap').modal('show')
+        }
+        else {
+            $('#signmodal_standard').modal('show')
+        }
+    }
 
+</script>
 <!--Не переставляйте код, он перестанет работать!-->
 
 <script>
@@ -410,11 +421,11 @@
 
 {% if status == 'error' %}
 <script>
-    $('#add-modal').modal('show');
+    $('#modal-add').modal('show');
 </script>
 {% endif %}
 
-<script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+
 <!--<script type="text/javascript"-->
 <!--        src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>-->
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
