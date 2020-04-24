@@ -525,6 +525,7 @@ class ProductPage(View):
             context['points'] = response['points']
             context['categories'] = response['categories']
             context['comments'] = Comment.objects.filter(good=good)
+            context['reviews'] = Comment.objects.filter(good=good)[:3]
             if request.user.is_authenticated:
                 try:
                     if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
@@ -541,7 +542,8 @@ class ProductPage(View):
                     print(exc.args)
 
             return render(request, self.template_name, context)
-        except Exception:
+        except Exception as exc:
+            print(exc)
             return render(request, '404.html', context)
 
     def post(self, request, good):
@@ -551,10 +553,10 @@ class ProductPage(View):
             image = Picture.objects.get(id=image_id)
             image.target_good = good
             image.save()
-            images = Picture.objects.filter(target_good=good)[:1]
+            images = Picture.objects.filter(target_good=good)[:3]
             context['images'] = images
         else:
-            images = Picture.objects.filter(target_good=good)[:1]
+            images = Picture.objects.filter(target_good=good)[:3]
             context['images'] = images
 
         images = request.FILES.getlist('image')
