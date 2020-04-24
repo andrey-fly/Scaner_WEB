@@ -271,6 +271,45 @@ class ProductPage(BaseView):
             except Exception as exc:
                 print(exc.args)
         return render(request, self.template_name, context)
+    
+    
+class GalleryPage(BaseView):
+    template_name = 'photo/gallery.html'
+    rated_previously = []
+
+    def get_list_of_images(self, good_name):
+        status_code, response = get_picture_list_by_good_name(good_name)
+        data = []
+        for image in response:
+            data.append(image['file'])
+        return data
+
+    def get(self, request, good):
+        context = {'name': good}
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
+        status_code, context['images'] = get_picture_list_by_good_name(good)
+        return render(request, self.template_name, context)
+
+    def post(self, request, good):
+        context = {}
+        if not request.user.is_authenticated:
+            context['reg_form'], context['login_errors'] = self.check_auth(request)
+        else:
+            rate = request.POST.get('rate')
+            image_id = request.POST.get('image_id')
+            if rate and image_id:
+                rate_photo = RatePhoto(
+                    user=request.user,
+                    image_id=image_id,
+                    rating=rate
+                )
+                rate_photo.save()
+
+        status_code, context['images'] = get_picture_list_by_good_name(good)
+
+        return render(request, self.template_name, context)
 
 
 def recovery_password(request):
@@ -583,52 +622,6 @@ class PhotoPage(TemplateView):
                 good.save()
 
                 return redirect(to='/product/{}'.format(response[0]['name']))
-        return render(request, self.template_name, self.context)
-
-
-class GalleryPage(View):
-    template_name = 'photo/gallery.html'
-    context = {}
-    rated_previously = []
-
-    def get(self, request, good):
-        self.context['name'] = good
-        image_id = request.GET.get('image')
-        if image_id:
-            image = Picture.objects.get(id=image_id)
-            image.target_good = good
-            image.save()
-            images = Picture.objects.filter(target_good=good)
-            self.context['images'] = images
-        else:
-            images = Picture.objects.filter(target_good=good)
-            self.context['images'] = images
-
-        return render(request, self.template_name, self.context)
-
-    def post(self, request, good):
-        picture_object = None
-        rate = request.POST.get('rate')
-        image_id = request.POST.get('image_id')
-        for item in self.context['images']:
-            print(item.id)
-            if int(item.id) == int(image_id):
-                print('reach it')
-                picture_object = item
-                rating = RatePhoto(
-                    user=request.user,
-                    picture=picture_object,
-                    rating=rate,
-                    good=good
-                )
-                rating.save()
-                self.rated_previously.append(item.id)
-        print(RatePhoto.objects.all())
-        user = request.user
-
-        self.context['rated'] = self.rated_previously
-        # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
-        self.context['rating'] = 5
         return render(request, self.template_name, self.context)
 
 

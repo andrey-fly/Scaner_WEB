@@ -80,9 +80,8 @@ class Rate(models.Model):
 
 class RatePhoto(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
-    picture = models.ForeignKey(to=Picture, verbose_name='Картинка', on_delete=models.CASCADE)
+    image_id = models.IntegerField(verbose_name='image ID')
     rating = models.FloatField(verbose_name='Рейтинг')
-    good = models.TextField(verbose_name='Товар')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
 
 
