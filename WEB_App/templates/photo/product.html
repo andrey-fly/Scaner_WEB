@@ -130,7 +130,7 @@
                 {% endif %}
                 <div class="selectors" style="display: flex; flex-flow: row; max-width: 480px">
                     {% for image in images %}
-                    <a data-zoom-id="zoom" href="{{image.file.url}}" data-image="{{image.file.url}}" title="..."
+                    <a data-zoom-id="zoom" href="{{image}}" data-image="{{image.file.url}}" title="..."
                        data-options="cssClass: no-expand-thumbnails" style="margin: 5px;"><img
                             src="{{image.file.url}}"/></a>
                     {% endfor %}

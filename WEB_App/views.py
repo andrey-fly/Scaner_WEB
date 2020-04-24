@@ -122,7 +122,7 @@ class AddProductPage(BaseView):
 
     def get_image_url(self, request):
         own_hash = request.GET.get('image')
-        status_code, response = get_by_hash(own_hash)
+        status_code, response = get_picture_by_hash(own_hash)
         return response['file']
 
     def get(self, request):
@@ -148,6 +148,166 @@ class AddProductPage(BaseView):
             return redirect('/thanks/')
         else:
             return redirect('500.html')
+
+
+class ProductPage(BaseView):
+    template_name = 'photo/product.html'
+
+    def get_image_by_hash(self, image_hash):
+        status_code_image, response_image = get_picture_by_hash(image_hash)
+        return response_image['file']
+
+    def get_list_of_images(self, good_name):
+        status_code, response = get_picture_list_by_good_name(good_name)
+        data = []
+        for image in response:
+            data.append(image['file'])
+        return data
+
+    def get(self, request, good):
+        context = {}
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
+
+        context['name'] = good
+        status_code, response = get_good_by_name(good)
+        context['default_img'] = response['image']
+
+        if request.GET.get('image'):
+            image_hash = request.GET.get('image')
+            context['default_img'] = self.get_image_by_hash(image_hash)
+
+        images = self.get_list_of_images(good)[:3]
+        context['images'] = images
+        # context['img_id'] = request.GET.get('image')
+        context['positives'] = response['positives']
+        context['negatives'] = response['negatives']
+        context['points'] = response['points']
+        context['categories'] = response['categories']
+        print(response)
+        context['comments'] = Comment.objects.filter(good=good)
+
+        return render(request, self.template_name, context)
+
+        # try:
+        #     context['name'] = good
+        #     status_code, response = get_good_by_name(good)
+        #
+        #     img = response['image']
+        #     context['default_img'] = response['image']
+        #
+        #     if request.GET.get('image'):
+        #         image_hash = request.GET.get('image')
+        #         status_code_image, response_image = get_picture_by_hash(image_hash)
+        #         image = response_image['file']
+        #
+        #
+        #         img = image.file.url
+        #         images = Picture.objects.filter(target_good=good)[:3]
+        #         context['images'] = images
+        #     else:
+        #         images = Picture.objects.filter(target_good=good)[:3]
+        #         context['images'] = images
+        #     context['img'] = img
+        #     context['img_id'] = request.GET.get('image')
+        #     context['positives'] = response['positives']
+        #     context['negatives'] = response['negatives']
+        #     context['points'] = response['points']
+        #     context['categories'] = response['categories']
+        #     context['comments'] = Comment.objects.filter(good=good)
+        #     if request.user.is_authenticated:
+        #         try:
+        #             if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+        #                 context['rated'] = str(
+        #                     float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+        #         except Exception as exc:
+        #             print(exc.args)
+        #     else:
+        #         try:
+        #             if Rate.objects.filter(Q(good=good)):
+        #                 context['rated'] = str(
+        #                     float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+        #         except Exception as exc:
+        #             print(exc.args)
+        #
+        #     return render(request, self.template_name, context)
+        # except Exception:
+        #     return render(request, '404.html', context)
+
+    # def post(self, request, good):
+    #     context = {'name': good, 'img_id': request.GET.get('image'), 'show_thanks': False}
+    #     image_id = request.GET.get('image')
+    #     if image_id:
+    #         image = Picture.objects.get(id=image_id)
+    #         image.target_good = good
+    #         image.save()
+    #         images = Picture.objects.filter(target_good=good)[:1]
+    #         context['images'] = images
+    #     else:
+    #         images = Picture.objects.filter(target_good=good)[:1]
+    #         context['images'] = images
+    #
+    #     images = request.FILES.getlist('image')
+    #     target_good = request.POST.get('good_name')
+    #     try:
+    #         if request.POST.get('comment'):
+    #             new_comment = Comment(
+    #                 text=request.POST.get('comment'),
+    #                 user=User.objects.get(id=request.user.id),
+    #                 good=good
+    #             )
+    #             new_comment.save()
+    #         if request.POST.get('response-to-comment'):
+    #             new_children_comment = ChildrenComment(
+    #                 text=request.POST.get('response-to-comment'),
+    #                 user=User.objects.get(id=request.user.id),
+    #                 parent=Comment.objects.get(id=request.POST.get('comment_id'))
+    #             )
+    #             new_children_comment.save()
+    #         if request.POST.get('rating'):
+    #             new_rating = Rate(
+    #                 user=User.objects.get(id=request.user.id),
+    #                 rating=request.POST.get('rating'),
+    #                 good=good
+    #             )
+    #             new_rating.save()
+    #         if images and target_good:
+    #             for image in images:
+    #                 PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
+    #             context['status'] = 'ok'
+    #             context['show_thanks'] = True
+    #         else:
+    #             context['status'] = 'error'
+    #
+    #         context['name'] = good
+    #
+    #         response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
+    #                                 headers={'Authorization': '{}'.format(API_TOKEN)}
+    #                                 ).json()
+    #         img = response['image']
+    #         if request.GET.get('image'):
+    #             image_id = request.GET.get('image')
+    #             image = Picture.objects.get(id=image_id)
+    #             image.target_good = good
+    #             image.save()
+    #             img = image.file.url
+    #         context['img'] = img
+    #         context['img_id'] = request.GET.get('image')
+    #         context['positives'] = response['positives']
+    #         context['negatives'] = response['negatives']
+    #         context['points'] = response['points']
+    #         context['categories'] = response['categories']
+    #         context['comments'] = Comment.objects.filter(good=good)
+    #         try:
+    #             if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
+    #                 context['rated'] = str(
+    #                     float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+    #         except Exception as exc:
+    #             print(exc.args)
+    #         return render(request, self.template_name, context)
+    #     except Exception:
+    #         return render(request, '500.html', context)
 
 
 def recovery_password(request):
@@ -507,135 +667,6 @@ class GalleryPage(View):
         # self.context['rating'] = str(float('{:.2f}'.format(RatePhoto.objects.filter(picture=image_id).aggregate(Avg('rating'))['rating__avg'])))
         self.context['rating'] = 5
         return render(request, self.template_name, self.context)
-
-
-class ProductPage(View):
-    template_name = 'photo/product.html'
-
-    def get(self, request, good):
-        context = {}
-
-        try:
-            context['name'] = good
-
-            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}
-                                    ).json()
-            img = response['image']
-            if request.GET.get('image'):
-                image_id = request.GET.get('image')
-                if request.user.is_authenticated:
-                    image = Picture.objects.get(id=image_id)
-                else:
-                    image = NotAuthUser.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                context['default_img'] = img
-                img = image.file.url
-                images = Picture.objects.filter(target_good=good)[:3]
-                context['images'] = images
-            else:
-                images = Picture.objects.filter(target_good=good)[:3]
-                context['images'] = images
-            context['img'] = img
-            context['img_id'] = request.GET.get('image')
-            context['positives'] = response['positives']
-            context['negatives'] = response['negatives']
-            context['points'] = response['points']
-            context['categories'] = response['categories']
-            context['comments'] = Comment.objects.filter(good=good)
-            if request.user.is_authenticated:
-                try:
-                    if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                        context['rated'] = str(
-                            float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-                except Exception as exc:
-                    print(exc.args)
-            else:
-                try:
-                    if Rate.objects.filter(Q(good=good)):
-                        context['rated'] = str(
-                            float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-                except Exception as exc:
-                    print(exc.args)
-
-            return render(request, self.template_name, context)
-        except Exception:
-            return render(request, '404.html', context)
-
-    def post(self, request, good):
-        context = {'name': good, 'img_id': request.GET.get('image'), 'show_thanks': False}
-        image_id = request.GET.get('image')
-        if image_id:
-            image = Picture.objects.get(id=image_id)
-            image.target_good = good
-            image.save()
-            images = Picture.objects.filter(target_good=good)[:1]
-            context['images'] = images
-        else:
-            images = Picture.objects.filter(target_good=good)[:1]
-            context['images'] = images
-
-        images = request.FILES.getlist('image')
-        target_good = request.POST.get('good_name')
-        try:
-            if request.POST.get('comment'):
-                new_comment = Comment(
-                    text=request.POST.get('comment'),
-                    user=User.objects.get(id=request.user.id),
-                    good=good
-                )
-                new_comment.save()
-            if request.POST.get('response-to-comment'):
-                new_children_comment = ChildrenComment(
-                    text=request.POST.get('response-to-comment'),
-                    user=User.objects.get(id=request.user.id),
-                    parent=Comment.objects.get(id=request.POST.get('comment_id'))
-                )
-                new_children_comment.save()
-            if request.POST.get('rating'):
-                new_rating = Rate(
-                    user=User.objects.get(id=request.user.id),
-                    rating=request.POST.get('rating'),
-                    good=good
-                )
-                new_rating.save()
-            if images and target_good:
-                for image in images:
-                    PictureOnModeration(image=image, target_good=target_good, user=request.user).save()
-                context['status'] = 'ok'
-                context['show_thanks'] = True
-            else:
-                context['status'] = 'error'
-
-            context['name'] = good
-
-            response = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good),
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}
-                                    ).json()
-            img = response['image']
-            if request.GET.get('image'):
-                image_id = request.GET.get('image')
-                image = Picture.objects.get(id=image_id)
-                image.target_good = good
-                image.save()
-                img = image.file.url
-            context['img'] = img
-            context['img_id'] = request.GET.get('image')
-            context['positives'] = response['positives']
-            context['negatives'] = response['negatives']
-            context['points'] = response['points']
-            context['categories'] = response['categories']
-            context['comments'] = Comment.objects.filter(good=good)
-            try:
-                if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
-                    context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
-            except Exception as exc:
-                print(exc.args)
-            return render(request, self.template_name, context)
-        except Exception:
-            return render(request, '500.html', context)
 
 
 class AcceptPage(PermissionRequiredMixin, View):

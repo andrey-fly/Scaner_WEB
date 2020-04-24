@@ -10,7 +10,7 @@ def get_product(image):
     return response.status_code, response.json()
 
 
-def get_by_hash(own_hash):
+def get_picture_by_hash(own_hash):
     url = 'http://api.scanner.savink.in/api/v1/picture/get_picture_by_hash/{}'.format(own_hash)
     response = requests.request("GET", url, headers=API_HEADERS)
     return response.status_code, response.json()
@@ -41,4 +41,13 @@ def get_barcode(image):
     return barcode
 
 
+def get_good_by_name(good):
+    url = 'http://api.scanner.savink.in/api/v1/goods/get_by_name/{}/'.format(good)
+    response = requests.request("GET", url, headers=API_HEADERS)
+    return response.status_code, response.json()
 
+
+def get_picture_list_by_good_name(good_name):
+    url = 'http://api.scanner.savink.in/api/v1/picture/get_pictures_list_by_good_name/{}'.format(good_name)
+    response = requests.request("GET", url, headers=API_HEADERS)
+    return response.status_code, response.json()
