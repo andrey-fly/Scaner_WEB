@@ -504,7 +504,7 @@ class ProductPage(View):
                                     ).json()
             img = response['image']
             if request.GET.get('image'):
-                image_id = request.GET.get('image')
+                image_id = request.GET.get('image') or img.id
                 if request.user.is_authenticated:
                     image = Picture.objects.get(id=image_id)
                 else:
@@ -512,7 +512,6 @@ class ProductPage(View):
                 image.target_good = good
                 image.save()
                 context['default_img'] = img
-                img = image.file.url
                 images = Picture.objects.filter(target_good=good)[:3]
                 context['images'] = images
             else:
@@ -548,7 +547,7 @@ class ProductPage(View):
 
     def post(self, request, good):
         context = {'name': good, 'img_id': request.GET.get('image'), 'show_thanks': False}
-        image_id = request.GET.get('image')
+        image_id = request.GET.get('image') or context['default_img'].id
         if image_id:
             image = Picture.objects.get(id=image_id)
             image.target_good = good
@@ -598,7 +597,7 @@ class ProductPage(View):
                                     ).json()
             img = response['image']
             if request.GET.get('image'):
-                image_id = request.GET.get('image')
+                image_id = request.GET.get('image') or context['default_img'].id
                 image = Picture.objects.get(id=image_id)
                 image.target_good = good
                 image.save()
