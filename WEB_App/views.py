@@ -26,19 +26,17 @@ from django.http import HttpResponse
 
 
 class UserAuth:
-    def __init__(self, request, template_name, reg_form):
+    def __init__(self, request, template_name):
         self.template_name = template_name
         self.request = request
-        self.reg_form = reg_form
+        self.reg_form = UserRegistrationForm()
         self.errors = []
 
     def sign_up(self):
-        if self.reg_form.is_valid():
-            new_user = self.reg_form.save(commit=False)
-            new_user.set_password(self.reg_form.cleaned_data['password2'])
-            new_user.save()
-            login(self.request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-        return self.reg_form
+        new_user = self.reg_form.save(commit=False)
+        new_user.set_password(self.reg_form.cleaned_data['password2'])
+        new_user.save()
+        login(self.request, new_user, backend='django.contrib.auth.backends.ModelBackend')
 
     def sign_in(self):
         identification = self.request.POST.get('identification')
@@ -54,7 +52,15 @@ class UserAuth:
             self.errors.append('Неправильный пароль!')
         else:
             login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return self.errors
+
+    def check_auth(self):
+        if self.request.POST.get('status') == 'SignUp':
+            self.reg_form = UserRegistrationForm(self.request.POST)
+            if self.reg_form.is_valid():
+                self.sign_up()
+        elif self.request.POST.get('status') == 'SignIn':
+            self.sign_in()
+        return self.reg_form, self.errors
 
 
 class BaseView(View):
@@ -69,14 +75,8 @@ class BaseView(View):
         return render(request, self.template_name, context)
 
     def check_auth(self, request):
-        reg_form = UserRegistrationForm()
-        login_errors = []
-        auth = UserAuth(request, self.template_name, UserRegistrationForm(request.POST))
-        if self.request.POST.get('status') == 'SignUp':
-            reg_form = auth.sign_up()
-        elif self.request.POST.get('status') == 'SignIn':
-            login_errors = auth.sign_in()
-        return reg_form, login_errors
+        auth = UserAuth(request, self.template_name)
+        return auth.check_auth()
 
 
 class BaseTemplateView(TemplateView):
@@ -89,14 +89,8 @@ class BaseTemplateView(TemplateView):
         return render(request, self.template_name, context)
 
     def check_auth(self, request):
-        reg_form = UserRegistrationForm()
-        login_errors = []
-        auth = UserAuth(request, self.template_name, UserRegistrationForm(request.POST))
-        if self.request.POST.get('status') == 'SignUp':
-            reg_form = auth.sign_up()
-        elif self.request.POST.get('status') == 'SignIn':
-            login_errors = auth.sign_in()
-        return reg_form, login_errors
+        auth = UserAuth(request, self.template_name)
+        return auth.check_auth()
 
 
 def sign_in(request):
