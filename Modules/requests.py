@@ -3,9 +3,9 @@ import requests
 from Scanner.settings import API_HEADERS
 
 
-def get_product(image):
+def get_product(image, author):
     url = 'http://api.scanner.savink.in/api/v1/goods/get_product/'
-    params = {'platform': 'WEB'}
+    params = {'platform': 'WEB', 'author': author}
     response = requests.request("GET", url, headers=API_HEADERS, params=params, files={'file': image})
     return response.status_code, response.json()
 

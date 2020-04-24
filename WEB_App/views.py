@@ -109,7 +109,10 @@ class IndexPage(BaseTemplateView):
             context['reg_form'], context['login_errors'] = self.check_auth(request)
         if request.FILES:
             image = request.FILES.get('file')
-            status_code, response = get_product(image)
+            if request.user.is_authenticated:
+                status_code, response = get_product(image, request.user.username)
+            else:
+                status_code, response = get_product(image, 'AnonymousUser')
             if response['status'] == 'ok':
                 return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
             else:
