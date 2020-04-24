@@ -35,7 +35,7 @@ urlpatterns = [
     path('profile/', profile),
     path('change_info/', change_info),
     path('about_us/', TemplateView.as_view(template_name='main/about_us.html')),
-    path('complaint/', TemplateView.as_view(template_name='photo/complaint.html')),
+    path('complaint/', ComplaintPage.as_view(template_name='photo/complaint.html')),
     path('admin/complaint_list', TemplateView.as_view(template_name='admin/complaint_list.html')),
 
 

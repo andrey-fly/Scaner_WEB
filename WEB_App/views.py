@@ -292,8 +292,8 @@ class ProductPage(BaseView):
             except Exception as exc:
                 print(exc.args)
         return render(request, self.template_name, context)
-    
-    
+
+
 class GalleryPage(BaseView):
     template_name = 'photo/gallery.html'
     rated_previously = []
@@ -983,3 +983,46 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
     def get_context(self):
         context = {'photo_data': PictureOnModeration.objects.filter(status='Принято на модерацию')}
         return context
+
+
+class ComplaintListPage(PermissionRequiredMixin, View):
+    template_name = 'admin/complaint_list.html'
+    permission_required = 'WEB_App.view'
+    login_url = '/login/'
+    context = {
+        'complaints': Complaint.objects.all(),
+    }
+
+    def get(self, request):
+        print(Complaint.objects.all())
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        return render(request, self.template_name, self.context)
+
+
+class ComplaintPage(TemplateView):
+    context = {}
+
+    def get(self, request):
+        form = ComplaintForm()
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
+
+    def post(self, request):
+        form = ComplaintForm(request.POST)
+        self.context['form'] = form
+
+        if form.is_valid():
+            complaint = Complaint(
+                user=request.user,
+                title=request.POST.get('title'),
+                text=request.POST.get('text')
+            )
+            complaint.save()
+            return redirect('/thanks/')
+        else:
+            form = ComplaintForm()
+            self.context['form'] = form
+            self.context['form_errors'] = True
+        return render(request, self.template_name, self.context)
