@@ -64,9 +64,6 @@ class UserAuth:
             self.sign_in()
         return self.reg_form, self.errors
 
-#         if not request.user.is_authenticated:
-#             context['reg_form'], context['login_errors'] = self.check_auth(request)
-
 
 class BaseView(View):
     template_name = 'main/index.html'
@@ -112,37 +109,11 @@ class IndexPage(BaseTemplateView):
             context['reg_form'], context['login_errors'] = self.check_auth(request)
         if request.FILES:
             image = request.FILES.get('file')
-            # if request.user.is_authenticated:
-            #     user = request.user
-            # else:
-            #     user = None
             status_code, response = get_product(image)
             if response['status'] == 'ok':
                 return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
             else:
                 return redirect(to='/add_product/?image={}'.format(response['image_hash']))
-
-            # hashes_list = list(Picture.objects.values_list('hash', flat=True))
-            # own_hash = imagehash.average_hash(Image.open(request.FILES['file'])),
-            # picture = Picture(
-            #     file=request.FILES['file'],
-            #     hash=imagehash.average_hash(Image.open(request.FILES['file'])),
-            #     user=user
-            # )
-            # own_hash = str(picture.hash)
-            # if str(own_hash) not in hashes_list:
-            #     pass
-
-                # if response['status'] == 'ok':
-                #     print(response)
-                # else:
-                #     pass
-            # else:
-            #     picture = Picture.objects.get(hash=own_hash)
-            #     if picture.target_good:
-            #         return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
-            #     else:
-            #         context['show_modal'] = 'true'
         return render(request, self.template_name, context)
 
 
