@@ -107,7 +107,7 @@ body {
 }
 
 #info-block-in-content-block {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     margin-top: 72px;
 
