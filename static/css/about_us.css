@@ -1,0 +1,29 @@
+.content {
+    margin: 0 10%;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.project-info-block {
+    width: 50%;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.participants-info-block {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.people-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.people-block img {
+    width: 50%;
+}
