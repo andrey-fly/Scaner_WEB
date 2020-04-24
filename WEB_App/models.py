@@ -92,3 +92,9 @@ class NotAuthUser(models.Model):
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
     target_good = models.TextField(verbose_name='Товар', null=True)
     hash = models.TextField(verbose_name='Хэш фото', null=True)
+
+
+class Complaint(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    title = models.CharField(verbose_name='Заголовок жалобы', max_length=255, null=False)
+    text = models.TextField(verbose_name='Содержимое жалобы', null=False)

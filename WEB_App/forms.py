@@ -111,6 +111,19 @@ class BarcodeForm(forms.Form):
         'placeholder': " ",
         'aria-describedby': 'question-barcode',
     }))
+
+
+class ComplaintForm(forms.Form):
+    title = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputTitle',
+        'placeholder': " ",
+    }), max_length=255)
+    text = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputText',
+        'placeholder': " ",
+    }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
