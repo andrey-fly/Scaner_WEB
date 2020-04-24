@@ -25,6 +25,80 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse
 
 
+class UserAuth:
+    def __init__(self, request, template_name, reg_form):
+        self.template_name = template_name
+        self.request = request
+        self.reg_form = reg_form
+        self.errors = []
+
+    def sign_up(self):
+        if self.reg_form.is_valid():
+            new_user = self.reg_form.save(commit=False)
+            new_user.set_password(self.reg_form.cleaned_data['password2'])
+            new_user.save()
+            login(self.request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+        return self.reg_form
+
+    def sign_in(self):
+        identification = self.request.POST.get('identification')
+        password = self.request.POST.get('password')
+        user = None
+        if User.objects.filter(username=identification):
+            user = User.objects.get(username=identification)
+        elif User.objects.filter(email=identification):
+            user = User.objects.get(email=identification)
+        if user is None:
+            self.errors.append('Пользователь не найден!')
+        elif user.check_password(password) is False:
+            self.errors.append('Неправильный пароль!')
+        else:
+            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return self.errors
+
+
+class BaseView(View):
+    template_name = 'main/index.html'
+
+    def get(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def check_auth(self, request):
+        reg_form = UserRegistrationForm()
+        login_errors = []
+        auth = UserAuth(request, self.template_name, UserRegistrationForm(request.POST))
+        if self.request.POST.get('status') == 'SignUp':
+            reg_form = auth.sign_up()
+        elif self.request.POST.get('status') == 'SignIn':
+            login_errors = auth.sign_in()
+        return reg_form, login_errors
+
+
+class BaseTemplateView(TemplateView):
+    def get(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def check_auth(self, request):
+        reg_form = UserRegistrationForm()
+        login_errors = []
+        auth = UserAuth(request, self.template_name, UserRegistrationForm(request.POST))
+        if self.request.POST.get('status') == 'SignUp':
+            reg_form = auth.sign_up()
+        elif self.request.POST.get('status') == 'SignIn':
+            login_errors = auth.sign_in()
+        return reg_form, login_errors
+
+
 def sign_in(request):
     context = {}
     reg_form = UserRegistrationForm()
@@ -330,11 +404,24 @@ class AddUser(View):
 
 class PhotoPage(TemplateView):
     context = {}
-    context['modal_window'] = False
+    context['modal_window'] = 'false'
+    context['show_modal'] = 'false'
     context['main_image'] = ''
     template_name = 'photo/photo.html'
 
+    def get(self, request):
+        self.context['modal_window'] = 'false'
+        form = BarcodeForm()
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
+
     def post(self, request):
+        if not request.user.is_authenticated:
+            auth = UserAuth(request, self.template_name)
+            errors = auth.post()
+            if errors:
+                return render(self.request, self.template_name, errors)
+
         self.context['modal_window'] = False if request.POST.get('modal_check') == 'false' else True
 
         # Страница без модального окна
@@ -435,12 +522,6 @@ class PhotoPage(TemplateView):
                 good.save()
 
                 return redirect(to='/product/{}'.format(response[0]['name']))
-        return render(request, self.template_name, self.context)
-
-    def get(self, request):
-        self.context['modal_window'] = False
-        form = BarcodeForm()
-        self.context['form'] = form
         return render(request, self.template_name, self.context)
 
 
@@ -862,15 +943,24 @@ class CategoryView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class CategoryFirstPageView(TemplateView):
+class CategoryFirstPageView(BaseTemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
+
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
                                              headers={'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
+
+        if not request.user.is_authenticated:
+            context['reg_form'], context['login_errors'] = self.check_auth(request)
+
         category_id = request.POST.get('category_id')
 
         payload = {}
