@@ -59,6 +59,8 @@
         <h5 class="text-wrap p-5">Image not found</h5>
         {%endif%}
         <div class="card-body">
+            {% if user.is_authenticated %}
+
             {% for rate in rated %}
                 {% for item in rate %}
                     <p style="margin: 0 auto;">Ваша оценка:</p>
@@ -75,6 +77,19 @@
                     {% endif %}
                 {% endfor %}
             {% endfor %}
+
+            {% else %}
+
+            {% for rate in rated %}
+                {% if rate.good == product.name %}
+                    <p style="margin: 0 auto;">оценка:</p>
+                    <p id="average-{{rate.good}}" style="color: #10c46a; margin: 0 auto; font-size: 20px;">{%if rate.rating.rating__avg%}
+                        {{rate.rating.rating__avg}} {%else%}0{%endif%}</p>
+                {%endif%}
+            {% endfor %}
+
+            {% endif %}
+
             <h5 class="card-title text-center"><a href="/product/{{product.name}}/" style="font-size: inherit">{{product.name}}</a>
             </h5>
 

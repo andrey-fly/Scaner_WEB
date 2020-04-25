@@ -112,8 +112,6 @@ class IndexPage(BaseTemplateView):
         if request.POST.get('action') == 'initial_searcher':
             status_code, context['all_goods_names'] = get_all_goods_names()
             status_code, context['all_categories'] = get_all_categories()
-            print(status_code)
-            print(context['all_categories'])
             return JsonResponse(
                 {
                     'all_goods_names': context['all_goods_names'],
@@ -751,11 +749,18 @@ class CategoryView(TemplateView):
                 images = Picture.objects.filter(target_good=item['name']).distinct('target_good')
                 temporary.append(images)
             context['images'] = temporary
+
             rate = []
-            for item in data:
-                rate.append(Rate.objects.filter(Q(good=item['name']) & Q(user=request.user)))
-            print(rate)
+            if request.user.is_authenticated:
+                for item in data:
+                    rate.append(Rate.objects.filter(Q(good=item['name']) & Q(user=request.user)))
+            else:
+                for item in data:
+                    rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(Avg('rating'))
+                    rate.append({'good': item['name'], 'rating': rating})
             context['rated'] = rate
+            print(rate)
+
 
             if request.user.is_superuser:
                 context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
