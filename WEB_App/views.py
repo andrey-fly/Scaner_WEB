@@ -637,34 +637,46 @@ class AcceptPage(PermissionRequiredMixin, View):
         return render(request, self.template_name, self.get_context())
 
     def post(self, request):
+        print(request.POST)
+        moder_good_id = request.POST.get('id')
+        moder_good_name = request.POST.get('name')
+        moder_good_barcode = request.POST.get('barcode')
+        moder_good_points = request.POST.get('points')
+        moder_good_image_id = request.POST.get('old_image_id')
+        moder_good_caregory = request.POST.get('category')
+
         if request.POST.get('action') == 'accept':
-            moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
-            name = request.POST.get('name')
-            barcode = request.POST.get('barcode') if request.POST.get('barcode') != 'None' else None
-            points = request.POST.get('points') or '?'
-            category = request.POST.get('category')
-            image = moderation_good.image
-
+            status_code, response = change_moderation_goods_status(
+                moder_good_id,
+                moder_good_name,
+                moder_good_image_id,
+                'Одобрено',
+            )
             if request.FILES:
-                image = request.FILES.get('image')
-
-            requests.post('http://api.scanner.savink.in/api/v1/goods/create/',
-                          files={'file': image},
-                          data={'user': request.user.id,
-                                'name': name,
-                                'category': category,
-                                'barcode': barcode,
-                                'points_rusControl': points
-                                },
-                          headers={'Authorization': '{}'.format(API_TOKEN)}
-                          )
-            moderation_good.status = 'Одобрено'
-            moderation_good.save()
-
+                status_code, response = create_good_with_new_image(
+                    moder_good_name,
+                    moder_good_barcode,
+                    moder_good_caregory,
+                    moder_good_points,
+                    request.FILES.get('image')
+                )
+            else:
+                status_code, response = create_good_with_old_image(
+                    moder_good_name,
+                    moder_good_barcode,
+                    moder_good_caregory,
+                    moder_good_points,
+                    moder_good_image_id
+                )
+                print(status_code)
+                print(response)
         elif request.POST.get('action') == 'deny':
-            moderation_good = GoodsOnModeration.objects.get(id=request.POST.get('id'))
-            moderation_good.status = 'Отклонено'
-            moderation_good.save()
+            status_code, response = change_moderation_goods_status(
+                moder_good_id,
+                moder_good_name,
+                moder_good_image_id,
+                'Отклонено',
+            )
 
         elif request.POST.get('action') == 'create_category':
             payload = {}
@@ -680,9 +692,16 @@ class AcceptPage(PermissionRequiredMixin, View):
 
     def get_context(self):
         context = {}
-
-        data_goods_on_moderation = GoodsOnModeration.objects.filter(status='Принято на модерацию')
-        context['goods_data'] = data_goods_on_moderation
+        status_code, goods_data = get_moderation_goods_by_status('Принято на модерацию')
+        data = []
+        for good in goods_data:
+            item = {'id': good['id'], 'name': good['name'], 'barcode': good['barcode']}
+            code, response = get_picture_by_id(int(good['image']))
+            item['image'] = response['file']
+            item['image_id'] = response['id']
+            item['image_hash'] = response['hash']
+            data.append(item)
+        context['goods_data'] = data
 
         categories = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
                                   headers={'Authorization': '{}'.format(API_TOKEN)}
