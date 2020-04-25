@@ -50,12 +50,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
             method: 'POST',
             body: formData,
         });
+
         $('.loader').css('display', 'block');
         setTimeout(function(){
           $('.loader').fadeOut(700, function(){
             $(this).css('display', 'none');
           });
-            }, 1500);
+            }, 9999999999);
 
         let result = await response;
 
