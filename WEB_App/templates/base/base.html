@@ -99,32 +99,6 @@
 
 <script src="{% static 'js/button.js' %}"></script>
 <script>
-    $('#num').animate({
-        num: 90 - 3 /* - начало */
-    }, {
-        duration: 5000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
-    $('#num2').animate({
-        num: 190 - 3 /* - начало */
-    }, {
-        duration: 3000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
-    $('#num3').animate({
-        num: 15 - 3 /* - начало */
-    }, {
-        duration: 2000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
-</script>
-<script>
     let csrftoken = '{{ csrf_token }}';
 </script>
 <script src="{% static 'js/photo.js' %}"></script>

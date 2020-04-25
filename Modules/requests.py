@@ -105,3 +105,9 @@ def get_all_categories():
     url = 'http://api.scanner.savink.in/api/v1/category/all_names_urls/'
     response = requests.request("GET", url, headers=API_HEADERS)
     return response.status_code, response.json()
+
+
+def get_amount_of_pictures():
+    url = 'http://api.scanner.savink.in/api/v1/picture/get_amount/'
+    response = requests.request("GET", url, headers=API_HEADERS)
+    return response.status_code, response.json()

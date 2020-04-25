@@ -69,23 +69,23 @@
             <div class="col-lg-4">
                 <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num"></div>
+                    <div class="num" id="num">0</div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Продуктов на сайте</h5>
             </div>
             <div class="col-lg-4">
                 <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num2"></div>
+                    <div class="num" id="num2">0</div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Пользователей с нами</h5>
             </div>
             <div class="col-lg-4">
                 <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num3"></div>
+                    <div class="num" id="num3">0</div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Обработано запросов</h5>
             </div>
         </div>
     </div>
@@ -108,30 +108,7 @@
 {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 <script>
-    $('#num').animate({
-        num: 90 - 3 /* - начало */
-    }, {
-        duration: 5000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
-    $('#num2').animate({
-        num: 190 - 3 /* - начало */
-    }, {
-        duration: 3000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
-    $('#num3').animate({
-        num: 15 - 3 /* - начало */
-    }, {
-        duration: 2000,
-        step: function(num) {
-            this.innerHTML = (num + 3).toFixed(0)
-        }
-    });
+
 </script>
 <script>
     let csrftoken = '{{ csrf_token }}';

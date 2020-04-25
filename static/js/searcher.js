@@ -42,6 +42,34 @@ $(document).ready(function() {
             console.log(d);
             goods_data = d.all_goods_names;
             categories_data = d.all_categories;
+            amount_of_picture = d.amount_of_pictures;
+            amount_of_users = d.amount_of_users;
+
+            // почему-то в другом месте оно не заработало :D
+            $('#num').animate({
+                num: goods_data.length - 1
+            }, {
+                duration: 3000,
+                step: function(num) {
+                    this.innerHTML = (num + 1).toFixed(0)
+                }
+            });
+            $('#num2').animate({
+                num: amount_of_users - 1 /* - начало */
+            }, {
+                duration: 2000,
+                step: function(num) {
+                    this.innerHTML = (num + 1).toFixed(0)
+                }
+            });
+            $('#num3').animate({
+                num: amount_of_picture - 3 /* - начало */
+            }, {
+                duration: 5000,
+                step: function(num) {
+                    this.innerHTML = (num + 3).toFixed(0)
+                }
+            });
         },
         error: function(d) {
             console.log('error request to server');
