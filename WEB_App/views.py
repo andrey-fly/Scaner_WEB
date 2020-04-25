@@ -725,11 +725,14 @@ class AcceptPage(PermissionRequiredMixin, View):
         return context
 
 
-class CategoryView(TemplateView):
+class CategoryView(BaseTemplateView):
     prev_category = ''
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not request.user.is_authenticated:
+            reg_form = UserRegistrationForm()
+            context['reg_form'] = reg_form
 
         # Этот код для кнопки перехода "назад" работает только при последовательном переходе к товару
         # (в обратную сторону не работает, зацикливает переход)
@@ -759,8 +762,6 @@ class CategoryView(TemplateView):
                     rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(Avg('rating'))
                     rate.append({'good': item['name'], 'rating': rating})
             context['rated'] = rate
-            print(rate)
-
 
             if request.user.is_superuser:
                 context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
@@ -784,6 +785,9 @@ class CategoryView(TemplateView):
         payload = {}
         image = request.FILES.get('image')
         category_id = request.POST.get('category_id')
+
+        if not request.user.is_authenticated:
+            context['reg_form'], context['login_errors'] = self.check_auth(request)
 
         if request.POST.get('type') == 'category':
             payload['name'] = request.POST.get('new_name')
