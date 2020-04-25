@@ -7,17 +7,17 @@ from WEB_App.models import Comment, ChildrenComment
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль',
-                               widget=forms.PasswordInput(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Пароль'}),
+                               widget=forms.PasswordInput(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Пароль'}),
                                min_length=8)
     password2 = forms.CharField(label='Повторите',
-                                widget=forms.PasswordInput(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
+                                widget=forms.PasswordInput(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = User
         fields = ('username', 'email')
         widgets = {
-            'username': Input(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Имя'}),
-            'email': Input(attrs={'id': 'product-name-input', 'class': 'mb-2', 'placeholder': 'Почта'}),
+            'username': Input(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Имя'}),
+            'email': Input(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Почта'})
         }
 
     def clean_password2(self):
@@ -110,6 +110,19 @@ class BarcodeForm(forms.Form):
         'id': 'inputBarcode',
         'placeholder': " ",
         'aria-describedby': 'question-barcode',
+    }))
+
+
+class ComplaintForm(forms.Form):
+    title = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputTitle',
+        'placeholder': " ",
+    }), max_length=255)
+    text = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputText',
+        'placeholder': " ",
     }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:

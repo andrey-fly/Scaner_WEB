@@ -36,7 +36,7 @@
             <li data-target="#carouselProducts"></li>
             {%endif%} {%endfor%}
         </ol>
-        <div class="carousel-inner goods">
+        <div class="carousel-inner" id="goods">
             {% for own_good in own_goods%}
             <div class="carousel-item active">
                 {% if own_good.status == 'Одобрено' %}
@@ -147,13 +147,11 @@
 {% endif %} {% endblock %} {% block extra_js %}
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script>
-    let all_ratings = document.getElementById('rating').getElementsByClassName('active');
-    while (all_ratings.length > 1) {
-        all_ratings[1].classList.remove('active');
+    while (document.getElementById('rating').getElementsByClassName('active').length > 1) {
+        document.getElementById('rating').getElementsByClassName('active')[1].classList.remove('active');
     }
-    let all_goods = document.getElementById('goods').getElementsByClassName('active');
-    while (all_goods.length > 1) {
-        all_goods[1].classList.remove('active');
+    while (document.getElementById('goods').getElementsByClassName('active').length > 1) {
+        document.getElementById('goods').getElementsByClassName('active')[1].classList.remove('active');
     }
 </script>
 {% endblock %}

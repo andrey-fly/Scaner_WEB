@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.translation import gettext as _
 
 
 class Recovery(models.Model):
@@ -34,7 +33,8 @@ class GoodsOnModeration(models.Model):
 
 class Picture(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    hash = models.TextField(verbose_name='Хэш фото', null=True)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True, default=None)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
@@ -80,12 +80,19 @@ class Rate(models.Model):
 
 class RatePhoto(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
-    picture = models.ForeignKey(to=Picture, verbose_name='Картинка', on_delete=models.CASCADE)
+    image_id = models.IntegerField(verbose_name='image ID')
     rating = models.FloatField(verbose_name='Рейтинг')
-    good = models.TextField(verbose_name='Товар')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
 
 
 class NotAuthUser(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
+    target_good = models.TextField(verbose_name='Товар', null=True)
+    hash = models.TextField(verbose_name='Хэш фото', null=True)
+
+
+class Complaint(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    title = models.CharField(verbose_name='Заголовок жалобы', max_length=255, null=False)
+    text = models.TextField(verbose_name='Содержимое жалобы', null=False)

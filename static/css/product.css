@@ -25,7 +25,7 @@ body {
 #content-block {
     display: flex;
     flex-wrap: wrap;
-    margin: 72px 0px;
+    margin: 15px 0px;
     flex-flow: column;
 }
 
@@ -37,7 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-right: 72px;
-    margin-left: 20px;
+    margin-left: 10px;
 
     /* position: static;
     width: 360px; */
@@ -107,7 +107,7 @@ body {
 }
 
 #info-block-in-content-block {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     margin-top: 72px;
 
@@ -146,7 +146,6 @@ body {
 
 #product-name-in-info-block {
     position: static;
-    width: 542px;
     height: 56px;
     left: 8px;
     top: 27px;
@@ -540,7 +539,7 @@ Comments
     display: flex;
     flex-direction: column;
     margin: 60px 5%;
-    margin-right: 25%;
+    /* margin-right: 25%; */
 }
 
 #add-comment-block label {
@@ -557,7 +556,7 @@ Comments
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-    margin-left: 10%;
+    margin: 0 10%;
 }
 
 #comment-list-block textarea {

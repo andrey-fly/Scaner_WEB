@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %} {% load static %}
+{% block title %}
+<title>Список жалоб</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/complaint_list.css'%}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+        {% for complaint in complaints %}
+            <div class="card">
+                <h5 class="card-title">{{ complaint.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Пользователь: {{ complaint.user.username }}</h6>
+                <p class="card-text">{{ complaint.text }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/complaint_list.js' %}"></script>
+{% endblock %}

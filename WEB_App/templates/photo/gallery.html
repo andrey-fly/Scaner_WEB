@@ -17,7 +17,7 @@
     {% for image in images %}
     <li class="gridder-list" data-griddercontent="#content{{image.id}}" value="{{image}}"
         style="width: 350px; height: 250px; margin-bottom: 1%; margin-right: 1%;">
-        <img src="{{image.file.url}}" style="width: inherit; height: inherit"/>
+        <img src="{{image.file}}" style="width: inherit; height: inherit"/>
     </li>
     {% endfor %}
 </ul>
@@ -28,11 +28,11 @@
     <input class="move" type="hidden" name="image" value="{{image.id}}">
     <div class="row" style="background-color: #999">
         <div class="col-sm-5">
-            <img src="{{image.file.url}}"/>
+            <img src="{{image.file}}"/>
         </div>
         <div>
             <fieldset id="rating">
-                <p style="color: white">Автор фото: {{ image.user }}. Фото загружено {{ image.created }}.</p>
+                <p style="color: white">Автор фото: {{ image.author }}</p>
             </fieldset>
         </div>
     </div>
@@ -60,10 +60,6 @@ $(function() {
         scrollTo: "listitem",                  // panel or listitem
         animationSpeed: 400,
         animationEasing: "easeInOutExpo",
-<!--        showNav: true,                      // Show Navigation-->
-<!--        nextText: "Next",                   // Next button text-->
-<!--        prevText: "Previous",               // Previous button text-->
-<!--        closeText: "Close",                 // Close button text-->
         onStart: function(){
             //Gridder Inititialized
         },
