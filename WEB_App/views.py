@@ -22,6 +22,8 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+from django.http import JsonResponse
+
 from django.http import HttpResponse
 
 from Modules.requests import *
@@ -106,6 +108,11 @@ class IndexPage(BaseTemplateView):
 
     def post(self, request):
         context = {}
+
+        if request.POST.get('action') == 'initial_searcher':
+            status_code, context['all_goods_names'] = get_all_goods_names()
+            return JsonResponse({'all_goods_names': context['all_goods_names']})
+
         if not request.user.is_authenticated:
             context['reg_form'], context['login_errors'] = self.check_auth(request)
         if request.FILES:
@@ -118,6 +125,7 @@ class IndexPage(BaseTemplateView):
                 return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
             else:
                 return redirect(to='/add_product/?image={}'.format(response['image_hash']))
+
         return render(request, self.template_name, context)
 
 

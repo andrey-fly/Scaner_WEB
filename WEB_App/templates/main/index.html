@@ -49,44 +49,6 @@
     </div>
 </section>
 
-<script>
-    let data = [];
-</script>
-{% for name in all_goods_names %}
-<script>
-    data.push('{{name}}')
-</script>
-{% endfor %}
-
-<script>
-    function open_list(){
-        if (searcher.value) {
-            searcher.value = searcher.value[0].toUpperCase() + searcher.value.slice(1);
-            let regV = RegExp.prototype.constructor(searcher.value);
-            for(let i = 0; i < dropdown_menu_searcher.children.length; i++)
-            {
-                dropdown_menu_searcher.removeChild(dropdown_menu_searcher.firstChild)
-            }
-            for(let i = 0; i < data.length; i++)
-            {
-                if(data[i].match(regV)) {
-                    element = document.createElement('a');
-                    element.classList.add('dropdown-item');
-                    element.type = 'button';
-                    element.href = '/product/' + data[i];
-                    element.textContent = data[i];
-                    dropdown_menu_searcher.appendChild(element);
-                }
-            }
-            $("#dropdownMenu").dropdown('show');
-        }
-        else {
-            $("#dropdownMenu").dropdown('hide');
-        }
-    }
-    searcher.addEventListener('input', () => open_list());
-</script>
-
 <section class="section-xl">
     <div class="container">
         <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
@@ -175,5 +137,8 @@
     let csrftoken = '{{ csrf_token }}';
 </script>
 <script src="{% static 'js/photo.js' %}"></script>
+
+
+<script src="{% static 'js/searcher.js' %}"></script>
 
 {% endblock %}
