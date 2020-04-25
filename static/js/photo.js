@@ -42,8 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
      async function uploadFile(file) {
-        console.log('kekus');
-        let url = '/photo/';
+        let url = '/';
         let formData = new FormData();
         formData.append('csrfmiddlewaretoken', csrftoken);
         formData.append('file', file);
