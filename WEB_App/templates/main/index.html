@@ -60,27 +60,29 @@
 
 <script>
     function open_list(){
-        searcher.value = searcher.value[0].toUpperCase() + searcher.value.slice(1);
-        let regV = RegExp.prototype.constructor(searcher.value);
-        for(let i = 0; i < dropdown_menu_searcher.children.length; i++)
-        {
-            dropdown_menu_searcher.removeChild(dropdown_menu_searcher.firstChild)
-        }
-        for(let i = 0; i < data.length; i++)
-        {
-            if(data[i].match(regV)) {
-                element = document.createElement('a');
-                element.classList.add('dropdown-item');
-                element.type = 'button';
-                element.href = '/product/' + data[i];
-                element.textContent = data[i];
-                dropdown_menu_searcher.appendChild(element);
+        if (searcher.value) {
+            searcher.value = searcher.value[0].toUpperCase() + searcher.value.slice(1);
+            let regV = RegExp.prototype.constructor(searcher.value);
+            for(let i = 0; i < dropdown_menu_searcher.children.length; i++)
+            {
+                dropdown_menu_searcher.removeChild(dropdown_menu_searcher.firstChild)
             }
-        }
-        if (searcher.value)
+            for(let i = 0; i < data.length; i++)
+            {
+                if(data[i].match(regV)) {
+                    element = document.createElement('a');
+                    element.classList.add('dropdown-item');
+                    element.type = 'button';
+                    element.href = '/product/' + data[i];
+                    element.textContent = data[i];
+                    dropdown_menu_searcher.appendChild(element);
+                }
+            }
             $("#dropdownMenu").dropdown('show');
-        else
+        }
+        else {
             $("#dropdownMenu").dropdown('hide');
+        }
     }
     searcher.addEventListener('input', () => open_list());
 </script>
