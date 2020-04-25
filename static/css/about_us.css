@@ -1,5 +1,5 @@
 .content {
-    margin: 0 10%;
+    margin: 5%;
 
     display: flex;
     flex-direction: row;
@@ -7,9 +7,24 @@
 
 .project-info-block {
     width: 50%;
+    margin-right: 3%;
+
+    text-align: center;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+.project-info-block h1 {
+    color: black;
+    font-size: -webkit-xxx-large;
+}
+
+.project-info-block hr {
+    height: 1px;
+    margin: 16px 25%;
+    margin-bottom: 0px;
+    border-color: black;
 }
 
 .participants-info-block {
@@ -20,10 +35,26 @@
 }
 
 .people-block {
+    margin: 3% 0px;
     display: flex;
     flex-direction: row;
 }
 
-.people-block img {
-    width: 50%;
+.img-block {
+    width: 30%;
+    margin: 0px 3%;
+}
+
+.img-block img {
+    width: 100%;
+}
+
+.contacts-block {
+    width: calc(100% - 30% - 4*(3%));
+    margin: 0px 3%;
+}
+
+.contacts-block p {
+    font-size: medium;
+    margin: 10px 0px;
 }
