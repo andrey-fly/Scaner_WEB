@@ -101,6 +101,7 @@ class IndexPage(BaseTemplateView):
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
             context['reg_form'] = reg_form
+        status_code, context['all_goods_names'] = get_all_goods_names()
         return render(request, self.template_name, context)
 
     def post(self, request):

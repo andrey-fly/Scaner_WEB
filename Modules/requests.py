@@ -93,3 +93,9 @@ def create_good_with_new_image(name, barcode, category, points, file):
     payload['points_rusControl'] = points
     response = requests.request("POST", url, data=payload, headers=API_HEADERS, files={'file': file})
     return response.status_code, response.json()
+
+
+def get_all_goods_names():
+    url = 'http://api.scanner.savink.in/api/v1/goods/all_names/'
+    response = requests.request("GET", url, headers=API_HEADERS)
+    return response.status_code, response.json()
