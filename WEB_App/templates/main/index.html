@@ -45,8 +45,11 @@
     <div class="container">
         <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
-                <h2 class="wow fadeInRight divider">Очень интересный заголовок</h2>
-                <p class="wow fadeInRight" style="animation-delay: 0.05s">Не менее интересеный абзац.</p>
+                <h2 class="wow fadeInRight divider">Множество категорий в списке товаров</h2>
+                <p class="wow fadeInRight" style="animation-delay: 0.05s">
+                    На нашем сайте вы можете найти интересующий вас товар в широком списке,
+                    отсортированном по категориям, а также набрав его название в поле поиска!
+                </p>
             </div>
             <div class="col-md-9 col-lg-6">
                 <img src="/static/img/section-4.png" alt="" width="652" height="491">
@@ -56,28 +59,28 @@
 </section>
 <section class="section-md text-center">
     <div class="container">
-        <h3 class="divider divider-mid">Всякие Прикольные Штуки</h3>
+        <h3 class="divider divider-mid">Некоторая статистика</h3>
         <div class="row row-30">
             <div class="col-lg-4">
-                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
+                <img src="/static/img/products.png" style="width: 25%;">
                 <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num"></div>
+                    <div class="num" id="num1"></div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Добавлено продуктов</h5>
             </div>
             <div class="col-lg-4">
-                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
+                <img src="/static/img/users.png" style="width: 25%;">
                 <div class="divider-min divider-mid offset-top-bt-15">
                     <div class="num" id="num2"></div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Пользователей</h5>
             </div>
             <div class="col-lg-4">
-                <i class="wow fadeIn icon-lg icon-blue fas fa-project-diagram "></i>
+                <img src="/static/img/comments.png" style="width: 25%;">
                 <div class="divider-min divider-mid offset-top-bt-15">
                     <div class="num" id="num3"></div>
                 </div>
-                <h5>Исследовано продуктов</h5>
+                <h5>Комментариев</h5>
             </div>
         </div>
     </div>
@@ -86,8 +89,12 @@
     <div class="container">
         <div class="row justify-content-md-center align-items-lg-center justify-content-lg-between row-50">
             <div class="col-md-9 col-lg-5">
-                <h2 class="wow fadeInLeft divider">Очень интересный заголовок</h2>
-                <p class="wow fadeInLeft" style="animation-delay: 0.05s">Не менее интересеный абзац.</p>
+                <h2 class="wow fadeInLeft divider">Система распознавания товара</h2>
+                <p class="wow fadeInLeft" style="animation-delay: 0.05s">
+                    Вы можете найти интересующий вас товар, просто отправив фотографию
+                    его штрих-кода нашей системе. А скоро мы научимся распознавать товар по его
+                    внешнему виду!
+                </p>
             </div>
             <div class="col-md-9 col-lg-6">
                 <img src="/static/img/section-2.png" alt="" width="652" height="491">
@@ -100,8 +107,8 @@
 {% block extra_js %}
 <script src="{% static 'js/button.js' %}"></script>
 <script>
-    $('#num').animate({
-        num: 90 - 3 /* - начало */
+    $('#num1').animate({
+        num: {{ num_1 }} - 3 /* - начало */
     }, {
         duration: 5000,
         step: function(num) {
@@ -109,7 +116,7 @@
         }
     });
     $('#num2').animate({
-        num: 190 - 3 /* - начало */
+        num: {{ num_2 }} - 3 /* - начало */
     }, {
         duration: 3000,
         step: function(num) {
@@ -117,7 +124,7 @@
         }
     });
     $('#num3').animate({
-        num: 15 - 3 /* - начало */
+        num: {{ num_3 }} - 3 /* - начало */
     }, {
         duration: 2000,
         step: function(num) {

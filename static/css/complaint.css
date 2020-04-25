@@ -1,0 +1,8 @@
+.content {
+    font-size: x-large;
+    margin: 5% 10%;
+}
+
+.form__error {
+    color: red;
+}

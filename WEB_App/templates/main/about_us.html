@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %} {% load static %}
+{% block title %}
+<title>О нас</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/about_us.css'%}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="project-info-block">
+            <h1>О нас</h1>
+            <hr>
+            <p>
+                Проект "Продовед" - работа группы учеников "Школы программистов Онлайн". Надеемся, что
+                наш сервис, позволяющий вам по фотографии опознать товар, а также найти его в каталоге
+                на нашем сайте, оставит вам хорошие впечатления!
+            </p>
+            <a href="https://informatics.ru"><img src="/static/img/shp.png" style="width: 100%;"></a>
+        </div>
+        <div class="participants-info-block">
+            <div class="people-group">
+                <div class="people-block">
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                    <div class="contacts-block">
+                        <h3>Никита Гудков</h3>
+                        <p>Teamleader, Fullstack, Project guru</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="people-block">
+                    <div class="contacts-block">
+                        <h3>Андрей Ткачёв</h3>
+                        <p>Teamleader, Fullstack, Git, Project guru</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                </div>
+            </div>
+            <div class="people-group">
+                <div class="people-block">
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                    <div class="contacts-block">
+                        <h3>Андрей Мухин</h3>
+                        <p>Backend</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="people-block">
+                    <div class="contacts-block">
+                        <h3>Анна Буше</h3>
+                        <p>Backend</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                </div>
+            </div>
+            <div class="people-group">
+                <div class="people-block">
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                    <div class="contacts-block">
+                        <h3 style="font-size: 26px;">Владислав Харченко</h3>
+                        <p>Backend</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="people-block">
+                    <div class="contacts-block">
+                        <h3>Евгений Маринин</h3>
+                        <p>Frontend</p>
+                        <a href="mailto:">wow@mail.huh</a>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="img-block">
+                        <img src="/static/img/profile/profile_icon.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/about_us.js' %}"></script>
+{% endblock %}
