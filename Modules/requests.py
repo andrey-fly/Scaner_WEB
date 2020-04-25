@@ -99,3 +99,9 @@ def get_all_goods_names():
     url = 'http://api.scanner.savink.in/api/v1/goods/all_names/'
     response = requests.request("GET", url, headers=API_HEADERS)
     return response.status_code, response.json()
+
+
+def get_all_categories():
+    url = 'http://api.scanner.savink.in/api/v1/category/all_names_urls/'
+    response = requests.request("GET", url, headers=API_HEADERS)
+    return response.status_code, response.json()

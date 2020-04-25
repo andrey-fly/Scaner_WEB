@@ -1,4 +1,5 @@
-var data = [];
+var goods_data = [];
+var categories_data = [];
 
 $(document).ready(function() {
     // CSRF code
@@ -39,7 +40,8 @@ $(document).ready(function() {
         data: {'action': 'initial_searcher'},
         success: function(d) {
             console.log(d);
-            data = d.all_goods_names;
+            goods_data = d.all_goods_names;
+            categories_data = d.all_categories;
         },
         error: function(d) {
             console.log('error request to server');
@@ -49,32 +51,49 @@ $(document).ready(function() {
 
 
 function open_list(){
-        if (searcher.value) {
-            searcher.value = searcher.value[0].toUpperCase() + searcher.value.slice(1);
-            let regV = RegExp.prototype.constructor(searcher.value);
-            for(let i = 0; i < dropdown_menu_searcher.children.length; i++)
-            {
-                dropdown_menu_searcher.removeChild(dropdown_menu_searcher.firstChild)
-            }
-            for(let i = 0; i < data.length; i++)
-            {
-                if(data[i].match(regV)) {
-                    element = document.createElement('a');
-                    element.classList.add('dropdown-item');
-                    element.type = 'button';
-                    element.href = '/product/' + data[i];
-                    element.textContent = data[i];
-                    dropdown_menu_searcher.appendChild(element);
-                }
-            }
-            $("#dropdownMenu").dropdown('show');
-        }
-        else {
-            $("#dropdownMenu").dropdown('hide');
-        }
-        if(!dropdown_menu_searcher.children.length)
-        {
-            $("#dropdownMenu").dropdown('hide');
-        }
+    let len = dropdown_menu_searcher.children.length;
+    for(let i = 0; i < len; i++)
+    {
+        dropdown_menu_searcher.removeChild(dropdown_menu_searcher.firstChild);
     }
-    searcher.addEventListener('input', () => open_list());
+
+    if (searcher.value) {
+        searcher.value = searcher.value[0].toUpperCase() + searcher.value.slice(1);
+        let regV = RegExp.prototype.constructor(searcher.value);
+
+        for(let i = 0; i < goods_data.length; i++)
+        {
+            if(goods_data[i].match(regV)) {
+                element = document.createElement('a');
+                element.classList.add('dropdown-item');
+                element.type = 'button';
+                element.href = '/product/' + goods_data[i];
+                element.textContent = goods_data[i];
+                dropdown_menu_searcher.appendChild(element);
+            }
+        }
+
+        for(let i = 0; i < categories_data.length; i++)
+        {
+            if(categories_data[i][0].match(regV)) {
+                element = document.createElement('a');
+                element.classList.add('dropdown-item');
+                element.type = 'button';
+                element.href = '/category/' + categories_data[i][1];
+                element.textContent = categories_data[i][0];
+                dropdown_menu_searcher.appendChild(element);
+            }
+        }
+
+        $("#dropdownMenu").dropdown('show');
+    }
+    else {
+        $("#dropdownMenu").dropdown('hide');
+    }
+    if(!dropdown_menu_searcher.children.length)
+    {
+        $("#dropdownMenu").dropdown('hide');
+    }
+}
+
+searcher.addEventListener('input', () => open_list());

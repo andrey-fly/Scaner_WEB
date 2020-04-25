@@ -111,7 +111,15 @@ class IndexPage(BaseTemplateView):
 
         if request.POST.get('action') == 'initial_searcher':
             status_code, context['all_goods_names'] = get_all_goods_names()
-            return JsonResponse({'all_goods_names': context['all_goods_names']})
+            status_code, context['all_categories'] = get_all_categories()
+            print(status_code)
+            print(context['all_categories'])
+            return JsonResponse(
+                {
+                    'all_goods_names': context['all_goods_names'],
+                    'all_categories': context['all_categories'],
+                }
+            )
 
         if not request.user.is_authenticated:
             context['reg_form'], context['login_errors'] = self.check_auth(request)
