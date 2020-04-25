@@ -36,7 +36,7 @@ urlpatterns = [
     path('change_info/', change_info),
     path('about_us/', TemplateView.as_view(template_name='main/about_us.html')),
     path('complaint/', ComplaintPage.as_view(template_name='photo/complaint.html')),
-    path('admin/complaint_list', TemplateView.as_view(template_name='admin/complaint_list.html')),
+    path('admin/complaint_list', ComplaintListPage.as_view()),
 
 
     path('category/<str:category>', CategoryView.as_view(template_name='categories/category_list.html')),
