@@ -364,12 +364,12 @@
         <div class="conatiner" style="margin-top: 30px">
             <div class="wrap">
                 {% for review in reviews %}
-                    <div class="box one" style="max-width: 200px">
+                    <div class="box one" style="max-width: 200px; height: 650px;">
                         <div class="date">
                             <h4>{{review.create}}</h4>
                         </div>
                         <h1>{{review.text}}</h1>
-                        <div class="poster p1">
+                        <div class="poster p1" style="margin: 12px auto">
                             <h4>{{review.user}}</h4>
                         </div>
                     </div>

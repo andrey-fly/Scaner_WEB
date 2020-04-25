@@ -206,6 +206,7 @@ class ProductPage(BaseView):
         context['points'] = response['points']
         context['categories'] = response['categories']
         context['comments'] = Comment.objects.filter(good=good)
+        context['reviews'] = Comment.objects.filter(good=good)[:3]
         context['show_thanks'] = False
 
         if request.user.is_authenticated:
@@ -259,7 +260,8 @@ class ProductPage(BaseView):
                     context['status'] = 'ok'
                     context['show_thanks'] = True
             else:
-                context['status'] = 'error'
+                pass
+                # context['status'] = 'error'
 
         context['name'] = good
         status_code, response = get_good_by_name(good)

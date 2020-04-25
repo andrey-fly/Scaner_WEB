@@ -84,7 +84,7 @@
                 {% if rate.good == product.name %}
                     <p style="margin: 0 auto;">оценка:</p>
                     <p id="average-{{rate.good}}" style="color: #10c46a; margin: 0 auto; font-size: 20px;">{%if rate.rating.rating__avg%}
-                        {{rate.rating.rating__avg}} {%else%}0{%endif%}</p>
+                        {{rate.rating.rating__avg}} {%else%}Нет оценок{%endif%}</p>
                 {%endif%}
             {% endfor %}
 
