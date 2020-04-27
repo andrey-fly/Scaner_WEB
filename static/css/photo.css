@@ -211,3 +211,9 @@ body {
 .photo-load-button-in-main-content-frame:hover {
     background-color: #002f55;
 }
+
+@media only screen and (min-width: 992px) {
+        #photo-frame-in-content-group {
+            display: none;
+        }
+    }

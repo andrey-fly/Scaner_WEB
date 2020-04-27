@@ -1,0 +1,73 @@
+<script>
+    function open_modal()
+    {
+        if (window.innerWidth < 780) {
+            $('#signmodal_wrap').modal('show')
+        }
+        else {
+            $('#signmodal_standard').modal('show')
+        }
+    }
+function closeThanks(){
+    setTimeout(() => $("#thanksModal [data-dismiss=modal]").trigger({ type: "click" }), 1000)
+};
+
+$('#thanksModal').on('shown.bs.modal', function (e) {
+    i = 5;
+    var count = setInterval(function() {
+        document.getElementById("timer").innerHTML = i;
+        if (i == 0) {
+            closeThanks();
+        }
+        if (i > 0) {
+            i = i - 1;
+        }
+    }, 1000);
+})
+{% if show_thanks %}
+$('#thanksModal').modal('show');
+{% endif %}
+{% if status == 'error' %}
+$('#modal-add').modal('show');
+{% endif %}
+$(document).ready(function(){
+    $('textarea').autosize();
+});
+
+$('#example').val('').trigger('autosize.resize');
+
+let rate = document.getElementById('rate')
+
+$(".my-rating-9").starRating({
+    starSize: 25,
+    {% if not rated %}
+    disableAfterRate: false,
+    onHover: function(currentIndex, currentRating, $el){
+      $('.live-rating').text(currentIndex);
+    },
+    onLeave: function(currentIndex, currentRating, $el){
+      $('.live-rating').text(currentRating);
+    },
+    callback: function(currentRating, $el){
+        // make a server call here
+        rate.value = currentRating;
+    }
+    {% else %}
+    initialRating : {{rated}},
+    readOnly : true,
+    {% endif %}
+});
+{% if rated %}
+if ({{rated}} <= 3.5)
+    $('#average').css('color', '#bf0704');
+else
+    $('#average').css('color', '#10c46a');
+{% endif %}
+
+var mzOptions = {
+    zoomPosition: 'inner',
+    selectorTrigger: 'hover',
+    expand: 'off',
+    hint: 'always'
+};
+</script>

@@ -1,8 +1,12 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
 <title>Профиль</title>
-{% endblock %} {% block extra_css %}
-<script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}"> {% endblock %} {% block content %}
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}">
+{% endblock %}
+{% block content %}
 <div class="container">
     <h1 class="main-name text-center">Личный кабинет</h1>
     <hr>
@@ -144,14 +148,9 @@
         <div class="card-footer bg-transparent border-primary"><a href="/category" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете выставить рейтинг всем нашим продуктам</a></div>
     </div>
 </div>
-{% endif %} {% endblock %} {% block extra_js %}
+{% endif %}
+{% endblock %}
+{% block extra_js %}
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
-<script>
-    while (document.getElementById('rating').getElementsByClassName('active').length > 1) {
-        document.getElementById('rating').getElementsByClassName('active')[1].classList.remove('active');
-    }
-    while (document.getElementById('goods').getElementsByClassName('active').length > 1) {
-        document.getElementById('goods').getElementsByClassName('active')[1].classList.remove('active');
-    }
-</script>
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
