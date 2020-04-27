@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>Галерея</title>
+{% endblock %}
+{% block extra_css %}
+<script src="{% static 'js/modernizr.custom.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.gridder.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/star-rating-svg.css'%}">
+{% endblock %}
+{% block content %}
+<!-- Gridder navigation -->
+<ul class="gridder">
+    <!-- You can load specify which content is loaded by specifying the #ID of the div where the content is  -->
+    {% for image in images %}
+    <li class="gridder-list" data-griddercontent="#content{{image.id}}" value="{{image}}"
+        style="width: 350px; height: 250px; margin-bottom: 1%; margin-right: 1%;">
+        <img src="{{image.file}}" style="width: inherit; height: inherit"/>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Gridder content -->
+{% for image in images %}
+<div id="content{{image.id}}" class="gridder-content">
+    <input class="move" type="hidden" name="image" value="{{image.id}}">
+    <div class="row" style="background-color: #999">
+        <div class="col-sm-5">
+            <img src="{{image.file}}"/>
+        </div>
+        <div>
+            <fieldset id="rating">
+                <p style="color: white">Автор фото: {{ image.author }}</p>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/jquery.gridder.min.js'%}"></script>
+<script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
+{% include 'components/product/gallery/rate.html' %}
+{% endblock %}

@@ -1,7 +1,12 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
 <title>Изменение данных</title>
-{% endblock %} {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/change_info.css'%}"> {% endblock %} {% block content %}
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/change_info.css'%}">
+{% endblock %}
+{% block content %}
 <div class="container">
     <h2 class="text-center section-name">Изменение данных</h2>
     <hr>
@@ -9,7 +14,7 @@
         <div class="col-sm-6 col-lg-4">
             {% if userphoto %}
             <img class="rounded mb-3 my-image" src="{{userphoto}}" alt="icon" style="width: 100px; height: 100px"> {% else %}
-            <img class="rounded mb-3 my-image" src="{% static 'img/profile/'%}profile_icon.png" alt="icon" style="width: 100px; height: 100px"> {% endif %}
+            <img class="rounded mb-3 my-image" src="{% static 'img/profile/profile/'%}profile_icon.png" alt="icon" style="width: 100px; height: 100px"> {% endif %}
             <form enctype="multipart/form-data" action="/change_info/" method="POST">
                 {% csrf_token %} {{photo.file}}
                 <div class="input-group">
@@ -42,10 +47,11 @@
     </div>
 </div>
 
-{% endblock %} {% block extra_js %}
+{% endblock %}
+{% block extra_js %}
 <script>
-    inputGroupFile.addEventListener('change', function() {
-        chosed_file.textContent = inputGroupFile.files[0].name;
-    })
+inputGroupFile.addEventListener('change', function() {
+    chosed_file.textContent = inputGroupFile.files[0].name;
+})
 </script>
 {% endblock %}

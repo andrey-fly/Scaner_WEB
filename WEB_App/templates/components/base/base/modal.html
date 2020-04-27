@@ -1,0 +1,34 @@
+<script>
+let csrftoken = '{{ csrf_token }}';
+
+{% if login_errors %}
+    window.setTimeout(function() {
+        modal_btn.click()
+    }, 10);
+    container.classList.remove("right-panel-active")
+{% endif %}
+
+{% if reg_form.errors %}
+window.setTimeout(function() {
+    modal_btn.click()
+}, 10);
+container.classList.add("right-panel-active")
+{% endif %}
+
+{% if show_modal %}
+if (window.innerWidth < 780) {
+    $('#signmodal_wrap').modal('show')
+    }
+else {
+    $('#signmodal_standard').modal('show')
+}
+{% endif %}
+let btn = document.getElementById('modal_btn');
+btn.addEventListener('click', function() {
+    if (window.innerWidth < 780) {
+        $('#signmodal_wrap').modal('show')
+    } else {
+        $('#signmodal_standard').modal('show')
+    }
+})
+</script>

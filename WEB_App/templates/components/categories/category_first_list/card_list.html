@@ -1,0 +1,33 @@
+<div class="card-list-group">
+    {% for category in categories %}
+    {% if category.level == 0 %}
+    <div class="card">
+        {%if category.file%}
+        <a href="/category/{{category.url_name}}"><img src="{{category.file}}" class="card-img-top" alt="{{category.name}}"></a>
+        {%else%}
+        <h5 class="text-wrap p-5">Image not found</h5>
+        {%endif%}
+        <div class="card-body" style="width: inherit;">
+            <h5 class="card-title text-center"><a href="/category/{{category.url_name}}" style="font-size: inherit">{{category.name}}</a></h5>
+            {% if user.is_superuser %}
+            {% include 'modals_for_admin/edit_category.html' %}
+            {% include 'modals_for_admin/add_child_category.html' %}
+            {% include 'modals_for_admin/add_good_in_category.html' %}
+            {% include 'modals_for_admin/add_first_level_category.html' %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="category_delete">
+                <input type="hidden" name="category_id" value="{{category.id}}">
+                <button type="submit" class="btn btn-block btn-outline-danger mt-4">Удалить</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {%endif%}
+    {% endfor %}
+
+{% if not categories %}
+<h3 class="p-5 text-danger">Элементы не найдены</h3>
+{% endif %}
+
+</div>

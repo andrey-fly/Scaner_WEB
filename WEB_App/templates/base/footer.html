@@ -1,3 +1,4 @@
+{% load static %}
 <div class="container logoFooter">
     <div class="linksFooter">
         <a class="linkFooter" href="/about_us/">О нас</a>
@@ -28,7 +29,7 @@
         </div>
     </div>
     <a class="icon layoutFooter__logo" href="#">
-        <img src="/static/pics/logo.svg">
+        <img src="{% static 'img/logo/logo.svg' %}">
     </a>
     <p class="copyright">&copy; Продовед</p>
 </div>

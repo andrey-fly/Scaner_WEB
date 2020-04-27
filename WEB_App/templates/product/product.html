@@ -345,7 +345,7 @@
         <div id="score-block-in-info-block" style="max-width: inherit;">
             <!--                Like or unlike block-->
             <div id="recommendation-block-in-score-block">
-                <img src="{% static 'pics/like.svg'%}" id="image-recommendation-in-recommendation-block">
+                <img src="{% static 'img/extras/like.svg'%}" id="image-recommendation-in-recommendation-block">
                 <p id="text-recommendation-in-recommendation-block">
                     Можно брать
                 </p>
@@ -452,100 +452,10 @@
             </div>
         </div>
     </div>
-    {% endif %}
-    {% endblock %}
-    {% block extra_js %}
-<script>
-    function open_modal()
-    {
-        if (window.innerWidth < 780) {
-            $('#signmodal_wrap').modal('show')
-        }
-        else {
-            $('#signmodal_standard').modal('show')
-        }
-    }
-
-</script>
-
-    <!--Не переставляйте код, он перестанет работать!-->
-
-    <script>
-    function closeThanks(){
-        setTimeout(() => $("#thanksModal [data-dismiss=modal]").trigger({ type: "click" }), 1000)
-    };
-
-    $('#thanksModal').on('shown.bs.modal', function (e) {
-        i = 5;
-        var count = setInterval(function() {
-            document.getElementById("timer").innerHTML = i;
-            if (i == 0) {
-                closeThanks();
-            }
-            if (i > 0) {
-                i = i - 1;
-            }
-        }, 1000);
-    })
-    </script>
-    {% if show_thanks %}
-    <script>
-$('#thanksModal').modal('show');
-
-    </script>
-    {% endif %}
-
-{% if status == 'error' %}
-<script>
-    $('#modal-add').modal('show');
-</script>
 {% endif %}
-
-<!--    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>-->
-<!--    <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>-->
-    <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
-    <script src="{% static 'js/jquery.autosize.js' %}"></script>
-    <script>
-$(document).ready(function(){
-    $('textarea').autosize();
-});
-
-$('#example').val('').trigger('autosize.resize');
-
-let rate = document.getElementById('rate')
-
-$(".my-rating-9").starRating({
-    starSize: 25,
-    {% if not rated %}
-    disableAfterRate: false,
-    onHover: function(currentIndex, currentRating, $el){
-      $('.live-rating').text(currentIndex);
-    },
-    onLeave: function(currentIndex, currentRating, $el){
-      $('.live-rating').text(currentRating);
-    },
-    callback: function(currentRating, $el){
-        // make a server call here
-        rate.value = currentRating;
-    }
-    {% else %}
-    initialRating : {{rated}},
-    readOnly : true,
-    {% endif %}
-});
-{% if rated %}
-if ({{rated}} <= 3.5)
-    $('#average').css('color', '#bf0704');
-else
-    $('#average').css('color', '#10c46a');
-{% endif %}
-
-var mzOptions = {
-    zoomPosition: 'inner',
-    selectorTrigger: 'hover',
-    expand: 'off',
-    hint: 'always'
-};
-
-    </script>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
+<script src="{% static 'js/jquery.autosize.js' %}"></script>
+{% include 'components/product/product/extra_js.html' %}
 {% endblock %}

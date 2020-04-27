@@ -1,4 +1,5 @@
-{% extends 'base/base.html' %} {% load static %}
+{% extends 'base/base.html' %}
+{% load static %}
 {% block title %}
 <title>О нас</title>
 {% endblock %}
@@ -15,13 +16,13 @@
                 наш сервис, позволяющий вам по фотографии опознать товар, а также найти его в каталоге
                 на нашем сайте, оставит вам хорошие впечатления!
             </p>
-            <a href="https://informatics.ru"><img src="/static/img/shp.png" style="width: 100%;"></a>
+            <a href="https://informatics.ru"><img src="{%static 'img/extras/shp.png' %}" style="width: 100%;"></a>
         </div>
         <div class="participants-info-block">
             <div class="people-group">
                 <div class="people-block">
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                     <div class="contacts-block">
                         <h3>Никита Гудков</h3>
@@ -46,14 +47,14 @@
                         </ul>
                     </div>
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                 </div>
             </div>
             <div class="people-group">
                 <div class="people-block">
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                     <div class="contacts-block">
                         <h3>Андрей Мухин</h3>
@@ -78,14 +79,14 @@
                         </ul>
                     </div>
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                 </div>
             </div>
             <div class="people-group">
                 <div class="people-block">
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                     <div class="contacts-block">
                         <h3 style="font-size: 26px;">Владислав Харченко</h3>
@@ -110,7 +111,7 @@
                         </ul>
                     </div>
                     <div class="img-block">
-                        <img src="/static/img/profile/profile_icon.png">
+                        <img src="{%static 'img/profile/profile_icon.png' %}">
                     </div>
                 </div>
             </div>
