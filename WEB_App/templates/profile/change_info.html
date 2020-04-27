@@ -14,7 +14,7 @@
         <div class="col-sm-6 col-lg-4">
             {% if userphoto %}
             <img class="rounded mb-3 my-image" src="{{userphoto}}" alt="icon" style="width: 100px; height: 100px"> {% else %}
-            <img class="rounded mb-3 my-image" src="{% static 'img/profile/'%}profile_icon.png" alt="icon" style="width: 100px; height: 100px"> {% endif %}
+            <img class="rounded mb-3 my-image" src="{% static 'img/profile/profile/'%}profile_icon.png" alt="icon" style="width: 100px; height: 100px"> {% endif %}
             <form enctype="multipart/form-data" action="/change_info/" method="POST">
                 {% csrf_token %} {{photo.file}}
                 <div class="input-group">
