@@ -1,0 +1,37 @@
+{% load static %}
+<h2 class="text-center section-name">Изменение данных</h2>
+<hr>
+<div class="row">
+    <div class="col-sm-6 col-lg-4">
+        {% if userphoto %}
+        <img class="rounded mb-3 my-image" src="{{userphoto}}" alt="icon" style="width: 100px; height: 100px"> {% else %}
+        <img class="rounded mb-3 my-image" src="{% static 'img/profile/profile_icon.png' %}" alt="icon" style="width: 100px; height: 100px"> {% endif %}
+        <form enctype="multipart/form-data" action="/change_info/" method="POST">
+            {% csrf_token %} {{photo.file}}
+            <div class="input-group">
+                <div class="custom-file">
+                    <label class="custom-file-label text-wrap" for="inputGroupFile" id="ididid">
+                        <span id="chosed_file" class="text-wrap">Выберите файл</span>
+                    </label>
+                </div>
+            </div>
+            <input type="submit" class="change-btn btn btn-md" id="inputGroupFileBtn" name="status" value="Обновить фото">
+        </form>
+    </div>
+    <form class="col-sm-6 col-lg-6" action="/change_info/" method="POST">
+        <div class="col-md-12 error-reg">
+            <b>{{form.errors}}</b>
+        </div>
+        {% for field in form %} {% csrf_token %}
+        <div class="col-md-12">
+            {{ field.label }}:
+        </div>
+        <div class="col-md-12 form-input">
+            {{ field }}
+        </div>
+        {% endfor %}
+        <div class="col-md-12">
+            <input type="submit" class="btn change-btn btn-md" name="status" value="Сохранить">
+        </div>
+    </form>
+</div>
