@@ -7,20 +7,7 @@
         <h5 class="text-wrap p-5">Image not found</h5>
         {%endif%}
         <div class="card-body" style="width: inherit;">
-            <h5 class="card-title text-center"><a href="/category/{{category.url_name}}" style="font-size: inherit">{{category.name}}</a>
-            </h5>
-            {% if user.is_superuser %}
-            {% include 'modals_for_admin/edit_category.html' %}
-            {% include 'modals_for_admin/add_child_category.html' %}
-            {% include 'modals_for_admin/add_good_in_category.html' %}
-
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="category_delete">
-                <input type="hidden" name="category_id" value="{{category.id}}">
-                <input name="type" value="category" type="hidden">
-                <button type="submit" class="btn btn-block btn-outline-danger mt-3">Удалить</button>
-            </form>
+            <h5 class="card-title text-center"><a href="/category/{{category.url_name}}" style="font-size: inherit">{{category.name}}</a></h5>
             {% endif %}
         </div>
     </div>

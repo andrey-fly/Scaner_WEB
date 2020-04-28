@@ -37,19 +37,6 @@
 
         {% endif %}
         <h5 class="card-title text-center"><a href="/product/{{product.name}}/" style="font-size: inherit">{{product.name}}</a></h5>
-
-        {% if user.is_superuser %}
-        {% include 'modals_for_admin/edit_good.html' %}
-        {% include 'modals_for_admin/edit_positives.html' %}
-        {% include 'modals_for_admin/edit_negatives.html' %}
-
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="good_id" value="{{product.id}}">
-            <input name="type" value="good" type="hidden">
-            <button type="submit" class="btn btn-block btn-outline-danger mt-4">Удалить</button>
-        </form>
         {% endif %}
     </div>
 </div>
