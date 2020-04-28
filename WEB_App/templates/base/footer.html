@@ -1,35 +1,6 @@
 {% load static %}
 <div class="container logoFooter">
-    <div class="linksFooter">
-        <a class="linkFooter" href="/about_us/">О нас</a>
-        <a class="linkFooter" href="">Поддержка</a>
-        <a class="linkFooter" href="/complaint/">Жалоба</a>
-    </div>
-    <div class="socialAppLinks">
-        <ul class="icons">
-            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-        </ul>
-        <div class="appLinks">
-            <a class="mobileLink__appStore" href="">
-                <button class="app-store">
-                    <span class="mdi mdi-apple app-store-icon"></span>
-                    <p>Загрузите в</p>
-                    <h1>App Store</h1>
-                </button>
-            </a>
-            <a class="mobileLink__googlePlay" href="">
-                <button class="app-store">
-                    <span class="mdi mdi-android app-store-icon"></span>
-                    <p>Загрузите в</p>
-                    <h1>App Store</h1>
-                </button>
-            </a>
-        </div>
-    </div>
-    <a class="icon layoutFooter__logo" href="#">
-        <img src="{% static 'img/logo/logo.svg' %}">
-    </a>
-    <p class="copyright">&copy; Продовед</p>
+    {% include 'base/footer/linksFooter.html' %}
+    {% include 'base/footer/socialAppLinks.html' %}
+    {% include 'base/footer/icon_layoutFooter__logo.html' %}
 </div>
