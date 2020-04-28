@@ -4,8 +4,10 @@
         <div class="logo">
             <a class="navbar-brand" href="/"></a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <img src="{% static 'img/nav/menu.svg' %}" title="menu"/>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <nav class="top-nav">
@@ -13,7 +15,7 @@
                     {% if request.user.is_superuser %}
                     <li class="nav-item float-right">
                         <a class="nav-link" href="/admin/accept/">
-                            <i class="fas fa-home"></i>
+                            <i class="fas fa-users-cog"></i>
                             <span class="i-text">Админ-панель</span>
                         </a>
                     </li>
@@ -26,16 +28,10 @@
                     </li>
                     <li class="nav-item float-right">
                         <a class="nav-link" href="/category/">
-                            <i class="fas fa-home"></i>
+                            <i class="fas fa-shopping-basket"></i>
                             <span class="i-text">Товары</span>
                         </a>
                     </li>
-<!--                    <li class="nav-item float-right">-->
-<!--                        <a class="nav-link" href="/product">-->
-<!--                            <i class="fas fa-search"></i>-->
-<!--                            <span class="i-text">Найдите товар</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
                     {% if not user.is_authenticated %}
                     <li class="nav-item float-right">
                         <a class="nav-link" type="button" id="modal_btn" data-toggle="modal" data-target="#signmodal">
@@ -52,7 +48,7 @@
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/profile" style="text-align: left;">
-                                <i class="fas fa-user-circle"></i>
+                                <i class="far fa-user-circle"></i>
                                 <span class="i-text">Профиль</span>
                             </a>
                             <a class="dropdown-item" href="/logout" style="text-align: left;">
