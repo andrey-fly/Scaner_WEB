@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>О нас</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/about_us.css'%}">
+{% endblock %}
+{% block content %}
+    <div class="content" onload="load_people();">
+        {% include 'components/extras/about_us/project_info.html' %}
+        <div id="participants-info-block">
+
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/about_us.js' %}"></script>
+{% endblock %}

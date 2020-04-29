@@ -1,0 +1,16 @@
+{% for comp_resp in complaint_responses %}
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            Наши администраторы ответили на вашу жалобу
+        </div>
+        <div class="card-body">
+            <p style="white-space: pre;">{{comp_resp.text}}</p>
+            <input type="hidden" name="complaint-response-id" value="{{comp_resp.id}}">
+            <input type="hidden" name="checked" value="True">
+            <button type="submit" class="btn btn-outline-warning">Отметить прочитанным</button>
+        </div>
+    </div>
+</form>
+{% endfor %}

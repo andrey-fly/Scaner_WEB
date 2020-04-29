@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>Жалобы</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/complaint.css'%}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+    {% include 'components/extras/complaint/complaint_form.html' %}
+    {% include 'components/extras/complaint/complaint_answer.html' %}
+    </div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/complaint.js' %}"></script>
+{% endblock %}
