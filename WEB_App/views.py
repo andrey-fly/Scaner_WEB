@@ -991,18 +991,15 @@ class ComplaintListPage(PermissionRequiredMixin, View):
     template_name = 'admin/complaint_list.html'
     permission_required = 'WEB_App.view'
     login_url = '/login/'
-    context = {
-        'complaints': Complaint.objects.filter(checked=False),
-    }
 
     def get(self, request):
         form = ComplaintResponseForm()
-        self.context['form'] = form
-        return render(request, self.template_name, self.context)
+        context = {'complaints': Complaint.objects.filter(checked=False), 'form': form}
+        return render(request, self.template_name, context)
 
     def post(self, request):
         form = ComplaintResponseForm(request.POST)
-        self.context['form'] = form
+        context = {'complaints': Complaint.objects.filter(checked=False), 'form': form}
 
         if form.is_valid():
             complaint_resp = ComplaintResponse(
@@ -1018,9 +1015,9 @@ class ComplaintListPage(PermissionRequiredMixin, View):
             return redirect('/admin/complaint_list')
         else:
             form = ComplaintForm()
-            self.context['form'] = form
-            self.context['form_errors'] = True
-        return render(request, self.template_name, self.context)
+            context['form'] = form
+            context['form_errors'] = True
+        return render(request, self.template_name, context)
 
 
 class ComplaintPage(TemplateView):
