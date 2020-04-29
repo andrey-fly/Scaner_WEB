@@ -912,3 +912,164 @@ Comments
 	.og-details { float: none; width: 100%; }
 
 }
+
+@media only screen and (max-width: 980px) {
+    #photo-frame-in-content-group {
+        display: none;
+    }
+    #content-group {
+        width: auto;
+    }
+}
+@media only screen and (max-width: 1275px) {
+    #content-block {
+        flex-wrap: wrap !important;
+    }
+}
+
+.status-card {
+        padding: 20px;
+    }
+
+    .modal form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+    }
+
+    .modal-content-thanks {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-clip: padding-box;
+        outline: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-thanks-container {
+        left: 0;
+        z-index: 2;
+        margin: 0 auto;
+    }
+
+    .thanks-container-modal {
+        position: relative;
+        overflow: hidden;
+        width: 768px;
+        max-width: 100%;
+        padding: 0 40px 20px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .modal-dialog-special {
+        position: relative;
+        width: auto;
+        pointer-events: none;
+    }
+
+    .modal-header {
+        border-bottom: none !important;
+    }
+
+    .thanks-text {
+        font-family: Roboto-Regular;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 2rem;
+        line-height: 120%;
+        color: #007bff;
+        text-align: center;
+    }
+
+    #timer-description {
+        margin: 50px 0px 40px 0px;
+        text-align: center;
+        font-family: Roboto-Regular;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 120%;
+    }
+
+    @media (min-width: 576px){
+        .modal-dialog-special {
+            max-width: 500px;
+            margin: 20vh auto;
+        }
+    }
+    @media (max-width: 450px) {
+        .modal-form {
+            padding: 0 !important;
+        }
+    }
+
+#btn:hover{cursor: pointer}
+#btn {
+  background: transparent; outline: none;
+  position: relative;
+  border: 2px solid #111;
+  padding: 15px 50px;
+  overflow: hidden;
+}
+
+/*button:before (attr data-hover)*/
+#btn:hover:before{opacity: 1; transform: translate(0,0);}
+#btn:before{
+  content: attr(data-hover);
+  position: absolute;
+  top: 1.1em; left: 0;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 800;
+  font-size: .8em;
+  opacity: 0;
+  transform: translate(-100%,0);
+  transition: all .3s ease-in-out;
+}
+  /*button div (button text before hover)*/
+  #btn:hover div{opacity: 0; transform: translate(100%,0)}
+  #btn div{
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    font-size: .8em;
+    transition: all .3s ease-in-out;
+  }
+
+.active-pink-textarea textarea.md-textarea {
+  border-bottom: 1px solid #00C851;
+  box-shadow: 0 1px 0 0 #00C851;
+}
+
+.active-pink-textarea.md-form label {
+  color: #00C851;
+}
+.active-pink-textarea.md-form .prefix {
+  color: #00C851;
+}
+
+.active-pink-textarea.md-form label.active {
+  color: #33b5e5;
+}
+.pink-textarea textarea.md-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid #33b5e5;
+  box-shadow: 0 1px 0 0 #33b5e5;
+}
+.pink-textarea.md-form .prefix.active {
+  color: #33b5e5;
+}
+.active-pink-textarea.md-form textarea.md-textarea:focus:not([readonly])+label {
+  color: #33b5e5;
+}

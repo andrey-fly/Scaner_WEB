@@ -278,6 +278,7 @@ class ProductPage(BaseView):
         context['points'] = response['points']
         context['categories'] = response['categories']
         context['comments'] = Comment.objects.filter(good=good)
+        context['reviews'] = Comment.objects.filter(good=good)[:3]
 
         if request.user.is_authenticated:
             try:

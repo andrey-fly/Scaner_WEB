@@ -1,13 +1,13 @@
 <script>
-    function open_modal()
-    {
-        if (window.innerWidth < 780) {
-            $('#signmodal_wrap').modal('show')
-        }
-        else {
-            $('#signmodal_standard').modal('show')
-        }
+function open_modal()
+{
+    if (window.innerWidth < 780) {
+        $('#signmodal_wrap').modal('show')
     }
+    else {
+        $('#signmodal_standard').modal('show')
+    }
+}
 function closeThanks(){
     setTimeout(() => $("#thanksModal [data-dismiss=modal]").trigger({ type: "click" }), 1000)
 };
