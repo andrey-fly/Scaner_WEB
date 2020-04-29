@@ -1,0 +1,16 @@
+<div id="photo-block-in-content-block" style="max-width: calc(100vw - 20px); width: 480px">
+    {% if default_img %}
+    <a id="zoom" href="{{default_img}}" class="MagicZoom"
+       data-options="zoomPosition: inner; variableZoom: true; selectorTrigger: hover; lazyZoom: true; expand: off; hint: always"><img src="{{default_img}}"></a>
+    {% else %}
+    <a id="zoom" href="{{images.0}}" class="MagicZoom"
+       data-options="zoomPosition: inner; variableZoom: true; selectorTrigger: hover; lazyZoom: true; expand: off; hint: always"><img
+            src="{{images.0}}"></a>
+    {% endif %}
+    <div class="selectors" style="display: flex; flex-flow: row; max-width: 480px">
+        {% for image in images %}
+        <a data-zoom-id="zoom" href="{{image}}" data-image="{{image}}" title="..."
+           data-options="cssClass: no-expand-thumbnails" style="margin: 5px;"><img
+                src="{{image}}"/></a>
+        {% endfor %}
+    </div>

@@ -1,0 +1,34 @@
+<div class="card mt-3 ml-2 mr-2">
+    <div class="card-body">
+        <p>Создать категорию</p>
+        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseCategory"
+                aria-expanded="false" aria-controls="collapseCategory">
+            Развернуть
+        </button>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="collapse" id="collapseCategory">
+                <div class="card card-body">
+                    <label for="category_name">Наименование: </label>
+                    <input id="category_name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2" required>
+
+                    <label for="url_name">Хвост ссылки: </label>
+                    <input id="url_name" type="text" name="url_name" placeholder="URL" class="row mt-2" required>
+
+                    <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
+                        <option value="None" disabled selected>Select parent</option>
+                        {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input name="image" type="file" accept="image/*" class="row mt-3">
+
+                    <button type="submit" class="btn btn-outline-success float-right mr-1" name="action" value="create_category">Сохранить</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

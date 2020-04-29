@@ -1,0 +1,13 @@
+<div id="content{{image.id}}" class="gridder-content">
+    <input class="move" type="hidden" name="image" value="{{image.id}}">
+    <div class="row" style="background-color: #999">
+        <div class="col-sm-5">
+            <img src="{{image.file}}"/>
+        </div>
+        <div>
+            <fieldset id="rating">
+                <p style="color: white">Автор фото: {{ image.author }}</p>
+            </fieldset>
+        </div>
+    </div>
+</div>

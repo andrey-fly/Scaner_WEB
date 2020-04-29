@@ -1,0 +1,55 @@
+<div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+<div class="modal-dialog" role="document" style="max-width: 950px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Добавьте ваше фото</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            {% if status == 'ok' %}
+            <div class="card status-card">
+                <p>Фотография успешно отправлена на модерацию</p>
+                <p>Вы можете добавить ещё одно фото</p>
+                <a class="btn btn-outline-primary" href="/">Или вернуться на главную страницу</a>
+            </div>
+            {% endif %}
+            {% if status == 'error' %}
+            <div class="card status-card">
+                <p style="color: darkred">При отправке на модерацию произошла ошибка</p>
+                <p>Убедитесь в том, что вы отправили правильный файл и попробуйте снова</p>
+                <a class="btn btn-outline-primary" href="/">Или вернитесь на главную страницу</a>
+            </div>
+            {% endif %}
+            <form id="content-group" method="POST" action="" enctype="multipart/form-data">
+                <div>
+                    {% csrf_token %}
+                    <input type="hidden" name="good_name" value="{{name}}">
+                    <div class="main-content-frame-in-content-group">
+                        <p class="header-text-in-main-content-frame">
+                            Добавьте вашу фотографию товара
+                        </p>
+                        <input id="file-input-for-label" type="file" accept="image/*" multiple
+                               onchange="func_submit_btn();" name="image">
+                        <label class="photo-load-button-in-main-content-frame btn-md"
+                               for="file-input-for-label"
+                               style="border: none; margin: 0 auto;">
+                            <span class="text-in-photo-load-button">
+                                Загрузить фото
+                            </span>
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-outline-primary">Отправить на модерацию
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

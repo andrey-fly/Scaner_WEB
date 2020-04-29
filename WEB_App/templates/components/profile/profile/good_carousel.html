@@ -1,0 +1,48 @@
+{% load static %}
+<h2 class="text-center section-name">Мои продукты</h2>
+{% if own_goods %}
+<div id="carouselProducts" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        {% for own_good in own_goods%}
+            {% if own_good.id == own_goods.0.id %}
+                <li data-target="#carouselProducts" class="active"></li>
+            {%else%}
+                <li data-target="#carouselProducts"></li>
+            {%endif%}
+        {%endfor%}
+    </ol>
+    <div class="carousel-inner" id="goods">
+        {% for own_good in own_goods%}
+        <div class="carousel-item active">
+            {% if own_good.status == 'Одобрено' %}
+            <a href="/product/{{own_good.name}}/"><img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."></a>
+            {% else %}
+            <img src="{{own_good.image.url}}" class="d-block w-100 photo" alt="..."> {% endif %}
+            <div class="carousel-caption d-md-block">
+                <h3 class="card-title">{{own_good.name}}</h3>
+                <p class="card-text ratingText">Статус: {{own_good.status}}</p>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    <a class="carousel-control-prev" href="#carouselProducts" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselProducts" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+{% else %}
+<div class="card border-primary mb-3" style="max-width: 350px; margin: 0 auto;">
+    <img src="{% static 'img/profile/warning.jpg' %}" class="card-img-top" alt="Image not found ;(" style="max-width: 720px; height: auto; max-height: 360px">
+    <div class="card-body text-primary">
+        <h5 class="card-title">Видимо, вы ещё не добавляли свои продукты на сайт</h5>
+        <p class="card-text">Но мы всегда рады получить ваши фото 📷</p>
+    </div>
+    <div class="card-footer bg-transparent border-primary"><a href="/photo" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете это исправить</a></div>
+</div>
+{% endif %}
+
+<hr>

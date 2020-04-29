@@ -1,0 +1,21 @@
+{% load static %}
+<div id="score-block-in-info-block" style="max-width: inherit;">
+    <!--                Like or unlike block-->
+    <div id="recommendation-block-in-score-block">
+        <img src="{% static 'img/extras/like.svg'%}" id="image-recommendation-in-recommendation-block">
+        <p id="text-recommendation-in-recommendation-block">
+            Можно брать
+        </p>
+    </div>
+    <!--                Score in number block-->
+    <div id="numbered-score-block-in-score-block" style="max-width: inherit;">
+        <div id="numbered-score-figure-in-numbered-score-block">
+            <label id="score-number-in-numbered-score-figure">
+                {{points}}
+            </label>
+        </div>
+        <p id="numbered-score-description-in-numbered-score-block">
+            Оценка Росконтроль
+        </p>
+    </div>
+</div>
