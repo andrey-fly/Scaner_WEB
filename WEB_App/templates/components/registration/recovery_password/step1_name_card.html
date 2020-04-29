@@ -1,0 +1,16 @@
+<div class="card jumbotron mt-5 mb-5 border-primary" style="width: 50%; margin: 0 auto">
+    <div class="card-body text-center">
+        {% if error %}
+        <h5 class="card-title text-danger font-weight-bold">ОШИБКА!</h5>
+        <div class="text-center text-danger font-weight-bold mt-2"><h5>{{error}}</h5></div>
+        <hr>
+        {% endif %}
+        <h5 class="card-title">Введите имя пользвателя или email</h5>
+        <form action="/recovery_password/" method="POST">
+            {% csrf_token %}
+            <hr style="background: white">
+            <input class="form-control" name="start_procedure" placeholder="login or email" required="True">
+            <button type="submit" class="btn btn-outline-primary btn-block mt-3">Отправить</button>
+        </form>
+    </div>
+</div>

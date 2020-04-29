@@ -4,115 +4,23 @@
 <title>Модерация</title>
 {% endblock %}
 {% block content %}
-<a class="btn btn-outline-info" href="/admin/accept_photo">На страницу модерации фото</a>
-<a class="btn btn-outline-info" href="/admin/complaint_list">На страницу списка жалоб</a>
+{% include 'components/admin/accept/other_pages_links.html' %}
 
 <!--{{category_form}}-->
+{% include 'components/admin/accept/new_category.html' %}
 
-<div class="card mt-3 ml-2 mr-2">
-    <div class="card-body">
-        <p>Создать категорию</p>
-        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseCategory"
-                aria-expanded="false" aria-controls="collapseCategory">
-            Развернуть
-        </button>
-
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="collapse" id="collapseCategory">
-                <div class="card card-body">
-                    <label for="category_name">Наименование: </label>
-                    <input id="category_name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2" required>
-
-                    <label for="url_name">Хвост ссылки: </label>
-                    <input id="url_name" type="text" name="url_name" placeholder="URL" class="row mt-2" required>
-
-                    <select name="category" class="form-control form-control-sm ml-1 mt-2 row" >
-                        <option value="None" disabled selected>Select parent</option>
-                        {% for category in categories %}
-                        <option value="{{category.id}}">{{category.name}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <input name="image" type="file" accept="image/*" class="row mt-3">
-
-                    <button type="submit" class="btn btn-outline-success float-right mr-1" name="action" value="create_category">Сохранить</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
-</div>
 
 {% if not goods_data %}
-<h1>Нет поступлений на модерацию</h1>
+{% include 'components/admin/accept/no_goods.html' %}
 {% else %}
 
 {% for good in goods_data %}
-<div class="card mt-3 ml-2 mr-2">
-    <div class="card-body">
-        <p>{{good.name}}</p>
-        <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#collapseExample{{good.id}}"
-                aria-expanded="false" aria-controls="collapseExample{{good.id}}">
-            Развернуть
-        </button>
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="collapse" id="collapseExample{{good.id}}">
-                <div class="card card-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-4">
-                                <img src="{{ good.image }}" class="row" style="width: 100%; max-width: 280px; height: auto">
-                                <input type="hidden" name="old_image_id" value="{{good.image_id}}">
-                                <input name="image" type="file" accept="image/*" class="row mt-3">
-                            </div>
-                            <div class="ml-5 col-6">
-                                <label for id="id">ID </label>
-                                <input for="id" name='id' type="text" value="{{good.id}}" placeholder="id" class="ro2 mt-2" readonly> <br>
-                                <label for="name">Наименование: </label>
-                                <input id="name" type="text" name="name" value="{{good.name}}" placeholder="Название" class="row mt-2">
-
-                                <label for="barcode">Штрих-код: </label>
-                                <input id="barcode" type="text" name="barcode" value="{{good.barcode}}" placeholder="Баркод" class="row mt-2">
-
-                                <label for="rcn">Оценка Росконтроль: </label>
-                                <input id="rcn" type="text" name="points" value="{{good.points_rusControl}}" placeholder="Оценка Росконтроль" class="row mt-2">
-
-                                <select name="category" class="form-control form-control-sm ml-1 mt-2 row" required>
-<!--                                    <option value="1" disabled selected>Select category</option>-->
-                                    {% for category in categories %}
-                                    <option value="{{category.id}}">{{category.name}}</option>
-                                    {% endfor %}
-                                </select>
-
-<!--                                <textarea placeholder="Описание" name="about" class="row mt-2" style="width: 50mw; height:30mh; resize: none;"></textarea>-->
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-outline-danger float-right mr-1" name="action" value="deny">Отклонить</button>
-                        <button type="submit" class="btn btn-outline-success float-right mr-1" name="action" value="accept">Одобрить</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
+{% include 'components/admin/accept/good_on_moderation.html' %}
 {% endfor %}
-
-<div class="mb-3"></div>
 
 {% endif %}
 
 {% endblock %}
 {% block extra_js %}
-<script>
-let data = $('.card-body > p')
-for (item of data) {
-    if (!item.innerHTML) {
-       item.innerHTML = 'Товар с баркодом'
-       item.style.color = 'red'
-    }
-}
-</script>
+<script src="{% static 'js/admin/accept.js' %}"></script>
 {% endblock %}
