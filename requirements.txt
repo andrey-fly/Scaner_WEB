@@ -17,5 +17,5 @@ django-s3-storage
 Pillow==7.0.0
 # for social auth
 django-allauth==0.41.0
-#for photo hash
+#for product hash
 imagehash==4.0

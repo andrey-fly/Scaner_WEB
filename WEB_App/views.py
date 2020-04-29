@@ -139,7 +139,7 @@ class IndexPage(BaseTemplateView):
 
 
 class AddProductPage(BaseView):
-    template_name = 'photo/add_product.html'
+    template_name = 'product/add_product.html'
 
     def get_image_url(self, request):
         own_hash = request.GET.get('image')
@@ -172,7 +172,7 @@ class AddProductPage(BaseView):
 
 
 class ProductPage(BaseView):
-    template_name = 'photo/product.html'
+    template_name = 'product/product.html'
 
     def get_image_by_hash(self, image_hash):
         status_code_image, response_image = get_picture_by_hash(image_hash)
@@ -297,7 +297,7 @@ class ProductPage(BaseView):
 
 
 class GalleryPage(BaseView):
-    template_name = 'photo/gallery.html'
+    template_name = 'product/gallery.html'
     rated_previously = []
 
     def get_list_of_images(self, good_name):
@@ -407,7 +407,7 @@ def profile(request):
 
     context['length'] = [i for i in range(len(context['goods']))]
     if UserPhoto.objects.filter(user=current_user):
-        context['photo'] = UserPhoto.objects.get(user=current_user).img.url
+        context['product'] = UserPhoto.objects.get(user=current_user).img.url
     return render(request, 'profile/profile.html', context)
 
 
@@ -417,7 +417,7 @@ def change_info(request):
     form.fields['username'].widget.attrs['placeholder'] = current_user.username
     form.fields['email'].widget.attrs['placeholder'] = current_user.email
     photo = FileForm(request.POST, request.FILES)
-    context = {'form': form, 'photo': photo}
+    context = {'form': form, 'product': photo}
     if UserPhoto.objects.filter(user=current_user):
         context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
     if request.method == 'POST':
@@ -530,7 +530,7 @@ class PhotoPage(TemplateView):
     context['modal_window'] = 'false'
     context['show_modal'] = 'false'
     context['main_image'] = ''
-    template_name = 'photo/photo.html'
+    template_name = 'product/product.html'
 
     def get(self, request):
         self.context['modal_window'] = 'false'

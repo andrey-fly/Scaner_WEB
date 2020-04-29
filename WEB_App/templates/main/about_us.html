@@ -1,4 +1,5 @@
-{% extends 'base/base.html' %} {% load static %}
+{% extends 'base/base.html' %}
+{% load static %}
 {% block title %}
 <title>О нас</title>
 {% endblock %}
@@ -15,7 +16,7 @@
                 наш сервис, позволяющий вам по фотографии опознать товар, а также найти его в каталоге
                 на нашем сайте, оставит вам хорошие впечатления!
             </p>
-            <a href="https://informatics.ru"><img src="/static/img/shp.png" style="width: 100%;"></a>
+            <a href="https://informatics.ru"><img src="{%static 'img/extras/shp.png' %}" style="width: 100%;"></a>
         </div>
         <div id="participants-info-block">
 

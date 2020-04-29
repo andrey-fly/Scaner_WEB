@@ -23,19 +23,19 @@ from WEB_App.views import *
 urlpatterns = [
     path('', IndexPage.as_view(template_name='main/index.html')),
     path('recovery_password/', recovery_password),
-    path('photo/', PhotoPage.as_view(template_name='photo/photo.html')),
+    path('product/', PhotoPage.as_view(template_name='product/product.html')),
     path('product/<str:good>/', ProductPage.as_view()),
     path('gallery/<str:good>', GalleryPage.as_view()),
     path('add_product/', AddProductPage.as_view()),
     path('add_user/', AddUser.as_view()),
-    path('thanks/', TemplateView.as_view(template_name='photo/thanks.html')),
+    path('thanks/', TemplateView.as_view(template_name='product/thanks.html')),
     path('admin/accept/', AcceptPage.as_view()),
     path('admin/accept_photo/', AcceptPhotoPage.as_view()),
     path('admin/urls/', TemplateView.as_view(template_name='admin/links.html')),
     path('profile/', profile),
     path('change_info/', change_info),
     path('about_us/', TemplateView.as_view(template_name='main/about_us.html')),
-    path('complaint/', ComplaintPage.as_view(template_name='photo/complaint.html')),
+    path('complaint/', ComplaintPage.as_view(template_name='product/complaint.html')),
     path('admin/complaint_list', ComplaintListPage.as_view()),
 
 
