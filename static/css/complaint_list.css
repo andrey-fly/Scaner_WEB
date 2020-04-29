@@ -1,0 +1,17 @@
+.content {
+    margin: 20px 8%;
+}
+
+.card {
+    margin: 5px 0px;
+    padding: 10px 5%;
+}
+
+.collapse-button {
+    width: fit-content;
+    align-self: flex-end;
+}
+
+.btn-subm {
+    margin-top: 10px;
+}
