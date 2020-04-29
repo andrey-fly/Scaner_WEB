@@ -992,14 +992,34 @@ class ComplaintListPage(PermissionRequiredMixin, View):
     permission_required = 'WEB_App.view'
     login_url = '/login/'
     context = {
-        'complaints': Complaint.objects.all(),
+        'complaints': Complaint.objects.filter(checked=False),
     }
 
     def get(self, request):
-        print(Complaint.objects.all())
+        form = ComplaintResponseForm()
+        self.context['form'] = form
         return render(request, self.template_name, self.context)
 
     def post(self, request):
+        form = ComplaintResponseForm(request.POST)
+        self.context['form'] = form
+
+        if form.is_valid():
+            complaint_resp = ComplaintResponse(
+                user=User.objects.get(id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
+                parent=Complaint.objects.get(id=request.POST.get('complaint-id')),
+                text=('Тема:'+Complaint.objects.get(id=request.POST.get('complaint-id')).title+'\n\n\n'+request.POST.get('text'))
+            )
+            complaint_resp.save()
+
+            complaint = Complaint.objects.get(id=request.POST.get('complaint-id'))
+            complaint.checked = True
+            complaint.save()
+            return redirect('/admin/complaint_list')
+        else:
+            form = ComplaintForm()
+            self.context['form'] = form
+            self.context['form_errors'] = True
         return render(request, self.template_name, self.context)
 
 
@@ -1009,13 +1029,19 @@ class ComplaintPage(TemplateView):
     def get(self, request):
         form = ComplaintForm()
         self.context['form'] = form
+        self.context['complaint_responses'] = ComplaintResponse.objects.filter(checked=False)
         return render(request, self.template_name, self.context)
 
     def post(self, request):
         form = ComplaintForm(request.POST)
         self.context['form'] = form
+        self.context['complaint_responses'] = ComplaintResponse.objects.filter(checked=False)
 
-        if form.is_valid():
+        if request.POST.get('checked'):
+            complaint_response = ComplaintResponse.objects.get(id=request.POST.get('complaint-response-id'))
+            complaint_response.checked = True
+            complaint_response.save()
+        elif form.is_valid():
             complaint = Complaint(
                 user=request.user,
                 title=request.POST.get('title'),

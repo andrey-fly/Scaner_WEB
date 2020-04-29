@@ -7,13 +7,31 @@
 {% endblock %}
 {% block content %}
     <div class="content">
+        {% if not complaints %}
+            <h4>Нет жалоб, на которых нет ответа.</h4>
+        {% else %}
         {% for complaint in complaints %}
             <div class="card">
-                <h5 class="card-title">{{ complaint.title }}</h5>
+                <h3 class="card-title">{{ complaint.title }}</h3>
                 <h6 class="card-subtitle mb-2 text-muted">Пользователь: {{ complaint.user.username }}</h6>
                 <p class="card-text">{{ complaint.text }}</p>
+                <button class="btn btn-primary collapse-button" type="button"
+                        data-toggle="collapse" data-target="#collapsed-block{{complaint.id}}"
+                        aria-expanded="false" aria-controls="collapsed-block{{complaint.id}}">
+                    Развернуть форму ответа
+                </button>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group response-form-block" id="collapsed-block{{complaint.id}}">
+                        <input type="hidden" name="complaint-id" value="{{complaint.id}}">
+                        <label for="form-control">Чем ответите на эту жалобу?</label>
+                        {{ form.text }}
+                        <button type="submit" class="btn btn-primary btn-subm">Отправить</button>
+                    </div>
+                </form>
             </div>
         {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 {% block extra_js %}

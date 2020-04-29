@@ -117,12 +117,20 @@ class ComplaintForm(forms.Form):
     title = forms.CharField(required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'inputTitle',
-        'placeholder': " ",
+        'placeholder': "Дайте кратки заголовок",
     }), max_length=255)
     text = forms.CharField(required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'inputText',
-        'placeholder': " ",
+        'placeholder': "Опишите проблему",
+    }))
+
+
+class ComplaintResponseForm(forms.Form):
+    text = forms.CharField(required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'inputText',
+        'placeholder': "Ваш ответ на жалобу",
     }))
 # class CommentForm(forms.ModelForm):
 #     class Meta:
