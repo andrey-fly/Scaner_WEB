@@ -1,0 +1,29 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+{% block title %}
+<title>Вход для админов</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/admin_login.css' %} ">
+<link rel="stylesheet" href="{% static 'css/material-design-iconic-font.min.css' %}">
+{% endblock %}
+{% block content %}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" method="POST" action="">
+                {% csrf_token %}
+                {% include 'components/admin/admin_login/header.html' %}
+                {% include 'components/admin/admin_login/logo.html' %}
+                {% include 'components/admin/admin_login/username.html' %}
+                {% include 'components/admin/admin_login/password.html' %}
+                {% include 'components/admin/admin_login/accept_button.html' %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/admin_login.js' %}"></script>
+{% endblock %}

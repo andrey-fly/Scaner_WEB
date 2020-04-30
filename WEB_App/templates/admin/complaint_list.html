@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/complaint_list.css'%}">
 {% endblock %}
 {% block content %}
+{% include 'components/admin/complaint_list/other_pages_links.html' %}
     <div class="content">
         {% include 'components/admin/complaint_list/complaints.html' %}
     </div>

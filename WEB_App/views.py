@@ -649,6 +649,20 @@ class PhotoPage(TemplateView):
         return render(request, self.template_name, self.context)
 
 
+class AdminLoginPage(PermissionRequiredMixin, View):
+    template_name = 'admin/admin_login.html'
+    permission_required = 'WEB_App.view'
+    login_url = '/login/'
+
+    def get(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+
+
 class AcceptPage(PermissionRequiredMixin, View):
     template_name = 'admin/accept.html'
     permission_required = 'WEB_App.view'
@@ -1006,7 +1020,8 @@ class ComplaintListPage(PermissionRequiredMixin, View):
             complaint_resp = ComplaintResponse(
                 user=User.objects.get(id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
                 parent=Complaint.objects.get(id=request.POST.get('complaint-id')),
-                text=('Тема:'+Complaint.objects.get(id=request.POST.get('complaint-id')).title+'\n\n\n'+request.POST.get('text'))
+                text=('Тема:' + Complaint.objects.get(
+                    id=request.POST.get('complaint-id')).title + '\n\n\n' + request.POST.get('text'))
             )
             complaint_resp.save()
 
