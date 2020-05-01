@@ -4,54 +4,54 @@ var person = [
     {
         name:"Никита Гудков",
         role:"Teamleader, Fullstack, Project guru",
-        email:"wow@mail.huh",
+        email:"nikitaster2001@gmail.com",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
     {
         name:"Андрей Ткачёв",
         role:"Teamleader, Fullstack, Git, Project guru",
-        email:"wow@mail.huh",
+        email:"sim200347@gmail.com",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
     {
         name:"Андрей Мухин",
         role:"Backend",
-        email:"wow@mail.huh",
+        email:"muhinav14@mail.ru",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
     {
         name:"Анна Буше",
         role:"Backend",
-        email:"wow@mail.huh",
+        email:"annbushe@yandex.ru",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
     {
         name:"Владислав Харченко",
         role:"Backend",
-        email:"wow@mail.huh",
+        email:"vladislavharcenko14@gmail.com",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
     {
         name:"Евгений Маринин",
         role:"Frontend",
-        email:"wow@mail.huh",
+        email:"marinin2003@yandex.ru",
+        vk:"#",
         twitter:"#",
-        facebook:"#",
         instagram:"#",
         photo_file:"profile_icon.png",
     },
@@ -59,7 +59,7 @@ var person = [
 var people_HTML = '';
 
 for (i = 0; i < 6; i++) {
-    var photo_HTML = '<div class="img-block">\n' +
+    var photo_HTML = '<div class="img-block" style="max-width: 100px; height: auto">\n' +
                      '    <img src="\/static\/img\/profile\/' + person[i].photo_file + '">\n' +
                      '</div>\n';
     var contacts_block_HTML = '<div class="contacts-block">\n' +
@@ -67,9 +67,9 @@ for (i = 0; i < 6; i++) {
                               '    <p>' + person[i].role + '</p>\n' +
                               '    <a href="mailto:' + person[i].email + '">' + person[i].email + '</a>\n' +
                               '    <ul class="icons">\n' +
-                              '        <li><a href="' + person[i].facebook +'" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>\n' +
+                              '        <li><a href="' + person[i].facebook +'" class="icon brands fa-vk"><span class="label">Facebook</span></a></li>\n' +
                               '        <li><a href="' + person[i].twitter +'" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>\n' +
-                              '        <li><a href="' + person[i].instagram +'" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>\n' +
+                              '        <li><a href="' + person[i].instagram +'" class="icon brands fa-telegram-plane"><span class="label">Instagram</span></a></li>\n' +
                               '    </ul>\n' +
                               '</div>\n';
     if (i % 2 == 0) {
