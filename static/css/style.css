@@ -281,7 +281,7 @@ header {
 .top-nav ul li a {
     color: #000000;
     padding: 0.2em 1.9em;
-    font-size: 0.875em;
+    /*font-size: 0.875em;*/
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
@@ -422,6 +422,7 @@ nav a#pull {
 
 .i-text {
     padding-left: 2px;
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .i-text:hover {
