@@ -111,3 +111,10 @@ def get_amount_of_pictures():
     url = 'http://api.scanner.savink.in/api/v1/picture/get_amount/'
     response = requests.request("GET", url, headers=API_HEADERS)
     return response.status_code, response.json()
+
+
+def get_admin_auth_token(username, password):
+    url = 'http://api.scanner.savink.in/api/v1/auth_token/token/login'
+    payload = {'username': username, 'password': password}
+    response = requests.request("POST", url, data=payload)
+    return response.status_code, response.json()

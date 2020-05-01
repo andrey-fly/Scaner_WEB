@@ -649,7 +649,7 @@ class PhotoPage(TemplateView):
         return render(request, self.template_name, self.context)
 
 
-class AdminLoginPage(PermissionRequiredMixin, View):
+class AdminLoginPage(PermissionRequiredMixin, BaseView):
     template_name = 'admin/admin_login.html'
     permission_required = 'WEB_App.view'
     login_url = '/login/'
@@ -660,6 +660,14 @@ class AdminLoginPage(PermissionRequiredMixin, View):
 
     def post(self, request):
         context = {}
+        username = request.POST.get('Username')
+        password = request.POST.get('pass')
+        status_code, response = get_admin_auth_token(username, password)
+        if status_code == 200:
+            request.session['admin_token'] = response['auth_token']
+            return redirect('/admin/accept/')
+        else:
+            context['non_field_errors'] = response['non_field_errors']
         return render(request, self.template_name, context)
 
 
