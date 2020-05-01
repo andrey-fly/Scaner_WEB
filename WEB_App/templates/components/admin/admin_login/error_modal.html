@@ -1,0 +1,21 @@
+{% if non_field_errors %}
+<div class="modal fade top" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+
+  <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+  <div class="modal-dialog modal-frame modal-top" role="document">
+
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row d-flex justify-content-center align-items-center">
+
+          <p class="pt-3 pr-2">{{non_field_errors.0}}</p>
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}

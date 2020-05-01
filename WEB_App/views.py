@@ -668,6 +668,7 @@ class AdminLoginPage(PermissionRequiredMixin, BaseView):
             return redirect('/admin/accept/')
         else:
             context['non_field_errors'] = response['non_field_errors']
+            print(context['non_field_errors'][0])
         return render(request, self.template_name, context)
 
 

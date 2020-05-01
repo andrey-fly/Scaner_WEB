@@ -23,7 +23,11 @@
         </div>
     </div>
 </div>
+{% include 'components/admin/admin_login/error_modal.html' %}
 {% endblock %}
 {% block extra_js %}
 <script src="{% static 'js/admin_login.js' %}"></script>
+<script>
+$('#frameModalBottom').modal('show')
+</script>
 {% endblock %}
