@@ -221,7 +221,7 @@ dmypy.json
 ### Images ###
 # JPEG
 #*.jpg
-*.jpeg
+#*.jpeg
 *.jpe
 *.jif
 *.jfif
