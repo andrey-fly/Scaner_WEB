@@ -104,5 +104,6 @@ class ComplaintResponse(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     date = models.DateField(verbose_name='Дата отправки ответа', auto_now_add=True, null=False)
     parent = models.ForeignKey(Complaint, verbose_name='Жалоба', null=False, on_delete=models.CASCADE)
+    title = models.CharField(verbose_name='Заголовок жалобы', max_length=255, null=False)
     text = models.TextField(verbose_name='Содержимое ответа на жалобу', null=False)
     checked = models.BooleanField(verbose_name='Прочитано ли', default=False)

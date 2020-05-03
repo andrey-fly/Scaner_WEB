@@ -1029,8 +1029,8 @@ class ComplaintListPage(PermissionRequiredMixin, View):
             complaint_resp = ComplaintResponse(
                 user=User.objects.get(id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
                 parent=Complaint.objects.get(id=request.POST.get('complaint-id')),
-                text=('Тема:' + Complaint.objects.get(
-                    id=request.POST.get('complaint-id')).title + '\n\n\n' + request.POST.get('text'))
+                text=request.POST.get('text'),
+                title=Complaint.objects.get(id=request.POST.get('complaint-id')).title
             )
             complaint_resp.save()
 

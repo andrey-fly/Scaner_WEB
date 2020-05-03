@@ -1,16 +1,42 @@
-{% for comp_resp in complaint_responses %}
-<form method="POST" action="">
-    {% csrf_token %}
-    <div class="card">
-        <div class="card-header">
-            Наши администраторы ответили на вашу жалобу
+{% load static %}
+<div class="row text-center">
+    {% for comp_resp in complaint_responses %}
+        <div class="col-xl-4 col-sm-6 mb-5">
+            <div class="card-container mt-4" style="height: 400px;">
+                <div class="card">
+                    <div class="front" style="height: 400px;">
+                        <div class="content">
+                            <div class="main">
+                                <h3 class="name">Наша администрация ответила вам</h3>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <div class="rating">
+                                <i class="fa fa-mail-forward"></i> Наведите для большей информации
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back" style="height: 400px;">
+                        <div class="header">
+                            <h5 class="motto">Спасибо за вашу жалобу</h5>
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <h4 class="text-center">Тема: {{comp_resp.title}}</h4>
+                                <p class="text-center" style="font-size: 14px">{{comp_resp.text}}</p>
+                            </div>
+                        </div>
+                        <div class="footer" style="margin: 0; padding: 0">
+                            <form method="POST" action="" style="width: inherit; height: inherit">
+                                {% csrf_token %}
+                                <input type="hidden" name="complaint-response-id" value="{{comp_resp.id}}">
+                                <input type="hidden" name="checked" value="True">
+                                <button type="submit" class="btn btn-outline-warning">Отметить прочитанным</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <p style="white-space: pre;">{{comp_resp.text}}</p>
-            <input type="hidden" name="complaint-response-id" value="{{comp_resp.id}}">
-            <input type="hidden" name="checked" value="True">
-            <button type="submit" class="btn btn-outline-warning">Отметить прочитанным</button>
-        </div>
-    </div>
-</form>
-{% endfor %}
+    {% endfor %}
+</div>

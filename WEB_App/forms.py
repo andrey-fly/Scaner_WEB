@@ -115,14 +115,16 @@ class BarcodeForm(forms.Form):
 
 class ComplaintForm(forms.Form):
     title = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'form-control',
+        'class': ' input2',
+        'name': 'header',
         'id': 'inputTitle',
-        'placeholder': "Дайте кратки заголовок",
+        # 'placeholder': "Дайте кратки заголовок",
     }), max_length=255)
-    text = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'form-control',
+    text = forms.CharField(required=True, widget=forms.Textarea(attrs={
+        'class': ' input2',
+        'name': 'message',
         'id': 'inputText',
-        'placeholder': "Опишите проблему",
+        # 'placeholder': "Опишите проблему",
     }))
 
 
