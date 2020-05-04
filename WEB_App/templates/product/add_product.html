@@ -4,14 +4,22 @@
 <title>Добавить продукт</title>
 {% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}"> {% endblock %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css'%}">
+{% endblock %}
 {% block content %}
 <section class="section-md">
     <div class="container">
         <h3 id="header-text-in-form">Добавить продукт</h3>
         <div class="row row-30">
-            {% include 'components/product/add_product/image.html' %}
-            {% include 'components/product/add_product/form.html' %}
+            <div class="col">
+                {% include 'components/product/add_product/image.html' %}
+            </div>
+            <div class="col">
+                <div class="row">
+                    <p>На этой странице вы можете отправить нашим модераторам название и фотографию продукта, чтобы он появился на нашем сайте</p>
+                    {% include 'components/product/add_product/form.html' %}
+                </div>
+            </div>
         </div>
     </div>
 </section>
