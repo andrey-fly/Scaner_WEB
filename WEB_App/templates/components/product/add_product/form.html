@@ -9,7 +9,14 @@
 <!--</form>-->
 
 <div class="md-form">
-    <i class="far fa-keyboard prefix"></i>
-    <input type="text" id="inputIconEx1" class="form-control">
-    <label for="inputIconEx1">Название продукта</label>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <i class="far fa-keyboard prefix"></i>
+        <input name="name" type="text" id="inputIconEx1" class="form-control" required>
+        <input type="hidden" name="img_url" value="{{img}}">
+        <label for="inputIconEx1">Название продукта</label>
+        <div class="input-group-append">
+            <button class="btn btn-md btn-info m-0 px-3" type="submit" id="MaterialButton-addon2">Отправить на модерацию</button>
+        </div>
+    </form>
 </div>
