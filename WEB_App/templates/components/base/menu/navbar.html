@@ -30,7 +30,7 @@
                 </a>
             </li>
             {% endif %}
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not page == 'profile' %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user"></i>
@@ -41,6 +41,20 @@
                         <i class="far fa-user-circle"></i>
                         <span class="i-text">Профиль</span>
                     </a>
+                    <a class="dropdown-item" href="/logout" style="text-align: left; padding: 0 10px;">
+                        <i class="fas fa-user-times"></i>
+                        <span class="i-text">Выйти</span>
+                    </a>
+                </div>
+            </li>
+            {% endif %}
+            {% if page == 'profile' %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                    <span class="i-text">{{user.username}}</span>
+                </a>
+                <div class="dropdown-menu">
                     <a class="dropdown-item" href="/logout" style="text-align: left; padding: 0 10px;">
                         <i class="fas fa-user-times"></i>
                         <span class="i-text">Выйти</span>

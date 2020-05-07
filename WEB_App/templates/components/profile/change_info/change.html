@@ -2,11 +2,11 @@
 <h2 class="text-center section-name">Изменение данных</h2>
 <hr>
 <div class="row">
-    <div class="col-sm-6 col-lg-4">
+    <div class="col">
         {% if userphoto %}
         <img class="rounded mb-3 my-image" src="{{userphoto}}" alt="icon" style="width: 100px; height: 100px"> {% else %}
         <img class="rounded mb-3 my-image" src="{% static 'img/profile/profile_icon.png' %}" alt="icon" style="width: 100px; height: 100px"> {% endif %}
-        <form enctype="multipart/form-data" action="/change_info/" method="POST">
+        <form enctype="multipart/form-data" action="" method="POST">
             {% csrf_token %} {{photo.file}}
             <div class="input-group">
                 <div class="custom-file">
@@ -18,7 +18,7 @@
             <input type="submit" class="change-btn btn btn-md" id="inputGroupFileBtn" name="status" value="Обновить фото">
         </form>
     </div>
-    <form class="col-sm-6 col-lg-6" action="/change_info/" method="POST">
+    <form class="col" action="" method="POST">
         <div class="col-md-12 error-reg">
             <b>{{form.errors}}</b>
         </div>

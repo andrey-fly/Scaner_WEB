@@ -397,28 +397,15 @@ def send_recovery_code(code, user):
 
 
 def profile(request):
-    context = {'user': User.objects.get(id=request.user.id)}
+    context = {'user': User.objects.get(id=request.user.id), 'page': 'profile'}
     current_user = User.objects.get(id=request.user.id)
-    context['comments'] = Comment.objects.filter(user=current_user)
-    context['rates'] = Rate.objects.filter(user=request.user)
-    context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
-
-    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-
-    context['length'] = [i for i in range(len(context['goods']))]
-    if UserPhoto.objects.filter(user=current_user):
-        context['product'] = UserPhoto.objects.get(user=current_user).img.url
-    return render(request, 'profile/profile.html', context)
-
-
-def change_info(request):
-    current_user = User.objects.get(id=request.user.id)
+    # change info code starts
     form = ChangeInfoForm(request.POST)
     form.fields['username'].widget.attrs['placeholder'] = current_user.username
     form.fields['email'].widget.attrs['placeholder'] = current_user.email
     photo = FileForm(request.POST, request.FILES)
-    context = {'form': form, 'product': photo}
+    context['form'] = form
+    context['product'] = photo
     if UserPhoto.objects.filter(user=current_user):
         context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
     if request.method == 'POST':
@@ -426,7 +413,7 @@ def change_info(request):
             old_password = request.POST.get('old_password')
             if current_user.check_password('{}'.format(old_password)) is False:
                 form.set_old_password_flag()
-                return render(request, 'profile/change_info.html', {'form': form})
+                return render(request, 'profile/profile.html', {'form': form})
         if form.is_valid():
             if request.POST.get('username'):
                 current_user.username = request.POST.get('username')
@@ -436,13 +423,13 @@ def change_info(request):
                 old_password = request.POST.get('old_password')
                 if current_user.check_password('{}'.format(old_password)) is False:
                     form.set_old_password_flag()
-                    return render(request, 'profile/change_info.html', {'form': form})
+                    return render(request, 'profile/profile.html', {'form': form})
                 else:
                     current_user.set_password('{}'.format(form.data['new_password2']))
             current_user.save()
             login(request, current_user, backend='django.contrib.auth.backends.ModelBackend')
         else:
-            return render(request, 'profile/change_info.html', context)
+            return render(request, 'profile/profile.html', context)
         if photo.is_valid():
             if UserPhoto.objects.filter(user=current_user):
                 userphoto = UserPhoto.objects.get(user=current_user)
@@ -451,9 +438,65 @@ def change_info(request):
             if request.FILES.get('file'):
                 userphoto.img = request.FILES.get('file')
                 userphoto.save()
+
     if request.POST.get('status'):
         return redirect('/profile')
-    return render(request, 'profile/change_info.html', context)
+    # change info ends
+    context['comments'] = Comment.objects.filter(user=current_user)
+    context['rates'] = Rate.objects.filter(user=request.user)
+    context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
+
+    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+    context['length'] = [i for i in range(len(context['goods']))]
+    if UserPhoto.objects.filter(user=current_user):
+        context['profile_photo'] = UserPhoto.objects.get(user=current_user).img.url
+    return render(request, 'profile/profile.html', context)
+
+#
+# def change_info(request):
+#     current_user = User.objects.get(id=request.user.id)
+#     form = ChangeInfoForm(request.POST)
+#     form.fields['username'].widget.attrs['placeholder'] = current_user.username
+#     form.fields['email'].widget.attrs['placeholder'] = current_user.email
+#     photo = FileForm(request.POST, request.FILES)
+#     context = {'form': form, 'product': photo}
+#     if UserPhoto.objects.filter(user=current_user):
+#         context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
+#     if request.method == 'POST':
+#         if request.POST.get('old_password'):
+#             old_password = request.POST.get('old_password')
+#             if current_user.check_password('{}'.format(old_password)) is False:
+#                 form.set_old_password_flag()
+#                 return render(request, 'profile/change_info.html', {'form': form})
+#         if form.is_valid():
+#             if request.POST.get('username'):
+#                 current_user.username = request.POST.get('username')
+#             if request.POST.get('email'):
+#                 current_user.email = request.POST.get('email')
+#             if request.POST.get('old_password'):
+#                 old_password = request.POST.get('old_password')
+#                 if current_user.check_password('{}'.format(old_password)) is False:
+#                     form.set_old_password_flag()
+#                     return render(request, 'profile/change_info.html', {'form': form})
+#                 else:
+#                     current_user.set_password('{}'.format(form.data['new_password2']))
+#             current_user.save()
+#             login(request, current_user, backend='django.contrib.auth.backends.ModelBackend')
+#         else:
+#             return render(request, 'profile/change_info.html', context)
+#         if photo.is_valid():
+#             if UserPhoto.objects.filter(user=current_user):
+#                 userphoto = UserPhoto.objects.get(user=current_user)
+#             else:
+#                 userphoto = UserPhoto(user=current_user, img='profile/profile_icon.png')
+#             if request.FILES.get('file'):
+#                 userphoto.img = request.FILES.get('file')
+#                 userphoto.save()
+#     if request.POST.get('status'):
+#         return redirect('/profile')
+#     return render(request, 'profile/change_info.html', context)
 
 
 class AddUser(View):
