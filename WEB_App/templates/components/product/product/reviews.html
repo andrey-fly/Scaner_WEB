@@ -1,7 +1,6 @@
 <p>Отзывы наших пользователей</p>
-<div class="row row-cols-1 row-cols-2 row-cols-3" style="display: flex; flex-wrap: wrap">
+<div class="card-columns">
     {% for comment in comments %}
-      <div class="col mb-4">
     <!-- Card -->
     <div class="card testimonial-card border-success" style="max-width: 22rem">
 
@@ -27,7 +26,6 @@
 
     </div>
     <!-- Card -->
-  </div>
     {% endfor %}
 </div>
 <div class="row mb-3">

@@ -5,18 +5,44 @@
 {% endblock %}
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_sidebar_menu.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_sidebar_themes.css'%}">
 {% endblock %}
+
+{% block menu %}
+{% include 'components/profile/profile/sidebar.html' %}
+{% endblock %}
+
 {% block content %}
-<div class="container">
-
-    {% include 'components/profile/profile/info.html' %}
-    {% include 'components/profile/profile/good_carousel.html' %}
-    {% include 'components/profile/profile/comments_scroll.html' %}
-    {% include 'components/profile/profile/rate_carousel.html' %}
-
-</div>
+<main class="page-content pt-2" style="margin-left: 80px">
+    <div class="tab-content p-3">
+        <div class="tab-pane fade show active" id="dashboard">
+            <div class="container-fluid">
+                {% include 'components/profile/profile/good_carousel.html' %}
+                {% include 'components/profile/profile/comments_scroll.html' %}
+                {% include 'components/profile/profile/rate_carousel.html' %}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="description">
+            <h2 class="h4 mb-3">Описание товара</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, in et nulla impedit, mollitia eos quae
+              inventore, minus molestiae est consequuntur nobis similique repudiandae reprehenderit fugit cumque voluptatum
+              laudantium tempore.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi consequatur deleniti animi, voluptates expedita
+              incidunt dignissimos fugiat repellendus dolorem ut corrupti sit libero nemo est iusto saepe, facilis rerum
+              quam.</p>
+          </div>
+    </div>
+    </main>
 {% endblock %}
 {% block extra_js %}
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/profile_sidebar.js' %}"></script>
+<script>
+$('#tabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+});
+</script>
 {% endblock %}
