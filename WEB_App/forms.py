@@ -61,7 +61,8 @@ class ChangeInfoForm(forms.Form):
                                widget=forms.TextInput(
                                    attrs={
                                        'placeholder': 'Ваше имя',
-                                       'id': 'name'}
+                                       'id': 'name',
+                                     'style': 'max-width: inherit'}
                                )
                                )
     email = forms.EmailField(label='Электронная почта',
@@ -69,13 +70,14 @@ class ChangeInfoForm(forms.Form):
                              widget=forms.EmailInput(
                                  attrs={
                                      'placeholder': 'Email',
-                                     'id': 'email'}
+                                     'id': 'email',
+                                     'style': 'max-width: inherit'}
                              )
                              )
-    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput, required=False, initial=None)
-    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput, min_length=8, required=False,
+    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), required=False, initial=None)
+    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), min_length=8, required=False,
                                    initial=None)
-    new_password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput, required=False, initial=None)
+    new_password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), required=False, initial=None)
     old_password_flag = True
 
     def set_old_password_flag(self):
@@ -99,9 +101,8 @@ class ChangeInfoForm(forms.Form):
 
 
 class FileForm(forms.Form):
-    file = forms.FileField(label='Select a file', required=False,
-                           widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'inputGroupFile',
-                                                         'aria-describedby': "inputGroupFileBtn"}))
+    file = forms.FileField(label='', required=False,
+                           widget=forms.FileInput(attrs={'type': 'file', 'class': 'custom-file-input', 'id': 'inputGroupFile', 'aria-describedby': 'inputGroupFileAddon', 'accept': 'image/*', 'onchange': 'preview_image(event)', 'style': 'display: none'}))
 
 
 class BarcodeForm(forms.Form):

@@ -15,64 +15,34 @@ body {
     border-radius: 8px
 }
 
-input {
-    margin-top: 12px;
-    height: calc(1.5em + .75rem + 2px);
-    padding: 20px;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #888;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    width: 225px;
-}
-
-.custom-file {
-    width: 300px;
-}
-
-.change-btn {
-    height: 42px;
-    background: #3B84F1;
-    margin-bottom: 12px;
-}
-
-.change-btn:hover {
-    background: #055fa8;
-}
-
-.btn {
-    color: #FFFFFF;
-    font-weight: bold;
-    text-align: center;
-    width: 225px;
-}
-
-.btn:hover {
-    color: #FFFFFF;
-    font-weight: bold;
-}
-
-.my-image {
-    display: block;
-    margin: auto;
-}
-
 .errorlist li {
     list-style-type: disc;
 }
 
-.custom-file-label::after {
-    content: "Выбрать";
+.form-input {
+    max-width: 250px;
+    margin: 0 auto;
 }
 
-@media (max-width: 767px) {
-    .main-frame {
-        width: 70%;
-        margin: 40px auto;
-        border-radius: 8px
+#inputGroupFileAddon {
+        width: 150px;
+    }
+
+@media only screen and (max-width: 480px) {
+    .h2 {
+        font-size: 1.5rem;
+    }
+    .form-input {
+        max-width: 150px;
+    }
+    .input-group {
+        flex-flow: column;
+        margin-bottom: 10px;
+    }
+    #inputGroupFileAddon {
+        width: 160px;
+    }
+    .navbar-brand {
+        margin-right: 0;
     }
 }

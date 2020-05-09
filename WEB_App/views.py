@@ -405,7 +405,7 @@ def profile(request):
     form.fields['email'].widget.attrs['placeholder'] = current_user.email
     photo = FileForm(request.POST, request.FILES)
     context['form'] = form
-    context['product'] = photo
+    context['photo'] = photo
     if UserPhoto.objects.filter(user=current_user):
         context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
     if request.method == 'POST':

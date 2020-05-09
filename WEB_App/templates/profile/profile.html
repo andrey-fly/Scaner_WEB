@@ -27,4 +27,14 @@
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script src="{% static 'js/profile.js' %}"></script>
 <script src="{% static 'js/profile_sidebar.js' %}"></script>
+<script>
+function preview_image(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('output_image');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
 {% endblock %}
