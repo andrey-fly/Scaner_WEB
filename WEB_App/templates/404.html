@@ -1,13 +1,15 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %}
-<title>Error 404</title>
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>Ошибка 404</title>
 {% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/error.css'%}">
 {% endblock %}
 {% block content %}
-<h1 id="error-name">Ошибка 404</h1>
-<p id="error-text">
- Страница не найдена
-</p>
-<a id="to-main" href="/">Назад</a>
+<div class="container">
+    <p id="error-text">Страница не найдена. Вы точно хотели увидеть эту страницу?</p>
+    <p class="error_img"><img src="{% static 'img/errors_page/404.png' %}" alt="500 error"></p>
+    <a id="to-main" href="/">На главную страницу</a>
+</div>
 {% endblock %}

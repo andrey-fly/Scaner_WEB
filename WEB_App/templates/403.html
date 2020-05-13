@@ -1,13 +1,15 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %}
-<title>Error 403</title>
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>Ошибка 403</title>
 {% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/error.css'%}">
 {% endblock %}
 {% block content %}
-<h1 id="error-name">Ошибка 403</h1>
-<p id="error-text">
- Доступ запрещен
-</p>
-<a id="to-main" href="/">Назад</a>
+<div class="container">
+    <p id="error-text">К сожалению, страница, на которую вы попытались перейти, создана только для администраторов</p>
+    <p class="error_img"><img src="{% static 'img/errors_page/403.png' %}" alt="500 error"></p>
+    <a id="to-main" href="/">На главную страницу</a>
+</div>
 {% endblock %}

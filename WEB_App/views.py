@@ -456,6 +456,7 @@ def profile(request):
 
 #
 # def change_info(request):
+#     return render(request, '403.html')
 #     current_user = User.objects.get(id=request.user.id)
 #     form = ChangeInfoForm(request.POST)
 #     form.fields['username'].widget.attrs['placeholder'] = current_user.username
