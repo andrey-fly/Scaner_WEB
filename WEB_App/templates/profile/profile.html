@@ -18,6 +18,9 @@
 <main class="page-content pt-2" style="margin-left: 80px">
     <div class="tab-content p-3">
         {% include 'components/profile/profile/tabs/full_dashboard.html' %}
+        {% include 'components/profile/profile/tabs/your_products.html' %}
+        {% include 'components/profile/profile/tabs/your_comments.html' %}
+        {% include 'components/profile/profile/tabs/your_rates.html' %}
         {% include 'components/profile/profile/tabs/default_tab.html' %}
         {% include 'components/profile/profile/tabs/change_info.html' %}
     </div>
@@ -27,14 +30,4 @@
 <script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
 <script src="{% static 'js/profile.js' %}"></script>
 <script src="{% static 'js/profile_sidebar.js' %}"></script>
-<script>
-function preview_image(event) {
-    var reader = new FileReader();
-    reader.onload = function() {
-        var output = document.getElementById('output_image');
-        output.src = reader.result;
-    }
-    reader.readAsDataURL(event.target.files[0]);
-}
-</script>
 {% endblock %}
