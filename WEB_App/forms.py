@@ -1,16 +1,18 @@
-from django.contrib.auth.models import User
 from django import forms
+from django.contrib.auth.models import User
 from django.forms.widgets import Input
-
-from WEB_App.models import Comment, ChildrenComment
 
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль',
-                               widget=forms.PasswordInput(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Пароль'}),
+                               widget=forms.PasswordInput(
+                                   attrs={'id': 'reg-input', 'class': 'mb-2',
+                                          'placeholder': 'Пароль'}),
                                min_length=8)
     password2 = forms.CharField(label='Повторите',
-                                widget=forms.PasswordInput(attrs={'id': 'reg-input', 'class': 'mb-2', 'placeholder': 'Повторите пароль'}))
+                                widget=forms.PasswordInput(
+                                    attrs={'id': 'reg-input', 'class': 'mb-2',
+                                           'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = User
@@ -21,37 +23,38 @@ class UserRegistrationForm(forms.ModelForm):
         }
 
     def clean_password2(self):
-        cd = self.data
-        if cd['password'] != cd['password2']:
+        clear_data = self.data
+        if clear_data['password'] != clear_data['password2']:
             raise forms.ValidationError('Пароли не совпадают.')
-        return cd['password2']
+        return clear_data['password2']
 
     def clean_username(self):
-        cd = self.data
-        if len(cd['username']) < 6:
+        clear_data = self.data
+        if len(clear_data['username']) < 6:
             raise forms.ValidationError('Имя пользователя должно содержать 6 символов и более.')
-        return cd['username']
+        return clear_data['username']
 
     def clean_email(self):
-        cd = self.data
+        clear_data = self.data
         users = User.objects.all()
         for user in users:
-            if user.email == cd['email']:
+            if user.email == clear_data['email']:
                 raise forms.ValidationError('Эта электронная почта уже используется')
-        return cd['email']
+        return clear_data['email']
 
 
 class RecoveryPass(forms.Form):
     password = forms.CharField(label='Password', widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autofocus': ''}), min_length=8, required=True)
+        attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autofocus': ''}), min_length=8,
+                               required=True)
     password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}), required=True)
 
     def clean_password2(self):
-        cd = self.data
-        if cd['password'] != cd['password2']:
+        clear_data = self.data
+        if clear_data['password'] != clear_data['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
-        return cd['password2']
+        return clear_data['password2']
 
 
 class ChangeInfoForm(forms.Form):
@@ -62,7 +65,7 @@ class ChangeInfoForm(forms.Form):
                                    attrs={
                                        'placeholder': 'Ваше имя',
                                        'id': 'name',
-                                     'style': 'max-width: inherit'}
+                                       'style': 'max-width: inherit'}
                                )
                                )
     email = forms.EmailField(label='Электронная почта',
@@ -74,10 +77,13 @@ class ChangeInfoForm(forms.Form):
                                      'style': 'max-width: inherit'}
                              )
                              )
-    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), required=False, initial=None)
-    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), min_length=8, required=False,
+    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput(
+        attrs={'style': 'max-width: inherit'}), required=False, initial=None)
+    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(
+        attrs={'style': 'max-width: inherit'}), min_length=8, required=False,
                                    initial=None)
-    new_password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(attrs={'style': 'max-width: inherit'}), required=False, initial=None)
+    new_password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(
+        attrs={'style': 'max-width: inherit'}), required=False, initial=None)
     old_password_flag = True
 
     def set_old_password_flag(self):
@@ -102,7 +108,12 @@ class ChangeInfoForm(forms.Form):
 
 class FileForm(forms.Form):
     file = forms.FileField(label='', required=False,
-                           widget=forms.FileInput(attrs={'type': 'file', 'class': 'custom-file-input', 'id': 'inputGroupFile', 'aria-describedby': 'inputGroupFileAddon', 'accept': 'image/*', 'onchange': 'preview_image(event)', 'style': 'display: none'}))
+                           widget=forms.FileInput(
+                               attrs={'type': 'file', 'class': 'custom-file-input',
+                                      'id': 'inputGroupFile',
+                                      'aria-describedby': 'inputGroupFileAddon',
+                                      'accept': 'image/*', 'onchange': 'preview_image(event)',
+                                      'style': 'display: none'}))
 
 
 class BarcodeForm(forms.Form):

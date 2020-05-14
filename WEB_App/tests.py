@@ -8,10 +8,10 @@ class IndexTest(TestCase):
 
     def setUp(self):
         self.client = Client()
-        pass
 
     def test_none_authorised_user_photo_scan_try(self):
-        response = self.client.post('/', {'file-input-for-label': 'fixtures/test.jpg'}, follow=True)
+        response = self.client.post('/', {'file-input-for-label': 'fixtures/test.jpg'},
+                                    follow=True)
         print(response.redirect_chain)
         self.assertEqual(response.request['PATH_INFO'], '/')
 
@@ -25,7 +25,6 @@ class ProductPageTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.get(username='test_user')
-        pass
 
     def test_rate_photo(self):
         perm = Permission.objects.get(codename='add_rate')
@@ -55,26 +54,27 @@ class ProductPageTest(TestCase):
         response_newline_comment = self.client.post('/product/test/', {'comment': '\n'})
         response_normal_comment = self.client.post('/product/test/', {'comment': 'test'})
 
-        response_whitespace_child = self.client.post('/product/test/', {'response-to-comment': ' '})
+        response_whitespace_child = self.client.post('/product/test/',
+                                                     {'response-to-comment': ' '})
         response_newline_child = self.client.post('/product/test/', {'response-to-comment': '\n'})
         response_normal_child = self.client.post('/product/test/', {'response-to-comment': 'test'})
 
-        self.assertEqual(len(Comment.objects.filter(text = ' ')), 0)
+        self.assertEqual(len(Comment.objects.filter(text=' ')), 0)
         self.assertEqual(response_whitespace_comment.request['PATH_INFO'], '/product/test/')
 
-        self.assertEqual(len(Comment.objects.filter(text = '\n')), 0)
+        self.assertEqual(len(Comment.objects.filter(text='\n')), 0)
         self.assertEqual(response_newline_comment.request['PATH_INFO'], '/product/test/')
 
-        self.assertGreater(len(Comment.objects.filter(text = 'test')), 0)
+        self.assertGreater(len(Comment.objects.filter(text='test')), 0)
         self.assertEqual(response_normal_comment.request['PATH_INFO'], '/product/test/')
 
-        self.assertEqual(len(ChildrenComment.objects.filter(text = ' ')), 0)
+        self.assertEqual(len(ChildrenComment.objects.filter(text=' ')), 0)
         self.assertEqual(response_whitespace_child.request['PATH_INFO'], '/product/test/')
 
-        self.assertEqual(len(ChildrenComment.objects.filter(text = '\n')), 0)
+        self.assertEqual(len(ChildrenComment.objects.filter(text='\n')), 0)
         self.assertEqual(response_newline_child.request['PATH_INFO'], '/product/test/')
 
-        self.assertGreater(len(ChildrenComment.objects.filter(text = 'test')), 0)
+        self.assertGreater(len(ChildrenComment.objects.filter(text='test')), 0)
         self.assertEqual(response_normal_child.request['PATH_INFO'], '/product/test/')
 
     def tearDown(self):

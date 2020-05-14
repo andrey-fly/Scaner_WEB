@@ -1,100 +1,23 @@
-from datetime import datetime
-from PIL import Image
-import imagehash
 import random
 import string
 
-import requests
+import imagehash
+from PIL import Image
 from django.conf import settings
 from django.contrib.auth import login
-
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
-from django.db.models import Avg, Q, QuerySet
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
-
-from Scanner.settings import API_TOKEN, API_HEADERS
-from WEB_App.forms import *
-from WEB_App.models import *
-
+from django.db.models import Avg, Q
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import PermissionRequiredMixin
 
-from django.http import JsonResponse
-
-from django.http import HttpResponse
-
-from Modules.requests import *
-
-
-class UserAuth:
-    def __init__(self, request, template_name):
-        self.template_name = template_name
-        self.request = request
-        self.reg_form = UserRegistrationForm()
-        self.errors = []
-
-    def sign_up(self):
-        new_user = self.reg_form.save(commit=False)
-        new_user.set_password(self.reg_form.cleaned_data['password2'])
-        new_user.save()
-        login(self.request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-
-    def sign_in(self):
-        identification = self.request.POST.get('identification')
-        password = self.request.POST.get('password')
-        user = None
-        if User.objects.filter(username=identification):
-            user = User.objects.get(username=identification)
-        elif User.objects.filter(email=identification):
-            user = User.objects.get(email=identification)
-        if user is None:
-            self.errors.append('Пользователь не найден!')
-        elif user.check_password(password) is False:
-            self.errors.append('Неправильный пароль!')
-        else:
-            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-    def check_auth(self):
-        if self.request.POST.get('status') == 'SignUp':
-            self.reg_form = UserRegistrationForm(self.request.POST)
-            if self.reg_form.is_valid():
-                self.sign_up()
-        elif self.request.POST.get('status') == 'SignIn':
-            self.sign_in()
-        return self.reg_form, self.errors
-
-
-class BaseView(View):
-    template_name = 'main/index.html'
-
-    def get(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def check_auth(self, request):
-        auth = UserAuth(request, self.template_name)
-        return auth.check_auth()
-
-
-class BaseTemplateView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def check_auth(self, request):
-        auth = UserAuth(request, self.template_name)
-        return auth.check_auth()
+from Modules.base_classes import *
+from Modules.requests_to_api import *
+from Scanner.settings import API_TOKEN
+from WEB_App.forms import *
+from WEB_App.models import *
 
 
 class IndexPage(BaseTemplateView):
@@ -131,7 +54,8 @@ class IndexPage(BaseTemplateView):
             else:
                 status_code, response = get_product(image, 'AnonymousUser')
             if response['status'] == 'ok':
-                return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
+                return redirect(to='/product/{}/?image={}'.format(response['good_name'],
+                                                                  response['image_hash']))
             else:
                 return redirect(to='/add_product/?image={}'.format(response['image_hash']))
 
@@ -141,7 +65,8 @@ class IndexPage(BaseTemplateView):
 class AddProductPage(BaseView):
     template_name = 'product/add_product.html'
 
-    def get_image_url(self, request):
+    @staticmethod
+    def get_image_url(request):
         own_hash = request.GET.get('image')
         status_code, response = get_picture_by_hash(own_hash)
         return response['file']
@@ -174,11 +99,13 @@ class AddProductPage(BaseView):
 class ProductPage(BaseView):
     template_name = 'product/product.html'
 
-    def get_image_by_hash(self, image_hash):
+    @staticmethod
+    def get_image_by_hash(image_hash):
         status_code_image, response_image = get_picture_by_hash(image_hash)
         return response_image['file']
 
-    def get_list_of_images(self, good_name):
+    @staticmethod
+    def get_list_of_images(good_name):
         status_code, response = get_picture_list_by_good_name(good_name)
         data = []
         for image in response:
@@ -213,14 +140,18 @@ class ProductPage(BaseView):
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         else:
             try:
                 if Rate.objects.filter(Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
 
@@ -284,14 +215,18 @@ class ProductPage(BaseView):
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         else:
             try:
                 if Rate.objects.filter(Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         return render(request, self.template_name, context)
@@ -301,7 +236,8 @@ class GalleryPage(BaseView):
     template_name = 'product/gallery.html'
     rated_previously = []
 
-    def get_list_of_images(self, good_name):
+    @staticmethod
+    def get_list_of_images(good_name):
         status_code, response = get_picture_list_by_good_name(good_name)
         data = []
         for image in response:
@@ -454,6 +390,7 @@ def profile(request):
         context['profile_photo'] = UserPhoto.objects.get(user=current_user).img.url
     return render(request, 'profile/profile.html', context)
 
+
 #
 # def change_info(request):
 #     return render(request, '403.html')
@@ -505,7 +442,8 @@ class AddUser(View):
 
     def get(self, request):
         context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
-                   'user_form': UserRegistrationForm, 'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
+                   'user_form': UserRegistrationForm,
+                   'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -571,10 +509,7 @@ class AddUser(View):
 
 
 class PhotoPage(TemplateView):
-    context = {}
-    context['modal_window'] = 'false'
-    context['show_modal'] = 'false'
-    context['main_image'] = ''
+    context = {'modal_window': 'false', 'show_modal': 'false', 'main_image': ''}
     template_name = 'product/product.html'
 
     def get(self, request):
@@ -590,7 +525,8 @@ class PhotoPage(TemplateView):
             if errors:
                 return render(self.request, self.template_name, errors)
 
-        self.context['modal_window'] = False if request.POST.get('modal_check') == 'false' else True
+        self.context['modal_window'] = False if request.POST.get(
+            'modal_check') == 'false' else True
 
         # Страница без модального окна
         if not self.context['modal_window']:
@@ -622,13 +558,15 @@ class PhotoPage(TemplateView):
                                         ).json()
                 if not request.user.is_authenticated:
                     if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        return redirect(
+                            to='/product/{}/?image={}'.format(response['good'], picture.id))
                     else:
                         print('redirect')
                         return redirect(to='add_user/?image={}'.format(picture.id))
                 else:
                     if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        return redirect(
+                            to='/product/{}/?image={}'.format(response['good'], picture.id))
                     else:
                         return redirect(to='/add_product/?image={}'.format(picture.id))
             else:
@@ -637,7 +575,8 @@ class PhotoPage(TemplateView):
                 else:
                     picture = NotAuthUser.objects.get(hash=hash_value)
                 if picture.target_good:
-                    return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                    return redirect(
+                        to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
                 else:
                     self.context['show_modal'] = 'true'
 
@@ -660,7 +599,8 @@ class PhotoPage(TemplateView):
                                         headers={'Authorization': '{}'.format(API_TOKEN)}
                                         ).json()
                 if response['status'] == 'ok':
-                    return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                    return redirect(
+                        to='/product/{}/?image={}'.format(response['good'], picture.id))
                 else:
                     return redirect(to='/add_product/?image={}'.format(picture.id))
 
@@ -677,13 +617,10 @@ class PhotoPage(TemplateView):
                     user=request.user,
                     barcode=request.POST.get('barcode')
                 )
-                response = requests.get('http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
-                                        headers={'Authorization': '{}'.format(API_TOKEN)}
-                                        ).json()
-
-                # Обращение к api вызывает функцию класса GetByBarCode, которая не возвращает статус
-                # if response['status'] == 'ok':
-                #     good.name = response['name']
+                response = requests.get(
+                    'http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
+                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                ).json()
 
                 if response:
                     good.name = response[0]['name']
@@ -731,7 +668,7 @@ class AcceptPage(PermissionRequiredMixin, View):
         moder_good_barcode = request.POST.get('barcode')
         moder_good_points = request.POST.get('points')
         moder_good_image_id = request.POST.get('old_image_id')
-        moder_good_caregory = request.POST.get('category')
+        moder_good_category = request.POST.get('category')
 
         if request.POST.get('action') == 'accept':
             status_code, response = change_moderation_goods_status(
@@ -744,7 +681,7 @@ class AcceptPage(PermissionRequiredMixin, View):
                 status_code, response = create_good_with_new_image(
                     moder_good_name,
                     moder_good_barcode,
-                    moder_good_caregory,
+                    moder_good_category,
                     moder_good_points,
                     request.FILES.get('image')
                 )
@@ -752,7 +689,7 @@ class AcceptPage(PermissionRequiredMixin, View):
                 status_code, response = create_good_with_old_image(
                     moder_good_name,
                     moder_good_barcode,
-                    moder_good_caregory,
+                    moder_good_category,
                     moder_good_points,
                     moder_good_image_id
                 )
@@ -767,10 +704,8 @@ class AcceptPage(PermissionRequiredMixin, View):
             )
 
         elif request.POST.get('action') == 'create_category':
-            payload = {}
-            payload['name'] = request.POST.get('name')
-            payload['url_name'] = request.POST.get('url_name')
-            payload['parent'] = request.POST.get('category') or None
+            payload = {'name': request.POST.get('name'), 'url_name': request.POST.get('url_name'),
+                       'parent': request.POST.get('category') or None}
             image = request.FILES.get('image') or None
 
             requests.post('http://api.scanner.savink.in/api/v1/category/create/',
@@ -778,7 +713,8 @@ class AcceptPage(PermissionRequiredMixin, View):
 
         return render(request, self.template_name, self.get_context())
 
-    def get_context(self):
+    @staticmethod
+    def get_context():
         context = {}
         status_code, goods_data = get_moderation_goods_by_status('Принято на модерацию')
         data = []
@@ -799,7 +735,6 @@ class AcceptPage(PermissionRequiredMixin, View):
 
 
 class CategoryView(BaseTemplateView):
-    prev_category = ''
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -807,18 +742,15 @@ class CategoryView(BaseTemplateView):
             reg_form = UserRegistrationForm()
             context['reg_form'] = reg_form
 
-        # Этот код для кнопки перехода "назад" работает только при последовательном переходе к товару
-        # (в обратную сторону не работает, зацикливает переход)
-        context['prev'] = '/category/' + CategoryView.prev_category
-        CategoryView.prev_category = context['category']
-
         try:
-            context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
-                                               '{}'.format(context['category']),
-                                               headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-            context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
-                                            '{}'.format(context['category']),
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['children'] = requests.get(
+                'http://api.scanner.savink.in/api/v1/category/filter/'
+                '{}'.format(context['category']),
+                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['goods'] = requests.get(
+                'http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+                '{}'.format(context['category']),
+                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             data = context['goods']
             temporary = []
             for item in data:
@@ -832,19 +764,23 @@ class CategoryView(BaseTemplateView):
                     rate.append(Rate.objects.filter(Q(good=item['name']) & Q(user=request.user)))
             else:
                 for item in data:
-                    rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(Avg('rating'))
+                    rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(
+                        Avg('rating'))
                     rate.append({'good': item['name'], 'rating': rating})
             context['rated'] = rate
 
             if request.user.is_superuser:
-                context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                                     headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['categories'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/category/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-                context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
-                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['positives'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/positive/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-                context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
-                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['negatives'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/negative/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
             return render(request, self.template_name, context)
 
@@ -873,7 +809,8 @@ class CategoryView(BaseTemplateView):
                 if request.POST.get('action') == 'category_delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
                 elif request.POST.get('action') == 'category_change':
-                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                     files={'file': image})
                 elif request.POST.get('action') == 'add_good':
                     payload['category'] = request.POST.get('category_id')
                     payload['barcode'] = request.POST.get('barcode')
@@ -904,7 +841,8 @@ class CategoryView(BaseTemplateView):
                 if request.POST.get('action') == 'delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
                 elif request.POST.get('action') == 'edit_good':
-                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                     files={'file': image})
             except ValueError:
                 return render(request, self.template_name, context)
 
@@ -943,21 +881,26 @@ class CategoryView(BaseTemplateView):
                 return render(request, self.template_name, context)
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                            '{}'.format(context['category']),
-                                           headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                           headers={
+                                               'Authorization': '{}'.format(API_TOKEN)}).json()
 
-        context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
-                                        '{}'.format(context['category']),
-                                        headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+        context['goods'] = requests.get(
+            'http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+            '{}'.format(context['category']),
+            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                            headers={
+                                                'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                            headers={
+                                                'Authorization': '{}'.format(API_TOKEN)}).json()
 
         return render(request, self.template_name, context)
 
@@ -971,7 +914,8 @@ class CategoryFirstPageView(BaseTemplateView):
             context['reg_form'] = reg_form
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
@@ -994,7 +938,8 @@ class CategoryFirstPageView(BaseTemplateView):
             if request.POST.get('action') == 'category_delete':
                 requests.request("DELETE", url, headers=API_HEADERS)
             elif request.POST.get('action') == 'category_change':
-                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                 files={'file': image})
             elif request.POST.get('action') == 'add_good':
                 payload['category'] = request.POST.get('category_id')
                 payload['barcode'] = request.POST.get('barcode')
@@ -1014,7 +959,8 @@ class CategoryFirstPageView(BaseTemplateView):
             return render(request, self.template_name, context)
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
 
@@ -1041,7 +987,8 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 new_picture = Picture(file=picture_object.image,
                                       user=picture_object.user,
                                       target_good=picture_object.target_good,
-                                      hash=imagehash.average_hash(Image.open(request.FILES['file']))
+                                      hash=imagehash.average_hash(
+                                          Image.open(request.FILES['file']))
                                       )
                 new_picture.save()
         except Exception:
@@ -1071,7 +1018,8 @@ class ComplaintListPage(PermissionRequiredMixin, View):
 
         if form.is_valid():
             complaint_resp = ComplaintResponse(
-                user=User.objects.get(id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
+                user=User.objects.get(
+                    id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
                 parent=Complaint.objects.get(id=request.POST.get('complaint-id')),
                 text=request.POST.get('text'),
                 title=Complaint.objects.get(id=request.POST.get('complaint-id')).title
@@ -1104,7 +1052,8 @@ class ComplaintPage(TemplateView):
         self.context['complaint_responses'] = ComplaintResponse.objects.filter(checked=False)
 
         if request.POST.get('checked'):
-            complaint_response = ComplaintResponse.objects.get(id=request.POST.get('complaint-response-id'))
+            complaint_response = ComplaintResponse.objects.get(
+                id=request.POST.get('complaint-response-id'))
             complaint_response.checked = True
             complaint_response.save()
         elif form.is_valid():

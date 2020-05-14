@@ -14,11 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required
-from WEB_App.views import *
 
+from WEB_App.views import AcceptPage, AcceptPhotoPage, AddProductPage, AddUser, AdminLoginPage, \
+    CategoryFirstPageView, CategoryView, ComplaintListPage, \
+    ComplaintPage, \
+    GalleryPage, \
+    IndexPage, \
+    PhotoPage, ProductPage, \
+    profile, recovery_password
 
 urlpatterns = [
     path('', IndexPage.as_view(template_name='main/index.html')),

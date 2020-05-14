@@ -34,7 +34,8 @@ class GoodsOnModeration(models.Model):
 class Picture(models.Model):
     file = models.ImageField(verbose_name='Ссылка на s3 хранилище', upload_to='photos')
     hash = models.TextField(verbose_name='Хэш фото', null=True)
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True, default=None)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE,
+                             null=True, default=None)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
     target_good = models.TextField(verbose_name='Товар', null=True)
     # platform = models.TextField(verbose_name='Платформа', default='Неизвестная платформа')
@@ -67,7 +68,8 @@ class Comment(models.Model):
 class ChildrenComment(models.Model):
     text = models.TextField(verbose_name='Содержимое комментария', null=False)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
-    parent = models.ForeignKey(Comment, verbose_name='Комментарий', null=False, on_delete=models.CASCADE)
+    parent = models.ForeignKey(Comment, verbose_name='Комментарий', null=False,
+                               on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True, null=False)
 
 
@@ -103,7 +105,8 @@ class Complaint(models.Model):
 class ComplaintResponse(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     date = models.DateField(verbose_name='Дата отправки ответа', auto_now_add=True, null=False)
-    parent = models.ForeignKey(Complaint, verbose_name='Жалоба', null=False, on_delete=models.CASCADE)
+    parent = models.ForeignKey(Complaint, verbose_name='Жалоба', null=False,
+                               on_delete=models.CASCADE)
     title = models.CharField(verbose_name='Заголовок жалобы', max_length=255, null=False)
     text = models.TextField(verbose_name='Содержимое ответа на жалобу', null=False)
     checked = models.BooleanField(verbose_name='Прочитано ли', default=False)
