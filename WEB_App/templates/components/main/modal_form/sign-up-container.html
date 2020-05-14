@@ -6,9 +6,8 @@
         <div class="social-container">
             <a href="{% provider_login_url 'vk' %}" class="social"><i class="fab fa-vk"></i></a>
             <a href="{% provider_login_url 'google' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
-            <a href="{% provider_login_url 'facebook' %}" class="social"><i
-                    class="fab fa-facebook-f"></i></a>
-        </div>
+            <a href="{% provider_login_url 'facebook' %}" class="social"><i class="fab fa-facebook-f"></i></a>
+<!--        </div>-->
         <!-- <span>или используйте вашу почту для регистрации</span>  -->
         {% if reg_form.errors %} {% if reg_form.errors.password2 %}
         <div class="error-reg">
