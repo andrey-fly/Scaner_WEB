@@ -1,4 +1,4 @@
-.. image:: _static/favicon.ico
+.. image:: _static/img/favicon.ico
    :alt: @Продовед
 
 
