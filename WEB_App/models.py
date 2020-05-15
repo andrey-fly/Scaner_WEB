@@ -1,5 +1,5 @@
 """
-Стандартные классы Django для создания моделей для базы данных
+Самописные классы для Django с целью создания моделей для базы данных
 """
 from django.contrib.auth.models import User
 from django.db import models

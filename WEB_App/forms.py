@@ -1,5 +1,5 @@
 """
-Стандартные классы Django для создания форм
+Самописные классы для Django с целью создания форм
 """
 from django import forms
 from django.contrib.auth.models import User
