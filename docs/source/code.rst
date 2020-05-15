@@ -21,3 +21,18 @@ View–функции и классы
 
 .. automodule:: WEB_App.views
     :members:
+    :show-inheritance:
+
+*********************
+Модели Django
+*********************
+
+.. automodule:: WEB_App.models
+    :members:
+
+*********************
+Формы Django
+*********************
+
+.. automodule:: WEB_App.forms
+    :members:

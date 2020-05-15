@@ -1,9 +1,16 @@
+"""
+Стандартные классы Django для создания форм
+"""
 from django import forms
 from django.contrib.auth.models import User
 from django.forms.widgets import Input
 
 
 class UserRegistrationForm(forms.ModelForm):
+    """
+    Класс для создание формы регистрации пользователя. Отнаследован от базового класса Django \
+    forms.ModelForm
+    """
     password = forms.CharField(label='Пароль',
                                widget=forms.PasswordInput(
                                    attrs={'id': 'reg-input', 'class': 'mb-2',
@@ -15,6 +22,9 @@ class UserRegistrationForm(forms.ModelForm):
                                            'placeholder': 'Повторите пароль'}))
 
     class Meta:
+        """
+        Стандартный Django Meta-класс для создание полей формы на основе модели
+        """
         model = User
         fields = ('username', 'email')
         widgets = {
@@ -23,18 +33,34 @@ class UserRegistrationForm(forms.ModelForm):
         }
 
     def clean_password2(self):
+        """
+        Функция, очищающая пароль в поле ввода, если произошла какая-либо ошибка при регистрации
+
+        :return: Список, содержащий очищенные поля паролей
+        """
         clear_data = self.data
         if clear_data['password'] != clear_data['password2']:
             raise forms.ValidationError('Пароли не совпадают.')
         return clear_data['password2']
 
     def clean_username(self):
+        """
+        Функция, очищающая никнейм в поле ввода, если произошла какая-либо ошибка при регистрации
+
+        :return: Список, содержащий очищенное поле никнейма
+        """
         clear_data = self.data
         if len(clear_data['username']) < 6:
             raise forms.ValidationError('Имя пользователя должно содержать 6 символов и более.')
         return clear_data['username']
 
     def clean_email(self):
+        """
+        Функция, очищающая электронную почту в поле ввода, если произошла какая-либо ошибка при \
+        регистрации
+
+        :return: Список, содержащий очищенное поле электронной почты
+        """
         clear_data = self.data
         users = User.objects.all()
         for user in users:
@@ -44,6 +70,10 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class RecoveryPass(forms.Form):
+    """
+    Класс для восстановления пароля пользователя. Отнаследован от базового класса Django \
+    forms.Form
+    """
     password = forms.CharField(label='Password', widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autofocus': ''}), min_length=8,
                                required=True)
@@ -51,6 +81,12 @@ class RecoveryPass(forms.Form):
         attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}), required=True)
 
     def clean_password2(self):
+        """
+        Функция, очищающая пароль в поле ввода, если произошла какая-либо ошибка при
+        восстановлении пароля
+
+        :return: Список, содержащий очищенные поля паролей
+        """
         clear_data = self.data
         if clear_data['password'] != clear_data['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
@@ -58,6 +94,9 @@ class RecoveryPass(forms.Form):
 
 
 class ChangeInfoForm(forms.Form):
+    """
+    Класс для изменения данных пользователя. Отнаследован от базового класса Django forms.Form
+    """
     username = forms.CharField(label='Имя пользователя',
                                min_length=3,
                                required=False,
@@ -87,9 +126,19 @@ class ChangeInfoForm(forms.Form):
     old_password_flag = True
 
     def set_old_password_flag(self):
+        """
+        Установка флага для отслеживания, изменился ли пароль
+
+        :return: None
+        """
         self.old_password_flag = False
 
     def clean_old_password(self):
+        """
+        Функция для очистки старого пароля пользователя
+
+        :return: Старый пароль
+        """
         old_password = self.cleaned_data.get('old_password')
         if not old_password and self.data.get('new_password'):
             print('Not')
@@ -99,6 +148,12 @@ class ChangeInfoForm(forms.Form):
         return old_password
 
     def clean_new_password2(self):
+        """
+        Функция, очищающая пароль в поле ввода, если произошла какая-либо ошибка при
+        изменении пароля
+
+        :return: Список, содержащий очищенные поля паролей
+        """
         new_password = self.cleaned_data.get('new_password')
         new_password2 = self.cleaned_data.get('new_password2')
         if new_password != new_password2:
@@ -107,6 +162,9 @@ class ChangeInfoForm(forms.Form):
 
 
 class FileForm(forms.Form):
+    """
+    Класс для изменения аватара пользователя. Отнаследован от базового класса Django forms.Form
+    """
     file = forms.FileField(label='', required=False,
                            widget=forms.FileInput(
                                attrs={'type': 'file', 'class': 'custom-file-input',
@@ -117,6 +175,9 @@ class FileForm(forms.Form):
 
 
 class BarcodeForm(forms.Form):
+    """
+    Класс для ручного ввода штрих-кода. Отнаследован от базового класса Django forms.Form
+    """
     barcode = forms.CharField(required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'inputBarcode',
@@ -126,6 +187,9 @@ class BarcodeForm(forms.Form):
 
 
 class ComplaintForm(forms.Form):
+    """
+    Класс для обратной связи с администрацией. Отнаследован от базового класса Django forms.Form
+    """
     title = forms.CharField(required=True, widget=forms.TextInput(attrs={
         'class': ' input2',
         'name': 'header',
@@ -141,19 +205,11 @@ class ComplaintForm(forms.Form):
 
 
 class ComplaintResponseForm(forms.Form):
+    """
+    Класс для ответа администратора на сообщение пользователя
+    """
     text = forms.CharField(required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'inputText',
         'placeholder': "Ваш ответ на жалобу",
     }))
-# class CommentForm(forms.ModelForm):
-#     class Meta:
-#         model = Comment
-#         fields = ('text',)
-#         widgets = {
-#             'text': Input(attrs={'class': 'form-control', 'placeholder': 'Описание', 'style': 'width: auto !important; border-radius: 8px'}),
-#         }
-
-
-# class RatePhotoForm(forms.Form):
-#     rate = forms.ChoiceField(widget=forms.Select(), required=True)
