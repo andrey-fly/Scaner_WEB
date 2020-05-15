@@ -45,6 +45,8 @@ urlpatterns = [
     path('admin/admin_login/', AdminLoginPage.as_view()),
 
     path('admin/urls/', TemplateView.as_view(template_name='admin/links.html')),
-    path('category/<str:category>', CategoryView.as_view(template_name='categories/category_list.html')),
-    path('category/', CategoryFirstPageView.as_view(template_name='categories/category_first_list.html')),
+    path('category/<str:category>',
+         CategoryView.as_view(template_name='categories/category_list.html')),
+    path('category/',
+         CategoryFirstPageView.as_view(template_name='categories/category_first_list.html')),
 ]
