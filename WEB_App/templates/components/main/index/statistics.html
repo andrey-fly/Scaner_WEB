@@ -1,0 +1,29 @@
+{% load static %}
+<section class="section-md text-center" id="animated_numbers">
+    <div class="container">
+        <h3 class="divider divider-mid">Некоторая статистика</h3>
+        <div class="row row-30">
+            <div class="col-lg-4">
+                <img src="{% static 'img/statistics/groceries_colored.svg' %}" style="width: 25%;">
+                <div class="divider-min divider-mid offset-top-bt-15">
+                    <div class="num" id="num">0</div>
+                </div>
+                <h5>Продуктов на сайте</h5>
+            </div>
+            <div class="col-lg-4">
+                <img src="{% static 'img/statistics/users_colored.svg' %}" style="width: 25%;">
+                <div class="divider-min divider-mid offset-top-bt-15">
+                    <div class="num" id="num2">0</div>
+                </div>
+                <h5>Пользователей с нами</h5>
+            </div>
+            <div class="col-lg-4">
+                <img src="{% static 'img/statistics/images_colored.svg' %}" style="width: 25%;">
+                <div class="divider-min divider-mid offset-top-bt-15">
+                    <div class="num" id="num3">0</div>
+                </div>
+                <h5>Обработано изображений</h5>
+            </div>
+        </div>
+    </div>
+</section>

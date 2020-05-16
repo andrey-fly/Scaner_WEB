@@ -1,0 +1,23 @@
+{% load static %}
+<!-- sidebar header -->
+<div class="sidebar-item sidebar-header d-flex flex-nowrap">
+    <div class="user-pic">
+        {% if profile_photo %}
+        <img class="img-responsive img-rounded" src="{{profile_photo}}" alt="User picture">
+        {% else %}
+        <img class="img-responsive img-rounded" src="{% static 'img/profile/profile_icon.png' %}" alt="User picture">
+        {% endif %}
+    </div>
+    <div class="user-info">
+        <span class="user-name">{{user.username}}</span>
+        {% if user.is_superuser %}
+        <span class="user-role">Администратор</span>
+        {% else %}
+        <span class="user-role">Пользователь</span>
+        {% endif %}
+        <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+        </span>
+    </div>
+</div>

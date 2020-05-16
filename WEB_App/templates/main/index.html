@@ -1,127 +1,15 @@
 {% extends 'base/base.html' %}
+
 {% load static %}
 {% block content %}
-<section style="margin: 32px auto;">
-    <div class="container">
-        <div class="search-holder active">
-            <div class="circle container"></div>
-            <div class="form">
-                <div class="search-button"></div>
-                <input type="text" class="search-input" placeholder="Найдите товар ..." id="searcher"/>
 
-                <div class="dropdown">
-                  <input type="hidden" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <input type="hidden" name="data" value="{{all_goods_names}}" id="initial_data">
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu" id="dropdown_menu_searcher"></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-<form id="content-group" method="POST" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="main-content-frame-in-content-group">
-        <p class="header-text-in-main-content-frame">
-            Загрузите фотографию товара
-        </p>
-        <p class="description-text-in-main-content-frame">
-            Мы расскажем вам о нем всё, что знаем
-        </p>
-        <input id="file-input-for-label" type="file" multiple onchange="func_submit_btn();">
-        <label class="photo-load-button-in-main-content-frame btn-md" for="file-input-for-label" style="border: none; margin: 0 auto">
-            <span class="text-in-photo-load-button">
-                Загрузить фото
-            </span>
-        </label>
-    </div>
-    <input id="file-input-for-frame" type="file" multiple onchange="func_submit_area();">
-    <label for="file-input-for-frame" id="photo-frame-in-content-group">
-        <label for="file-input-for-frame">
-            <p class="main-text-in-photo-frame">
-                Можно перетащить сюда фотографию в формате jpeg
-            </p>
-            <p class="description-text-in-photo-frame">
-                Мы знаем всё про молочные, мясные продукты, крупы, воду и многое другое
-            </p>
-        </label>
-    </label>
-</form>
-
-<section class="section-xl">
-    <div class="container">
-        <div class="row justify-content-md-center flex-lg-row-reverse align-items-lg-center justify-content-lg-between row-50">
-            <div class="col-md-9 col-lg-5">
-                <h2 class="wow fadeInRight divider">Множество категорий в списке товаров</h2>
-                <p class="wow fadeInRight" style="animation-delay: 0.05s">
-                    На нашем сайте вы можете найти интересующий вас товар в широком списке,
-                    отсортированном по категориям, а также набрав его название в поле поиска!
-                </p>
-            </div>
-            <div class="col-md-9 col-lg-6">
-                <img src="/static/img/section-4.png" alt="" width="652" height="491">
-            </div>
-        </div>
-    </div>
-</section>
-<section class="section-md text-center">
-    <div class="container">
-        <h3 class="divider divider-mid">Некоторая статистика</h3>
-        <div class="row row-30">
-            <div class="col-lg-4">
-                <img src="/static/img/products.png" style="width: 25%;">
-                <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num">0</div>
-                </div>
-                <h5>Продуктов на сайте</h5>
-            </div>
-            <div class="col-lg-4">
-                <img src="/static/img/users.png" style="width: 25%;">
-                <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num2">0</div>
-                </div>
-                <h5>Пользователей с нами</h5>
-            </div>
-            <div class="col-lg-4">
-                <img src="/static/img/images.svg" style="width: 25%;">
-                <div class="divider-min divider-mid offset-top-bt-15">
-                    <div class="num" id="num3">0</div>
-                </div>
-                <h5>Обработано изображений</h5>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="section-xl">
-    <div class="container">
-        <div class="row justify-content-md-center align-items-lg-center justify-content-lg-between row-50">
-            <div class="col-md-9 col-lg-5">
-                <h2 class="wow fadeInLeft divider">Система распознавания товара</h2>
-                <p class="wow fadeInLeft" style="animation-delay: 0.05s">
-                    Вы можете найти интересующий вас товар, просто отправив фотографию
-                    его штрих-кода нашей системе. А скоро мы научимся распознавать товар по его
-                    внешнему виду!
-                </p>
-            </div>
-            <div class="col-md-9 col-lg-6">
-                <img src="/static/img/section-2.png" alt="" width="652" height="491">
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'components/main/index/search.html' %}
+{% include 'components/main/index/photo_search.html' %}
+{% include 'components/main/index/first_product_section.html' %}
+{% include 'components/main/index/statistics.html' %}
+{% include 'components/main/index/second_product_section.html' %}
 
 {% endblock %}
 {% block extra_js %}
-<script src="{% static 'js/button.js' %}"></script>
-<script>
-
-</script>
-<script>
-    let csrftoken = '{{ csrf_token }}';
-</script>
-<script src="{% static 'js/photo.js' %}"></script>
-
 <script src="{% static 'js/searcher.js' %}"></script>
-
 {% endblock %}

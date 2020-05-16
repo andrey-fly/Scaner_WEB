@@ -1,0 +1,83 @@
+{% load static %}
+<style>
+@media only screen and (max-width: 1140px) {
+    .container {
+        display: flex;
+        flex-flow: column;
+    }
+}
+</style>
+<h2 class="text-center section-name">Изменение данных</h2>
+<hr>
+<div class="container" style="display: flex">
+    <div class="col-md">
+        <!-- Jumbotron -->
+        <div class="jumbotron" style="max-width: 560px">
+
+            <!-- Title -->
+            <h4 class="card-title h4 pb-2 text-info"><strong>Превью вашего аватара</strong></h4>
+
+            <!-- Card image -->
+            <div class="view overlay my-4" style="width: auto; left: auto; max-height: 480px; background: none">
+                {% if userphoto %}
+                <img id="output_image" class="card-img-top img-fluid" src="{{userphoto}}" alt="icon"
+                     style="width: auto; left: auto; max-height: 480px; margin: 0 auto;">
+                {% else %}
+                <img id="output_image" class="card-img-top img-fluid"
+                     src="{% static 'img/profile/profile_icon.png' %}"
+                     alt="icon" style="width: auto; left: auto; max-height: 480px; margin: 0 auto;">
+                {% endif %}
+                <a href="#">
+                    <div class="mask lue-gradient-rgba flex-center"
+                         style="width: auto; left: auto; max-height: 480px"></div>
+                </a>
+            </div>
+
+            <h5 class="h5 mb-4">Загрузите новое фото</h5>
+
+            <form enctype="multipart/form-data" action="" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <input class="input-group-text p-0" id="inputGroupFileAddon" type="submit"
+                               id="inputGroupFile" name="status" value="Обновить фото">
+                    </div>
+                    <div class="custom-file">
+                        {{photo}}
+                        <label class="custom-file-label" for="inputGroupFile">Выберите файл</label>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="jumbotron text-center" style="max-width: 560px">
+            <form action="" method="POST">
+                <h2 class="card-title h4">Изменение данных</h2>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-xl-7 pb-2">
+
+                        <div class="error-reg">
+                            <b>{{form.errors}}</b>
+                        </div>
+                        {% for field in form %}
+                        {% csrf_token %}
+                        <div class="">
+                            {{ field.label }}:
+                        </div>
+                        <div class="form-input">
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="pt-2">
+                    <input type="submit" class="btn btn-outline-info waves-effect m-0" name="status"
+                                   value="Сохранить">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     'django_s3_storage',
     'mptt',
     'django.contrib.sites',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
     # include the providers you want to enable:
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.yandex',
 ]
 
 SITE_ID = 1
@@ -199,7 +200,6 @@ API_TOKEN = 'Token c70b88bb12ce5694c171d463518a8dd9aa297ff9'
 API_HEADERS = {
     'Authorization': '{}'.format(API_TOKEN),
 }
-
 
 FIXTURE_DIRS = [
     'WEB_App/fixtures',

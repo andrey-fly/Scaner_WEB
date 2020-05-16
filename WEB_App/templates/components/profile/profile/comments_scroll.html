@@ -1,0 +1,31 @@
+{% load static %}
+<h2 class="text-center section-name">Мои комментарии</h2>
+{% if comments %}
+<nav id="myScrollspy"></nav>
+<div class="comment-scroll" data-spy="scroll" data-target="#myScrollspy" data-offset="10">
+    {% for comment in comments %}
+    <div class="card mb-3 comment-card">
+        <div class="row no-gutters">
+            <a class="col-md-4 comment-image" href="/product/{{comment.good}}/" style="background-image: url('{%for good in goods%}{%if comment.good == good.name%}{{good.file}}{%endif%}{%endfor%}');"></a>
+            <div class="col-md-8">
+                <div class="card-body comment-card-body">
+                    <h5 class="card-title">{{comment.good}}</h5>
+                    <p class="card-text text">{{comment.text}}</p>
+                    <p class="card-text date">{{comment.created}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{% else %}
+<div class="card border-primary mb-3" style="max-width: 360px; margin: 0 auto;">
+    <img src="{% static 'img/profile/warning.jpg' %}" class="card-img-top" alt="Image not found ;(" style="max-width: 720px; height: auto; max-height: 360px">
+    <div class="card-body text-primary">
+        <h5 class="card-title">Видимо, вы ещё не оставляли комментарии на сайте</h5>
+        <p class="card-text">Но мы всегда рады узнать ваше мнение 🤔</p>
+    </div>
+    <div class="card-footer bg-transparent border-primary"><a href="/category" class="btn btn-outline-primary" style="display: flex; justify-content: center; max-width: 300px; text-align: center">Тут вы можете прокомментировать все наши продукты</a></div>
+</div>
+{% endif %}
+<hr>

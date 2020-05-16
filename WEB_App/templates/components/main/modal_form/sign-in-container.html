@@ -1,0 +1,27 @@
+{% load socialaccount %}
+<div class="form-container sign-in-container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h1>Войти</h1>
+        <div class="social-container">
+            <a href="{% provider_login_url 'vk' %}" class="social"><i class="fab fa-vk"></i></a>
+            <a href="{% provider_login_url 'google' %}" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="{% provider_login_url 'facebook' %}" class="social"><i class="fab fa-facebook-f"></i></a>
+        </div>
+        <!--                <span>или использовать ваш аккаунт</span> -->
+        {% for error in login_errors %}
+        <div class="row error-reg">
+            <p><b>{{error}}</b></p>
+        </div>
+
+        {% endfor %}
+
+        <input class="mb-2" type="text" placeholder="Имя или почта" name="identification" required
+               autofocus>
+        <input class="mb-2" type="password" placeholder="Пароль" name="password" required>
+
+        <input type="hidden" name="status" value="SignIn">
+        <a href="/recovery_password">Забыли пароль?</a>
+        <button class="bt-ghost-in" type="submit">Вход</button>
+    </form>
+</div>

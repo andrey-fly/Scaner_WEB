@@ -22,9 +22,9 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = 'Scanner'
-copyright = '2020, BOMBIT TEAM'
-author = 'BOMBIT TEAM'
+project = 'Prodoved'
+copyright = '2020, BombIt Team'
+author = 'BombIt Team'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
@@ -39,6 +39,12 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
 ]
+
+autodoc_default_options = {
+    'member-order': 'bysource',
+    'typehints': 'description',
+    'content': 'both'
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -63,7 +69,7 @@ exclude_patterns = []
 #
 html_theme = "yummy_sphinx_theme"
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
+# Add any paths that contain custom _static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin _static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']

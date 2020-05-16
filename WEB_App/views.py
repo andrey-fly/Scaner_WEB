@@ -1,104 +1,42 @@
-from datetime import datetime
-from PIL import Image
-import imagehash
+"""
+Самописные классы и функции для Django с целью рендера старниц и  взаимодействия с ними
+"""
 import random
 import string
 
-import requests
+import imagehash
+from PIL import Image
 from django.conf import settings
-from django.contrib.auth import login
-
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
-from django.db.models import Avg, Q, QuerySet
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
+from django.db.models import Avg, Q
+from django.http import JsonResponse
+from django.shortcuts import redirect
 
-from Scanner.settings import API_TOKEN, API_HEADERS
+from Modules.base_classes import *
+from Modules.requests_to_api import *
+from Scanner.settings import API_TOKEN
 from WEB_App.forms import *
 from WEB_App.models import *
 
-from django.views import View
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
-from django.http import JsonResponse
-
-from django.http import HttpResponse
-
-from Modules.requests import *
-
-
-class UserAuth:
-    def __init__(self, request, template_name):
-        self.template_name = template_name
-        self.request = request
-        self.reg_form = UserRegistrationForm()
-        self.errors = []
-
-    def sign_up(self):
-        new_user = self.reg_form.save(commit=False)
-        new_user.set_password(self.reg_form.cleaned_data['password2'])
-        new_user.save()
-        login(self.request, new_user, backend='django.contrib.auth.backends.ModelBackend')
-
-    def sign_in(self):
-        identification = self.request.POST.get('identification')
-        password = self.request.POST.get('password')
-        user = None
-        if User.objects.filter(username=identification):
-            user = User.objects.get(username=identification)
-        elif User.objects.filter(email=identification):
-            user = User.objects.get(email=identification)
-        if user is None:
-            self.errors.append('Пользователь не найден!')
-        elif user.check_password(password) is False:
-            self.errors.append('Неправильный пароль!')
-        else:
-            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-    def check_auth(self):
-        if self.request.POST.get('status') == 'SignUp':
-            self.reg_form = UserRegistrationForm(self.request.POST)
-            if self.reg_form.is_valid():
-                self.sign_up()
-        elif self.request.POST.get('status') == 'SignIn':
-            self.sign_in()
-        return self.reg_form, self.errors
-
-
-class BaseView(View):
-    template_name = 'main/index.html'
-
-    def get(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def check_auth(self, request):
-        auth = UserAuth(request, self.template_name)
-        return auth.check_auth()
-
-
-class BaseTemplateView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        context = {}
-        return render(request, self.template_name, context)
-
-    def check_auth(self, request):
-        auth = UserAuth(request, self.template_name)
-        return auth.check_auth()
-
 
 class IndexPage(BaseTemplateView):
+    """
+    Класс для отображения начальной страницы. Отнаследован от базового класса BaseTemplateView
+    """
+
     def get(self, request, *args, **kwargs):
+        """
+        Функция для обработки get-запросов главной страницы
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param args: Автоматический параметр для заполнения context
+        :param kwargs: Автоматический параметр для заполнения context
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context_data(**kwargs)
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
@@ -107,6 +45,15 @@ class IndexPage(BaseTemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов главной страницы
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {}
 
         if request.POST.get('action') == 'initial_searcher':
@@ -131,7 +78,8 @@ class IndexPage(BaseTemplateView):
             else:
                 status_code, response = get_product(image, 'AnonymousUser')
             if response['status'] == 'ok':
-                return redirect(to='/product/{}/?image={}'.format(response['good_name'], response['image_hash']))
+                return redirect(to='/product/{}/?image={}'.format(response['good_name'],
+                                                                  response['image_hash']))
             else:
                 return redirect(to='/add_product/?image={}'.format(response['image_hash']))
 
@@ -139,14 +87,35 @@ class IndexPage(BaseTemplateView):
 
 
 class AddProductPage(BaseView):
-    template_name = 'photo/add_product.html'
+    """
+    Класс для отображения страницы добаления продуктов. Отнаследован от базового класса BaseView
+    """
+    template_name = 'product/add_product.html'
 
-    def get_image_url(self, request):
+    @staticmethod
+    def get_image_url(request):
+        """
+        Статический метод для полуения картинки
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Url файла картинки в S3 хранилище
+        :rtype: :class:`str`
+        """
         own_hash = request.GET.get('image')
         status_code, response = get_picture_by_hash(own_hash)
         return response['file']
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов страницы добавления товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {'img': self.get_image_url(request)}
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
@@ -154,6 +123,15 @@ class AddProductPage(BaseView):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов страницы добавления товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {'img': self.get_image_url(request)}
         if not request.user.is_authenticated:
             context['reg_form'], context['login_errors'] = self.check_auth(request)
@@ -172,13 +150,34 @@ class AddProductPage(BaseView):
 
 
 class ProductPage(BaseView):
-    template_name = 'photo/product.html'
+    """
+    Класс для отображения страницы продукта. Отнаследован от базового класса BaseView
+    """
+    template_name = 'product/product.html'
 
-    def get_image_by_hash(self, image_hash):
+    @staticmethod
+    def get_image_by_hash(image_hash):
+        """
+        Статический метод для получения картинки по хэшу
+
+        :param image_hash: Хэш картинки
+        :type image_hash: :class:`str`
+        :return: Ссылка на файл картинки в S3 хранилище
+        :rtype: :class:`str`
+        """
         status_code_image, response_image = get_picture_by_hash(image_hash)
         return response_image['file']
 
-    def get_list_of_images(self, good_name):
+    @staticmethod
+    def get_list_of_images(good_name):
+        """
+        Статический метод для получения фотографий товара по его названию
+
+        :param good_name: Название товара
+        :type good_name: :class:`str`
+        :return: Список ссылок на файлы картинок в S3 хранилище
+        :rtype: :class:`dict`
+        """
         status_code, response = get_picture_list_by_good_name(good_name)
         data = []
         for image in response:
@@ -186,6 +185,17 @@ class ProductPage(BaseView):
         return data
 
     def get(self, request, good):
+        """
+        Функция для обработки get-запросов страницы добавления товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param good: Название товара
+        :type good: :class:`str`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {}
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
@@ -213,20 +223,35 @@ class ProductPage(BaseView):
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         else:
             try:
                 if Rate.objects.filter(Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
 
         return render(request, self.template_name, context)
 
     def post(self, request, good):
+        """
+        Функция для обработки post-запросов страницы добавления товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param good: Название товара
+        :type good: :class:`str`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {'name': good, 'show_thanks': False}
         if not request.user.is_authenticated:
             context['reg_form'], context['login_errors'] = self.check_auth(request)
@@ -278,29 +303,46 @@ class ProductPage(BaseView):
         context['points'] = response['points']
         context['categories'] = response['categories']
         context['comments'] = Comment.objects.filter(good=good)
+        context['reviews'] = Comment.objects.filter(good=good)[:3]
 
         if request.user.is_authenticated:
             try:
                 if Rate.objects.filter(Q(user=request.user) & Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         else:
             try:
                 if Rate.objects.filter(Q(good=good)):
                     context['rated'] = str(
-                        float('{:.2f}'.format(Rate.objects.filter(good=good).aggregate(Avg('rating'))['rating__avg'])))
+                        float('{:.2f}'.format(
+                            Rate.objects.filter(good=good).aggregate(Avg('rating'))[
+                                'rating__avg'])))
             except Exception as exc:
                 print(exc.args)
         return render(request, self.template_name, context)
 
 
 class GalleryPage(BaseView):
-    template_name = 'photo/gallery.html'
+    """
+    Класс для отображения галереи товара. Отнаследован от базового класса BaseView
+    """
+    template_name = 'product/gallery.html'
     rated_previously = []
 
-    def get_list_of_images(self, good_name):
+    @staticmethod
+    def get_list_of_images(good_name):
+        """
+        Функция получения всех картинок товара по его названию
+
+        :param good_name: Название товара
+        :type good_name: :class:`str`
+        :return: Список ссылок на файлы картинок в S3 хранилище
+        :rtype: :class:`dict`
+        """
         status_code, response = get_picture_list_by_good_name(good_name)
         data = []
         for image in response:
@@ -308,6 +350,17 @@ class GalleryPage(BaseView):
         return data
 
     def get(self, request, good):
+        """
+        Функция для обработки get-запросов страницы галереи товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param good: Название товара
+        :type good: :class:`str`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {'name': good}
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
@@ -316,6 +369,17 @@ class GalleryPage(BaseView):
         return render(request, self.template_name, context)
 
     def post(self, request, good):
+        """
+        Функция для обработки post-запросов страницы галереи товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param good: Название товара
+        :type good: :class:`str`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {}
         if not request.user.is_authenticated:
             context['reg_form'], context['login_errors'] = self.check_auth(request)
@@ -336,6 +400,15 @@ class GalleryPage(BaseView):
 
 
 def recovery_password(request):
+    """
+    Функция для отображения страницы восстановления пароля
+
+    :param request: Обязательный параметр для работы запросов в Django
+    :type request: :class:`django.http.HttpRequest`
+    :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+    Обязательный возврат значения для работы Django. Производит рендер html страницы
+    :rtype: :class:`django.http.HttpResponse`
+    """
     context = {'step': '1'}
     user_ip = request.META.get('REMOTE_ADDR', '') or request.META.get('HTTP_X_FORWARDED_FOR', '')
     form = RecoveryPass(request.POST)
@@ -389,6 +462,15 @@ def recovery_password(request):
 
 
 def send_recovery_code(code, user):
+    """
+    Функция для отправления кода восстановления на почту пользователя
+
+    :param code: Код для доступа к восстновлению пароля
+    :type code: :class:`str`
+    :param user: Пользователь, запросивший восстановление пароля
+    :type user: :class:`django.contrib.auth.models.User`
+    :return: None
+    """
     email_subject = 'EVILEG :: Сообщение через контактную форму '
     email_body = "Код для восстановления пароля: {}".format(code)
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, ['{}'.format(user.email)],
@@ -396,28 +478,24 @@ def send_recovery_code(code, user):
 
 
 def profile(request):
-    context = {'user': User.objects.get(id=request.user.id)}
+    """
+    Функция для отображения страницы профиля пользователя
+
+    :param request: Обязательный параметр для работы запросов в Django
+    :type request: :class:`django.http.HttpRequest`
+    :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+    Обязательный возврат значения для работы Django. Производит рендер html страницы
+    :rtype: :class:`django.http.HttpResponse`
+    """
+    context = {'user': User.objects.get(id=request.user.id), 'page': 'profile'}
     current_user = User.objects.get(id=request.user.id)
-    context['comments'] = Comment.objects.filter(user=current_user)
-    context['rates'] = Rate.objects.filter(user=request.user)
-    context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
-
-    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
-                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-
-    context['length'] = [i for i in range(len(context['goods']))]
-    if UserPhoto.objects.filter(user=current_user):
-        context['photo'] = UserPhoto.objects.get(user=current_user).img.url
-    return render(request, 'profile/profile.html', context)
-
-
-def change_info(request):
-    current_user = User.objects.get(id=request.user.id)
+    # change info code starts
     form = ChangeInfoForm(request.POST)
     form.fields['username'].widget.attrs['placeholder'] = current_user.username
     form.fields['email'].widget.attrs['placeholder'] = current_user.email
     photo = FileForm(request.POST, request.FILES)
-    context = {'form': form, 'photo': photo}
+    context['form'] = form
+    context['photo'] = photo
     if UserPhoto.objects.filter(user=current_user):
         context['userphoto'] = UserPhoto.objects.get(user=current_user).img.url
     if request.method == 'POST':
@@ -425,7 +503,7 @@ def change_info(request):
             old_password = request.POST.get('old_password')
             if current_user.check_password('{}'.format(old_password)) is False:
                 form.set_old_password_flag()
-                return render(request, 'profile/change_info.html', {'form': form})
+                return render(request, 'profile/profile.html', {'form': form})
         if form.is_valid():
             if request.POST.get('username'):
                 current_user.username = request.POST.get('username')
@@ -435,13 +513,13 @@ def change_info(request):
                 old_password = request.POST.get('old_password')
                 if current_user.check_password('{}'.format(old_password)) is False:
                     form.set_old_password_flag()
-                    return render(request, 'profile/change_info.html', {'form': form})
+                    return render(request, 'profile/profile.html', {'form': form})
                 else:
                     current_user.set_password('{}'.format(form.data['new_password2']))
             current_user.save()
             login(request, current_user, backend='django.contrib.auth.backends.ModelBackend')
         else:
-            return render(request, 'profile/change_info.html', context)
+            return render(request, 'profile/profile.html', context)
         if photo.is_valid():
             if UserPhoto.objects.filter(user=current_user):
                 userphoto = UserPhoto.objects.get(user=current_user)
@@ -450,20 +528,57 @@ def change_info(request):
             if request.FILES.get('file'):
                 userphoto.img = request.FILES.get('file')
                 userphoto.save()
+
     if request.POST.get('status'):
         return redirect('/profile')
-    return render(request, 'profile/change_info.html', context)
+    # change info ends
+    context['comments'] = Comment.objects.filter(user=current_user)
+    context['rates'] = Rate.objects.filter(user=request.user)
+    context['own_goods'] = GoodsOnModeration.objects.filter(user=request.user)
+
+    context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/all/',
+                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+
+    context['length'] = [i for i in range(len(context['goods']))]
+    if UserPhoto.objects.filter(user=current_user):
+        context['profile_photo'] = UserPhoto.objects.get(user=current_user).img.url
+    return render(request, 'profile/profile.html', context)
 
 
-class AddUser(View):
+class AddUser(BaseView):
+    """
+    Класс для отображения страницы добавления продукта неавторизованным пользователем.
+    Отнаследован от базового класса BaseView
+    """
     template_name = 'registration/add_user.html'
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов страницы добавления продукта неавторизованным
+        пользователем
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {'img': NotAuthUser.objects.get(id=request.GET.get('image')).file.url,
-                   'user_form': UserRegistrationForm, 'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
+                   'user_form': UserRegistrationForm,
+                   'image': NotAuthUser.objects.get(id=request.GET.get('image')).id}
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов страницы добавления продукта неавторизованным
+        пользователем
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = {}
         reg_form = UserRegistrationForm()
         errors = []
@@ -525,27 +640,46 @@ class AddUser(View):
         return render(request, self.template_name, context)
 
 
-class PhotoPage(TemplateView):
-    context = {}
-    context['modal_window'] = 'false'
-    context['show_modal'] = 'false'
-    context['main_image'] = ''
-    template_name = 'photo/photo.html'
+class PhotoPage(BaseTemplateView):
+    """
+    Класс для отображения страницы товара. Отнаследован от базового класса BaseTemplateView
+    """
+    context = {'modal_window': 'false', 'show_modal': 'false', 'main_image': ''}
+    template_name = 'product/product.html'
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов страницы товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         self.context['modal_window'] = 'false'
         form = BarcodeForm()
         self.context['form'] = form
         return render(request, self.template_name, self.context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов страницы товара
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         if not request.user.is_authenticated:
             auth = UserAuth(request, self.template_name)
             errors = auth.post()
             if errors:
                 return render(self.request, self.template_name, errors)
 
-        self.context['modal_window'] = False if request.POST.get('modal_check') == 'false' else True
+        self.context['modal_window'] = False if request.POST.get(
+            'modal_check') == 'false' else True
 
         # Страница без модального окна
         if not self.context['modal_window']:
@@ -577,13 +711,15 @@ class PhotoPage(TemplateView):
                                         ).json()
                 if not request.user.is_authenticated:
                     if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        return redirect(
+                            to='/product/{}/?image={}'.format(response['good'], picture.id))
                     else:
                         print('redirect')
                         return redirect(to='add_user/?image={}'.format(picture.id))
                 else:
                     if response['status'] == 'ok':
-                        return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                        return redirect(
+                            to='/product/{}/?image={}'.format(response['good'], picture.id))
                     else:
                         return redirect(to='/add_product/?image={}'.format(picture.id))
             else:
@@ -592,7 +728,8 @@ class PhotoPage(TemplateView):
                 else:
                     picture = NotAuthUser.objects.get(hash=hash_value)
                 if picture.target_good:
-                    return redirect(to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
+                    return redirect(
+                        to='/product/{}/?image={}'.format(str(picture.target_good), picture.id))
                 else:
                     self.context['show_modal'] = 'true'
 
@@ -615,7 +752,8 @@ class PhotoPage(TemplateView):
                                         headers={'Authorization': '{}'.format(API_TOKEN)}
                                         ).json()
                 if response['status'] == 'ok':
-                    return redirect(to='/product/{}/?image={}'.format(response['good'], picture.id))
+                    return redirect(
+                        to='/product/{}/?image={}'.format(response['good'], picture.id))
                 else:
                     return redirect(to='/add_product/?image={}'.format(picture.id))
 
@@ -632,13 +770,10 @@ class PhotoPage(TemplateView):
                     user=request.user,
                     barcode=request.POST.get('barcode')
                 )
-                response = requests.get('http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
-                                        headers={'Authorization': '{}'.format(API_TOKEN)}
-                                        ).json()
-
-                # Обращение к api вызывает функцию класса GetByBarCode, которая не возвращает статус
-                # if response['status'] == 'ok':
-                #     good.name = response['name']
+                response = requests.get(
+                    'http://api.scanner.savink.in/api/v1/goods/barcode/{}/'.format(good.barcode),
+                    headers={'Authorization': '{}'.format(API_TOKEN)}
+                ).json()
 
                 if response:
                     good.name = response[0]['name']
@@ -648,22 +783,89 @@ class PhotoPage(TemplateView):
         return render(request, self.template_name, self.context)
 
 
-class AcceptPage(PermissionRequiredMixin, View):
+class AdminLoginPage(PermissionRequiredMixin, BaseView):
+    """
+    Класс для отображения страницы регистрации администраторов. Отнаследован от стандартного
+    класса Django и базового класса BaseView
+    """
+    template_name = 'admin/admin_login.html'
+    permission_required = 'WEB_App.view'
+    login_url = '/login/'
+
+    def get(self, request):
+        """
+        Функция для обработки get-запросов страницы регистрации администраторов
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        """
+        Функция для обработки post-запросов страницы регистрации администраторов
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
+        context = {}
+        username = request.POST.get('Username')
+        password = request.POST.get('pass')
+        status_code, response = get_admin_auth_token(username, password)
+        if status_code == 200:
+            request.session['admin_token'] = response['auth_token']
+            return redirect('/admin/accept/')
+        else:
+            context['non_field_errors'] = response['non_field_errors']
+            print(context['non_field_errors'][0])
+        return render(request, self.template_name, context)
+
+
+class AcceptPage(PermissionRequiredMixin, BaseView):
+    """
+    Класс для отображения панели администратора. Отнаследован от стандартного
+    класса Django и базового класса BaseView
+    """
     template_name = 'admin/accept.html'
     permission_required = 'WEB_App.view'
     login_url = '/login/'
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов панели администратора
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         return render(request, self.template_name, self.get_context())
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов панели администратора
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         print(request.POST)
         moder_good_id = request.POST.get('id')
         moder_good_name = request.POST.get('name')
         moder_good_barcode = request.POST.get('barcode')
         moder_good_points = request.POST.get('points')
         moder_good_image_id = request.POST.get('old_image_id')
-        moder_good_caregory = request.POST.get('category')
+        moder_good_category = request.POST.get('category')
 
         if request.POST.get('action') == 'accept':
             status_code, response = change_moderation_goods_status(
@@ -676,7 +878,7 @@ class AcceptPage(PermissionRequiredMixin, View):
                 status_code, response = create_good_with_new_image(
                     moder_good_name,
                     moder_good_barcode,
-                    moder_good_caregory,
+                    moder_good_category,
                     moder_good_points,
                     request.FILES.get('image')
                 )
@@ -684,7 +886,7 @@ class AcceptPage(PermissionRequiredMixin, View):
                 status_code, response = create_good_with_old_image(
                     moder_good_name,
                     moder_good_barcode,
-                    moder_good_caregory,
+                    moder_good_category,
                     moder_good_points,
                     moder_good_image_id
                 )
@@ -699,10 +901,8 @@ class AcceptPage(PermissionRequiredMixin, View):
             )
 
         elif request.POST.get('action') == 'create_category':
-            payload = {}
-            payload['name'] = request.POST.get('name')
-            payload['url_name'] = request.POST.get('url_name')
-            payload['parent'] = request.POST.get('category') or None
+            payload = {'name': request.POST.get('name'), 'url_name': request.POST.get('url_name'),
+                       'parent': request.POST.get('category') or None}
             image = request.FILES.get('image') or None
 
             requests.post('http://api.scanner.savink.in/api/v1/category/create/',
@@ -710,7 +910,14 @@ class AcceptPage(PermissionRequiredMixin, View):
 
         return render(request, self.template_name, self.get_context())
 
-    def get_context(self):
+    @staticmethod
+    def get_context():
+        """
+        Статический метод для получения наполнения context
+
+        :return: Заполненный context
+        :rtype: :class:`dict`
+        """
         context = {}
         status_code, goods_data = get_moderation_goods_by_status('Принято на модерацию')
         data = []
@@ -731,26 +938,36 @@ class AcceptPage(PermissionRequiredMixin, View):
 
 
 class CategoryView(BaseTemplateView):
-    prev_category = ''
+    """
+    Класс для отображения страницы категорий. Отнаследован от базового класса BaseTemplateView
+    """
 
     def get(self, request, *args, **kwargs):
+        """
+        Функция для обработки get-запросов страницы категорий
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param args: Автоматический параметр для заполнения context
+        :param kwargs: Автоматический параметр для заполнения context
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context_data(**kwargs)
         if not request.user.is_authenticated:
             reg_form = UserRegistrationForm()
             context['reg_form'] = reg_form
 
-        # Этот код для кнопки перехода "назад" работает только при последовательном переходе к товару
-        # (в обратную сторону не работает, зацикливает переход)
-        context['prev'] = '/category/' + CategoryView.prev_category
-        CategoryView.prev_category = context['category']
-
         try:
-            context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
-                                               '{}'.format(context['category']),
-                                               headers={'Authorization': '{}'.format(API_TOKEN)}).json()
-            context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
-                                            '{}'.format(context['category']),
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['children'] = requests.get(
+                'http://api.scanner.savink.in/api/v1/category/filter/'
+                '{}'.format(context['category']),
+                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+            context['goods'] = requests.get(
+                'http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+                '{}'.format(context['category']),
+                headers={'Authorization': '{}'.format(API_TOKEN)}).json()
             data = context['goods']
             temporary = []
             for item in data:
@@ -764,19 +981,23 @@ class CategoryView(BaseTemplateView):
                     rate.append(Rate.objects.filter(Q(good=item['name']) & Q(user=request.user)))
             else:
                 for item in data:
-                    rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(Avg('rating'))
+                    rating = Rate.objects.filter(good=item['name']).values('rating').aggregate(
+                        Avg('rating'))
                     rate.append({'good': item['name'], 'rating': rating})
             context['rated'] = rate
 
             if request.user.is_superuser:
-                context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                                     headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['categories'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/category/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-                context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
-                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['positives'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/positive/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
-                context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
-                                                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                context['negatives'] = requests.get(
+                    'http://api.scanner.savink.in/api/v1/negative/all/',
+                    headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
             return render(request, self.template_name, context)
 
@@ -784,6 +1005,16 @@ class CategoryView(BaseTemplateView):
             return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
+        """
+        Функция для обработки post-запросов страницы категорий
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param kwargs: Автоматический параметр для заполнения context
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context_data(**kwargs)
         context['prev'] = '/category/' + CategoryView.prev_category
         CategoryView.prev_category = context['category']
@@ -805,7 +1036,8 @@ class CategoryView(BaseTemplateView):
                 if request.POST.get('action') == 'category_delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
                 elif request.POST.get('action') == 'category_change':
-                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                     files={'file': image})
                 elif request.POST.get('action') == 'add_good':
                     payload['category'] = request.POST.get('category_id')
                     payload['barcode'] = request.POST.get('barcode')
@@ -836,7 +1068,8 @@ class CategoryView(BaseTemplateView):
                 if request.POST.get('action') == 'delete':
                     requests.request("DELETE", url, headers=API_HEADERS)
                 elif request.POST.get('action') == 'edit_good':
-                    requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                    requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                     files={'file': image})
             except ValueError:
                 return render(request, self.template_name, context)
 
@@ -875,27 +1108,48 @@ class CategoryView(BaseTemplateView):
                 return render(request, self.template_name, context)
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['children'] = requests.get('http://api.scanner.savink.in/api/v1/category/filter/'
                                            '{}'.format(context['category']),
-                                           headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                           headers={
+                                               'Authorization': '{}'.format(API_TOKEN)}).json()
 
-        context['goods'] = requests.get('http://api.scanner.savink.in/api/v1/goods/get_by_category/'
-                                        '{}'.format(context['category']),
-                                        headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+        context['goods'] = requests.get(
+            'http://api.scanner.savink.in/api/v1/goods/get_by_category/'
+            '{}'.format(context['category']),
+            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['positives'] = requests.get('http://api.scanner.savink.in/api/v1/positive/all/',
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                            headers={
+                                                'Authorization': '{}'.format(API_TOKEN)}).json()
 
         context['negatives'] = requests.get('http://api.scanner.savink.in/api/v1/negative/all/',
-                                            headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                            headers={
+                                                'Authorization': '{}'.format(API_TOKEN)}).json()
 
         return render(request, self.template_name, context)
 
 
 class CategoryFirstPageView(BaseTemplateView):
+    """
+    Класс для отображения первой страницы категорий. Отнаследован от базового класса
+    BaseTemplateView
+    """
+
     def get(self, request, *args, **kwargs):
+        """
+        Функция для обработки get-запросов первой страницы категорий
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param args: Автоматический параметр для заполнения context
+        :param kwargs: Автоматический параметр для заполнения context
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context_data(**kwargs)
 
         if not request.user.is_authenticated:
@@ -903,10 +1157,22 @@ class CategoryFirstPageView(BaseTemplateView):
             context['reg_form'] = reg_form
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
+        """
+        Функция для обработки post-запросов первой страницы категорий
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :param args: Автоматический параметр для заполнения context
+        :param kwargs: Автоматический параметр для заполнения context
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context_data(**kwargs)
 
         if not request.user.is_authenticated:
@@ -926,7 +1192,8 @@ class CategoryFirstPageView(BaseTemplateView):
             if request.POST.get('action') == 'category_delete':
                 requests.request("DELETE", url, headers=API_HEADERS)
             elif request.POST.get('action') == 'category_change':
-                requests.request("PUT", url, headers=API_HEADERS, data=payload, files={'file': image})
+                requests.request("PUT", url, headers=API_HEADERS, data=payload,
+                                 files={'file': image})
             elif request.POST.get('action') == 'add_good':
                 payload['category'] = request.POST.get('category_id')
                 payload['barcode'] = request.POST.get('barcode')
@@ -946,20 +1213,43 @@ class CategoryFirstPageView(BaseTemplateView):
             return render(request, self.template_name, context)
 
         context['categories'] = requests.get('http://api.scanner.savink.in/api/v1/category/all/',
-                                             headers={'Authorization': '{}'.format(API_TOKEN)}).json()
+                                             headers={
+                                                 'Authorization': '{}'.format(API_TOKEN)}).json()
         return render(request, self.template_name, context)
 
 
-class AcceptPhotoPage(PermissionRequiredMixin, View):
+class AcceptPhotoPage(PermissionRequiredMixin, BaseView):
+    """
+    Класс для отображения панели модерации фото к товару. Отнаследован от стандартного
+    класса Django и базового класса BaseView
+    """
     template_name = 'admin/photo_accept.html'
     permission_required = 'WEB_App.view'
     login_url = '/login/'
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов панели модерации фото к товару
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         context = self.get_context()
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов панели модерации фото к товару
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         picture_id = request.POST.get('picture_id')
         action = request.POST.get('action')
         try:
@@ -973,7 +1263,8 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
                 new_picture = Picture(file=picture_object.image,
                                       user=picture_object.user,
                                       target_good=picture_object.target_good,
-                                      hash=imagehash.average_hash(Image.open(request.FILES['file']))
+                                      hash=imagehash.average_hash(
+                                          Image.open(request.FILES['file']))
                                       )
                 new_picture.save()
         except Exception:
@@ -982,40 +1273,119 @@ class AcceptPhotoPage(PermissionRequiredMixin, View):
         context = self.get_context()
         return render(request, self.template_name, context)
 
-    def get_context(self):
+    @staticmethod
+    def get_context():
+        """
+        Статичесткий метод для наполнения сontext
+
+        :return: Заполненный context
+        :rtype: :class:`dict`
+        """
         context = {'photo_data': PictureOnModeration.objects.filter(status='Принято на модерацию')}
         return context
 
 
-class ComplaintListPage(PermissionRequiredMixin, View):
+class ComplaintListPage(PermissionRequiredMixin, BaseView):
+    """
+    Класс для отображения панели ответа модераторов на сообщения пользователей. Отнаследован от
+    стандартного класса Django и базового класса BaseView
+    """
+
     template_name = 'admin/complaint_list.html'
     permission_required = 'WEB_App.view'
     login_url = '/login/'
-    context = {
-        'complaints': Complaint.objects.all(),
-    }
 
     def get(self, request):
-        print(Complaint.objects.all())
-        return render(request, self.template_name, self.context)
+        """
+        Функция для обработки get-запросов панели ответа модераторов на сообщения пользователей
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
+        form = ComplaintResponseForm()
+        context = {'complaints': Complaint.objects.filter(checked=False), 'form': form}
+        return render(request, self.template_name, context)
 
     def post(self, request):
-        return render(request, self.template_name, self.context)
+        """
+        Функция для обработки post-запросов панели ответа модераторов на сообщения
+        пользователей
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
+        form = ComplaintResponseForm(request.POST)
+        context = {'complaints': Complaint.objects.filter(checked=False), 'form': form}
+
+        if form.is_valid():
+            complaint_resp = ComplaintResponse(
+                user=User.objects.get(
+                    id=Complaint.objects.get(id=request.POST.get('complaint-id')).user.id),
+                parent=Complaint.objects.get(id=request.POST.get('complaint-id')),
+                text=request.POST.get('text'),
+                title=Complaint.objects.get(id=request.POST.get('complaint-id')).title
+            )
+            complaint_resp.save()
+
+            complaint = Complaint.objects.get(id=request.POST.get('complaint-id'))
+            complaint.checked = True
+            complaint.save()
+            return redirect('/admin/complaint_list')
+        else:
+            form = ComplaintForm()
+            context['form'] = form
+            context['form_errors'] = True
+        return render(request, self.template_name, context)
 
 
-class ComplaintPage(TemplateView):
+class ComplaintPage(BaseTemplateView):
+    """
+    Класс для отображения страницы для обратной связи.
+    Отнаследован от базового класса BaseTemplateView
+    """
     context = {}
 
     def get(self, request):
+        """
+        Функция для обработки get-запросов на странице для обратной связи
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         form = ComplaintForm()
         self.context['form'] = form
+        self.context['complaint_responses'] = ComplaintResponse.objects.filter(checked=False)
         return render(request, self.template_name, self.context)
 
     def post(self, request):
+        """
+        Функция для обработки post-запросов на странице для обратной связи
+
+        :param request: Обязательный параметр для работы запросов в Django
+        :type request: :class:`django.http.HttpRequest`
+        :return: Запросы, шаблон страницы и набор передаваемых в шаблон значений. \
+        Обязательный возврат значения для работы Django. Производит рендер html страницы
+        :rtype: :class:`django.http.HttpResponse`
+        """
         form = ComplaintForm(request.POST)
         self.context['form'] = form
+        self.context['complaint_responses'] = ComplaintResponse.objects.filter(checked=False)
 
-        if form.is_valid():
+        if request.POST.get('checked'):
+            complaint_response = ComplaintResponse.objects.get(
+                id=request.POST.get('complaint-response-id'))
+            complaint_response.checked = True
+            complaint_response.save()
+        elif form.is_valid():
             complaint = Complaint(
                 user=request.user,
                 title=request.POST.get('title'),

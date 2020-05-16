@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>Галерея</title>
+{% endblock %}
+{% block extra_css %}
+<script src="{% static 'js/modernizr.custom.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.gridder.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/star-rating-svg.css'%}">
+{% endblock %}
+{% block content %}
+
+{% include 'components/product/gallery/all_imgs.html' %}
+{% for image in images %}
+{% include 'components/product/gallery/img_expanded.html' %}
+{% endfor %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/jquery.gridder.min.js'%}"></script>
+<script src="{% static 'js/jquery.star-rating-svg.js' %}"></script>
+{% include 'components/product/gallery/rate.html' %}
+{% endblock %}

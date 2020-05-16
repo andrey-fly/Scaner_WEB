@@ -1,0 +1,8 @@
+<ul class="gridder mt-2">
+    {% for image in images %}
+    <li class="gridder-list" data-griddercontent="#content{{image.id}}" value="{{image}}"
+        style="width: 350px; height: 250px; margin-bottom: 1%; margin-right: 1%;">
+        <img class="img-fluid z-depth-1 rounded" src="{{image.file}}" style="width: inherit; height: inherit"/>
+    </li>
+    {% endfor %}
+</ul>

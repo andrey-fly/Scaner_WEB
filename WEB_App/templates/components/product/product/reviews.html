@@ -1,0 +1,43 @@
+<p>Отзывы наших пользователей</p>
+<div class="card-columns">
+    {% for comment in comments %}
+    <!-- Card -->
+    <div class="card testimonial-card border-success" style="max-width: 22rem">
+
+        <!-- Background color -->
+        <div class="card-up indigo lighten-1"></div>
+
+        <!-- Avatar -->
+<!--        <div class="avatar mx-auto white">-->
+<!--            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle"-->
+<!--                 alt="woman avatar">-->
+<!--        </div>-->
+
+        <!-- Content -->
+        <div class="card-body cloudy-knoxville-gradient hoverable">
+            <!-- Name -->
+            <h4 class="card-title">{{comment.user}}</h4>
+            <h6 class="card-title">{{comment.created}}</h6>
+            <hr>
+            <!-- Quotation -->
+            <p class="text-wrap"><i class="fas fa-quote-left"></i> {{comment.text}}
+            </p>
+        </div>
+
+    </div>
+    <!-- Card -->
+    {% endfor %}
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <form class="ui reply" action="/product/{{name}}/?image={{img_id}}" method="post">
+            {% csrf_token %}
+                <div class="md-form mb-4 pink-textarea active-pink-textarea">
+                  <i class="fas fa-angle-double-right prefix"></i>
+                  <textarea id="form21" name="comment" class="md-textarea form-control" rows="3"></textarea>
+                  <label for="form21">Оставьте ваш отзыв</label>
+                </div>
+                <button id="btn" type="submit" name="status" data-hover="&#x2764️"><div>Отправить</div></button>
+        </form>
+    </div>
+</div>

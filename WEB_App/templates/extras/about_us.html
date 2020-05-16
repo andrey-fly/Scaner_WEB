@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+<title>О нас</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/about_us.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/rotating-card.css'%}">
+{% endblock %}
+{% block content %}
+
+{% include 'components/extras/about_us/header.html' %}
+{% include 'components/extras/about_us/main_info.html' %}
+{% include 'components/extras/about_us/timeline.html' %}
+{% include 'components/extras/about_us/team.html' %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/about_us.js' %}"></script>
+{% endblock %}

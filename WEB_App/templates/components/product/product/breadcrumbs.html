@@ -1,0 +1,10 @@
+{% load static %}
+<ol class="breadcrumb lighten-4 heavy-rain-gradient pt-2">
+    <!--                Молочные продукты > Сливочное масло-->
+<!--    <a class="m-0 mr-2" class="navbar-brand" href="/" >-->
+<!--        <img src="{% static 'img/logo/logo.svg' %}" alt="Logo" style="height: 30px">-->
+<!--    </a>-->
+    {% for category in categories %}
+    <li class="breadcrumb-item"><a class="m-0" href="/category/{{category.0}}">{{category.1}}</a></li>
+    {% endfor %}
+</ol>

@@ -1,0 +1,46 @@
+{% load static %}
+<div class="row text-center">
+    {% for comp_resp in complaint_responses %}
+        <div class="col-xl-4 col-sm-6 mb-5">
+            <div class="card-container mt-4" style="height: 400px;">
+                <div class="card">
+                    <div class="front" style="height: 400px;">
+                        <div class="cover">
+                            <img src="{% static 'img/extras/complaint_cover.jpg' %}"/>
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <h3 class="name" style="text-transform: none;">Наша администрация ответила вам</h3>
+                                <p class="profession" style="font-size: 14px">Спасибо за участие в улучшении проекта</p>
+                            </div>
+                        </div>
+                        <div class="footer" style="margin: 0">
+                            <div class="rating">
+                                <i class="fa fa-mail-forward"></i> Наведите для большей информации
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back" style="height: 400px;">
+                        <div class="header">
+                            <h5 class="motto">Спасибо за вашу жалобу</h5>
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <h4 class="text-center">Тема: {{comp_resp.title}}</h4>
+                                <p class="text-center" style="font-size: 14px">{{comp_resp.text}}</p>
+                            </div>
+                        </div>
+                        <div class="footer" style="margin: 0; padding: 0">
+                            <form method="POST" action="" style="width: inherit; height: inherit">
+                                {% csrf_token %}
+                                <input type="hidden" name="complaint-response-id" value="{{comp_resp.id}}">
+                                <input type="hidden" name="checked" value="True">
+                                <button type="submit" class="btn btn-outline-warning">Отметить прочитанным</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

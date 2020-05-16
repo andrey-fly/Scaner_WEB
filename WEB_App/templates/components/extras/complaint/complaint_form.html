@@ -1,0 +1,31 @@
+<div class="mask rgba-white-slight">
+    <div class="container-contact2">
+        <div class="wrap-contact2 z-depth-3">
+            <form class="contact2-form validate-form" method="POST" action="">
+                {% csrf_token %}
+                <span class="contact2-form-title">
+                    Оставьте вашу жалобу
+                </span>
+
+                <div class="wrap-input2 validate-input" data-validate="Это поле необходимо">
+                    {{ form.title }}
+                    <span class="focus-input2" data-placeholder="Краткое описание проблемы"></span>
+                </div>
+
+                <div class="wrap-input2 validate-input" data-validate="Это поле необхожимо">
+                    {{ form.text }}
+                    <span class="focus-input2" data-placeholder="Подробное описание прблемы"></span>
+                </div>
+
+                <div class="container-contact2-form-btn">
+                    <div class="wrap-contact2-form-btn">
+                        <div class="contact2-form-bgbtn"></div>
+                        <button class="contact2-form-btn" type="submit">
+                            Отправить вашу жалобу
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

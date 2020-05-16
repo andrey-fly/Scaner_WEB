@@ -1,145 +1,41 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://kit.fontawesome.com/f85fa57f91.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.materialdesignicons.com/3.8.95/css/materialdesignicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/preloader.css' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'pics/favicon/apple-touch-icon.png'%}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'pics/favicon/favicon-32x32.png'%}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'pics/favicon/favicon-16x16.png'%}">
-    <link rel="manifest" href="{% static 'pics/favicon/site.webmanifest'%}">
-    <link rel="mask-icon" href="{% static 'pics/favicon/safari-pinned-tab.svg'%}" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#182121">
-    <meta name="theme-color" content="#ffffff">
-    <script src="{% static 'js/wow.min.js' %}"></script>
-    <script>
-        new WOW().init();
-    </script>
+    {% include 'components/base/base/css_imports.html' %}
+    {% include 'components/base/base/favicon.html' %}
+
     {% block title %}
     <title>Главная</title>
     {% endblock %}
-    {% block extra_css %} {% endblock %}
+
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-<div class="loader">
-    <div class="loader-inner">
-        <div class="loader-line-wrap">
-            <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-            <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-            <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-            <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-            <div class="loader-line"></div>
-        </div>
-    </div>
-</div>
+{% include 'components/base/base/preloader.html' %}
+
 <header>
     {% include 'base/menu.html' %}
+    {% block menu %}
+    {% endblock %}
 </header>
+
 <main>
     {% include 'main/modal_form.html' %}
     {% block content %}
     {% endblock %}
-
 </main>
+
 <footer id="footer">
     {% include 'base/footer.html' %}
 </footer>
 
-<!--    НЕ НАДО УДАЛЯТЬ СКРИПТЫ!!!!!!!!!!!!   -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
-<script src='https://aishek.github.io/jquery-animateNumber/javascripts/jquery.animateNumber.js'></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
-<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
-<!--        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
-<!--        crossorigin="anonymous"></script>-->
-
-<!--  ЭТОТ СКРИПТ ЛОМАЕТ ПРЕДЫДУЩИЙ СКРИПТ, БЕЗ НЕГО МНОГОЕ НЕ РАБОТАЕТ  -->
-<!--  например, ломается открытие модального окна и сворачивание коллапсов!!!  -->
-<!--  ПРОСЬБА ПЕРЕДЕЛАТЬ БУРГЕР БЕЗ НЕГО (ИСПОЛЬЗУЙТЕ КЛАССИЧЕСКИЙ БУСТРАП)  -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<script>
-    $(window).on('load', function(e){
-        setTimeout(function(){
-          $('.loader').fadeOut(500, function(){
-            $(this).css('display', 'none');
-          });
-        }, 750);
-    });
-<!--     $('.loader').css('display', 'block');-->
-</script>
-
-<script src="{% static 'js/button.js' %}"></script>
-<script>
-    let csrftoken = '{{ csrf_token }}';
-</script>
-<script src="{% static 'js/photo.js' %}"></script>
-
-{% if login_errors %}
-<script>
-    window.setTimeout(function() {
-        modal_btn.click()
-    }, 10);
-    container.classList.remove("right-panel-active")
-</script>
-{% endif %} {% if reg_form.errors %}
-<script>
-    window.setTimeout(function() {
-        modal_btn.click()
-    }, 10);
-    container.classList.add("right-panel-active")
-</script>
-
-{% endif %} {% if show_modal %}
-<script>
-if (window.innerWidth < 780) {
-    $('#signmodal_wrap').modal('show')
-    }
-else {
-    $('#signmodal_standard').modal('show')
-}
-</script>
-{% endif %}
-<script>
-    let btn = document.getElementById('modal_btn');
-    btn.addEventListener('click', function() {
-        if (window.innerWidth < 780) {
-            $('#signmodal_wrap').modal('show')
-        } else {
-            $('#signmodal_standard').modal('show')
-        }
-    })
-</script>
+{% include 'components/base/base/js_imports.html' %}
 
 {% block extra_js %}{% endblock %}
 </body>
-
 </html>

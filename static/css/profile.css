@@ -101,7 +101,7 @@ body {
         max-width: 240px;
     }
     .comment-scroll {
-        max-width: 260px;
+        max-width: 260px !important;
     }
     .comment-card {
         max-width: 240px;
