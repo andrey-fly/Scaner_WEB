@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'WEB_App',
     'django_s3_storage',
-    'mptt',
+    # 'mptt',
     'django.contrib.sites',
-
+    'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -63,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'Scanner.urls'
@@ -211,5 +213,9 @@ FIXTURE_DIRS = [
     'WEB_App/fixtures',
 ]
 
-
 SECURE_SSL_REDIRECT = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'https://s3.nl-ams.scw.cloud',
+]
