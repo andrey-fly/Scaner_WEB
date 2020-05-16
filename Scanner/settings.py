@@ -218,4 +218,7 @@ SECURE_SSL_REDIRECT = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
     'https://s3.nl-ams.scw.cloud',
+    'https://scanner.savink.in',
+    'https://0.0.0.0:80',
+    'https://0.0.0.0:443',
 ]

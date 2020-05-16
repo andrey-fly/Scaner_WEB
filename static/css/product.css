@@ -1,26 +1,29 @@
 body {
     overflow-x: hidden !important;
 }
-@font-face {
-    font-family: 'Roboto-Regular';
-    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: 'Roboto-Black';
-    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.svg#Roboto-Black') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+/*    font-family: 'Roboto-Regular';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
 
-@font-face {
-    font-family: 'Roboto-Medium';
-    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.svg#Roboto-Medium') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+/*    font-family: 'Roboto-Black';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.svg#Roboto-Black') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'Roboto-Medium';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.svg#Roboto-Medium') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 #content-block {
     display: flex;
@@ -80,7 +83,7 @@ body {
     position: relative;
     height: 32px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -130,7 +133,7 @@ body {
     top: 0px;
     margin-bottom: 10px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -150,7 +153,7 @@ body {
     left: 8px;
     top: 27px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 32px;
@@ -210,7 +213,7 @@ body {
     left: 0px;
     top: 0px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 36px;
@@ -235,7 +238,7 @@ body {
     top: 6.5px;
     padding-left: 10px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -288,7 +291,7 @@ body {
     /*position: static;*/
     /*padding: calc((100% - 20px)/2);*/
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
@@ -306,7 +309,7 @@ body {
     left: 56px;
     top: 6.5px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -349,7 +352,7 @@ body {
     left: 0px;
     top: 0px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
@@ -393,7 +396,7 @@ body {
     left: 24px;
     top: calc(50% - 24px/2 - 0.5px);
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -412,7 +415,7 @@ body {
     left: 0px;
     top: calc(50% - 24px/2 + 0.5px);
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -448,7 +451,7 @@ body {
     left: 0px;
     top: 0px;
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
@@ -492,7 +495,7 @@ body {
     left: 24px;
     top: calc(50% - 24px/2 - 0.5px);
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -511,7 +514,7 @@ body {
     left: 0px;
     top: calc(50% - 24px/2 + 0.5px);
 
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -983,7 +986,7 @@ Comments
     }
 
     .thanks-text {
-        font-family: Roboto-Regular;
+        font-family: 'Roboto', sans-serif;
         font-style: normal;
         font-weight: 900;
         font-size: 2rem;
@@ -995,7 +998,7 @@ Comments
     #timer-description {
         margin: 50px 0px 40px 0px;
         text-align: center;
-        font-family: Roboto-Regular;
+        font-family: 'Roboto', sans-serif;
         font-style: normal;
         font-weight: 600;
         font-size: 18px;

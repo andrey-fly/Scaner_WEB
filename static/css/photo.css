@@ -1,26 +1,29 @@
 body {
     overflow-x: hidden !important;
 }
-@font-face {
-    font-family: 'Roboto-Regular';
-    src: url('fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/Roboto-Regular.woff') format('woff'), url('fonts/Roboto-Regular.ttf') format('truetype'), url('fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: 'Roboto-Black';
-    src: url('fonts/Roboto-Black.eot?#iefix') format('embedded-opentype'), url('fonts/Roboto-Black.woff') format('woff'), url('fonts/Roboto-Black.ttf') format('truetype'), url('fonts/Roboto-Black.svg#Roboto-Black') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+/*    font-family: 'Roboto-Regular';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Regular.svg#Roboto-Regular') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
 
-@font-face {
-    font-family: 'Roboto-Medium';
-    src: url('fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'), url('fonts/Roboto-Medium.woff') format('woff'), url('fonts/Roboto-Medium.ttf') format('truetype'), url('fonts/Roboto-Medium.svg#Roboto-Medium') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+/*@font-face {*/
+/*    font-family: 'Roboto-Black';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Black.svg#Roboto-Black') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'Roboto-Medium';*/
+/*    src: url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.woff') format('woff'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.ttf') format('truetype'), url('https://s3.nl-ams.scw.cloud/scanner-static/css/fonts/Roboto-Medium.svg#Roboto-Medium') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 #content-group {
     background-color: #f8f9fa;
@@ -60,7 +63,7 @@ body {
     height: 54px;
     left: 37px;
     top: 169px;
-    font-family: Roboto-Medium;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
@@ -81,7 +84,7 @@ body {
     /*height: 72px;*/
     /*left: 62.5px;*/
     /*top: 239px;*/
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -118,7 +121,7 @@ body {
     height: 116px;*/
     left: 8px;
     top: 40px;
-    font-family: Roboto-Black;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 48px;
@@ -136,7 +139,7 @@ body {
     height: 66px;*/
     left: 8px;
     top: 180px;
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
@@ -166,7 +169,7 @@ body {
     position: static;
     /*width: 118px;*/
     height: 52px;
-    font-family: Roboto-Regular;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
