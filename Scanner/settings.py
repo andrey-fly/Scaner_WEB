@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'nc#qztqrjv3h9h)tc09nh18(d*f1u!-h$8!odzvq6x)-(2$+&#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -185,7 +185,7 @@ EMAIL_USE_TLS = True  # использование протокола шифро
 DEFAULT_FROM_EMAIL = 'info@example.com'  # email, с которого будет отправлено письмо
 
 DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
-
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 # The AWS region to connect to.
 AWS_REGION = "nl-ams"
 
@@ -193,6 +193,12 @@ AWS_ACCESS_KEY_ID = "SCW4NVHQWSWKR4YTRCVG"
 AWS_SECRET_ACCESS_KEY = "912dc092-b911-441b-9582-de4180fb47d1"
 AWS_S3_ENDPOINT_URL = "https://s3.nl-ams.scw.cloud"
 AWS_S3_BUCKET_NAME = "scaner-goods-pictures"
+
+AWS_ACCESS_KEY_ID_STATIC = "SCW4NVHQWSWKR4YTRCVG"
+AWS_SECRET_ACCESS_KEY_STATIC = "912dc092-b911-441b-9582-de4180fb47d1"
+AWS_S3_ENDPOINT_URL_STATIC = "https://s3.nl-ams.scw.cloud"
+AWS_S3_BUCKET_NAME_STATIC = "scanner-static"
+
 
 
 API_URL = 'http://api.scanner.savink.in/'
@@ -204,3 +210,6 @@ API_HEADERS = {
 FIXTURE_DIRS = [
     'WEB_App/fixtures',
 ]
+
+
+SECURE_SSL_REDIRECT = True

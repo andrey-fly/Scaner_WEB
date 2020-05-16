@@ -19,3 +19,5 @@ Pillow==7.0.0
 django-allauth
 #for product hash
 imagehash==4.0
+daphne
+Twisted[tls,http2]
