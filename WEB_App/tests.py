@@ -1,15 +1,31 @@
+"""
+Это файл для тестирования Django-приложения
+"""
 from django.test import TestCase, Client
 from django.contrib.auth.models import User, Permission
 from WEB_App.models import Rate, Comment, ChildrenComment
 
 
 class IndexTest(TestCase):
+    """
+    Класс для тестирования главной страницы сайта
+    """
     fixtures = ['db.json']
 
     def setUp(self):
+        """
+        Базовая настройка тестов для страницы
+
+        :return: None
+        """
         self.client = Client()
 
     def test_none_authorised_user_photo_scan_try(self):
+        """
+        Тест на неавторизованного пользователя
+
+        :return: None
+        """
         response = self.client.post('/', {'file-input-for-label': 'fixtures/test.jpg'},
                                     follow=True)
         print(response.redirect_chain)
@@ -20,13 +36,26 @@ class IndexTest(TestCase):
 
 
 class ProductPageTest(TestCase):
+    """
+    Класс для тестирования страницы продукта
+    """
     fixtures = ['db.json']
 
     def setUp(self):
+        """
+        Базовая настройка тестов для страницы
+
+        :return: None
+        """
         self.client = Client()
         self.user = User.objects.get(username='test_user')
 
     def test_rate_photo(self):
+        """
+        Тестирование оценки товара
+
+        :return: None
+        """
         perm = Permission.objects.get(codename='add_rate')
         self.user.user_permissions.add(perm)
         self.client.login(username=self.user.username, password='test_user')
@@ -44,6 +73,11 @@ class ProductPageTest(TestCase):
         self.assertEqual(response5.request['PATH_INFO'], '/product/test/')
 
     def test_comment_photo(self):
+        """
+        Тест на комментирование товара
+
+        :return: None
+        """
         perm_comment = Permission.objects.get(codename='add_comment')
         perm_child = Permission.objects.get(codename='add_childrencomment')
         self.user.user_permissions.add(perm_comment)
@@ -82,12 +116,25 @@ class ProductPageTest(TestCase):
 
 
 class AdminPageTest(TestCase):
+    """
+    Класс для тестирования страницы администрации
+    """
     fixtures = ['db.json']
 
     def setUp(self):
+        """
+        Базовая настройка тестов для страницы
+
+        :return: None
+        """
         pass
 
     def test_admin_page(self):
+        """
+        Тест страницы администрации
+
+        :return: None
+        """
         self.assertEqual(True, True)
 
     def tearDown(self):
