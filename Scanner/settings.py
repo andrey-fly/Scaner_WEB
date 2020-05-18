@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'nc#qztqrjv3h9h)tc09nh18(d*f1u!-h$8!odzvq6x)-(2$+&#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django_s3_storage',
     # 'mptt',
     'django.contrib.sites',
-    'corsheaders',
+    # 'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -63,7 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
 
@@ -215,10 +215,10 @@ FIXTURE_DIRS = [
 
 SECURE_SSL_REDIRECT = True
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = [
-    'https://s3.nl-ams.scw.cloud',
-    'https://scanner.savink.in',
-    'https://0.0.0.0:80',
-    'https://0.0.0.0:443',
-]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     'https://s3.nl-ams.scw.cloud',
+#     'https://scanner.savink.in',
+#     'https://0.0.0.0:80',
+#     'https://0.0.0.0:443',
+# ]

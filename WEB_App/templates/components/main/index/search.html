@@ -6,9 +6,9 @@
                 <div class="search-button"></div>
                 <input type="text" class="search-input" placeholder="Найдите товар" id="searcher"/>
                 <div class="dropdown">
-                  <input type="hidden" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <input type="hidden" name="data" value="{{all_goods_names}}" id="initial_data">
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu" id="dropdown_menu_searcher"></div>
+                    <button class="btn btn-secondary dropdown-toggle" id="dropdownMenu" aria-haspopup="true" aria-expanded="false" style="display: none"></button>
+                  <input type="hidden" name="data" value="{{all_goods_names}}" id="initial_data">
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu" id="dropdown_menu_searcher" aria-expanded="false" style="margin-left: 15px;"></div>
                 </div>
             </div>
         </div>

@@ -11,19 +11,26 @@
                     <a href="{% provider_login_url 'facebook' %}" class="social"><i
                             class="fab fa-facebook-f"></i></a>
                 </div>
-                {% if reg_form.errors %} {% if reg_form.errors.password2 %}
-                <div class="error-reg">
-                    <b>{{reg_form.errors.password2}}</b>
-                </div>
-                {%endif%} {% if reg_form.errors.username %}
-                <div class="error-reg">
-                    <b>{{reg_form.errors.username}}</b>
-                </div>
-                {%endif%} {% if reg_form.errors.email %}
-                <div class="error-reg">
-                    <b>{{reg_form.errors.email}}</b>
-                </div>
-                {%endif%} {%endif%} {{ reg_form.username }} {{ reg_form.email }} {{ reg_form.password }}
+                {% if reg_form.errors %}
+                    {% if reg_form.errors.password2 %}
+                    <div class="error-reg">
+                        <b>{{reg_form.errors.password2}}</b>
+                    </div>
+                    {%endif%}
+                    {% if reg_form.errors.username %}
+                    <div class="error-reg">
+                        <b>{{reg_form.errors.username}}</b>
+                    </div>
+                    {%endif%}
+                    {% if reg_form.errors.email %}
+                    <div class="error-reg">
+                        <b>{{reg_form.errors.email}}</b>
+                    </div>
+                    {%endif%}
+                {%endif%}
+                {{ reg_form.username }}
+                {{ reg_form.email }}
+                {{ reg_form.password }}
                 {{reg_form.password2 }}
                 <input type="hidden" value="SignUp" name="status">
                 <button class="mt-3 bt-ghost-up-acc" type="submit">Регистрация</button>

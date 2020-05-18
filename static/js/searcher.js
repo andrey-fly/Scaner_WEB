@@ -50,8 +50,8 @@ function open_list(){
             if(goods_data[i].match(regV)) {
                 element = document.createElement('a');
                 element.classList.add('dropdown-item');
-                element.type = 'button';
-                element.href = '/product/' + goods_data[i];
+//                element.type = 'button';
+                element.href = '/product/' + goods_data[i] + '/';
                 element.textContent = goods_data[i];
                 dropdown_menu_searcher.appendChild(element);
             }
@@ -62,21 +62,21 @@ function open_list(){
             if(categories_data[i][0].match(regV)) {
                 element = document.createElement('a');
                 element.classList.add('dropdown-item');
-                element.type = 'button';
+//                element.type = 'button';
                 element.href = '/category/' + categories_data[i][1];
                 element.textContent = categories_data[i][0];
                 dropdown_menu_searcher.appendChild(element);
             }
         }
 
-        $("#dropdownMenu").dropdown('show');
+        $("#dropdown_menu_searcher").dropdown('show');
     }
     else {
-        $("#dropdownMenu").dropdown('hide');
+        $("#dropdown_menu_searcher").dropdown('hide');
     }
     if(!dropdown_menu_searcher.children.length)
     {
-        $("#dropdownMenu").dropdown('hide');
+        $("#dropdown_menu_searcher").dropdown('hide');
     }
 }
 
