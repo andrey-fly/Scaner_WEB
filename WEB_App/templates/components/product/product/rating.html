@@ -1,20 +1,20 @@
 <fieldset id="rating">
-{% if not rated %}
-<legend class="rating_caption" style="color: inherit;"> Ваша оценка:</legend>
-<div class="rating_group">
-    <form action="" method="POST">
-        {% csrf_token %}
-        <span class="my-rating-9"></span>
-        <span class="live-rating mt-0"></span>
-        <input id="rate" type="hidden" value="0" name="rating">
-        <button type="submit" class="btn btn-outline-primary ml-3">Оценить</button>
-    </form>
-    {% else %}
-    <p>Средняя оценка всеми пользователями:</p>
-    <div style="display: inline-flex">
-        <span class="my-rating-9"></span>
-        <p id="average" class="mt-0" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+    {% if not rated %}
+    <legend class="rating_caption" style="color: inherit;"> Ваша оценка:</legend>
+    <div class="rating_group">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <span class="my-rating-9"></span>
+            <span class="live-rating mt-0"></span>
+            <input id="rate" type="hidden" value="0" name="rating">
+            <button type="submit" class="btn btn-outline-primary ml-3">Оценить</button>
+        </form>
+        {% else %}
+        <p>Средняя оценка всеми пользователями:</p>
+        <div style="display: inline-flex">
+            <span class="my-rating-9"></span>
+            <p id="average" class="mt-0" style="color: #10c46a; margin-left: 10px; font-size: 20px;">{{rated}}</p>
+        </div>
     </div>
-</div>
-{% endif %}
+    {% endif %}
 </fieldset>

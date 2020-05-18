@@ -1,4 +1,5 @@
 <p style="margin: 20px">Лучшие отзывы:</p>
+{% if reviews %}
 <div class="col-lg-10 offset-lg-1 pt-5 pb-5 heavy-rain-gradient" style="background-color: #c9c9c9">
   <div id="client-testimonial-carousel" class="carousel slide" data-ride="carousel" style="min-height:200px;">
     <div id="review_inner" class="carousel-inner" role="listbox">
@@ -29,6 +30,11 @@
     </ol>
   </div>
 </div>
+{% else %}
+<div class="col-lg-10 offset-lg-1 pt-5 pb-5 heavy-rain-gradient" style="background-color: #c9c9c9">
+  <p>На этот товар ещё не оставляли отзывов. Будьте первым ;)</p>
+</div>
+{% endif %}
 
 <script>
 while (document.getElementById('review_inner').getElementsByClassName('active').length > 1) {

@@ -28,16 +28,4 @@
     <!-- Card -->
     {% endfor %}
 </div>
-<div class="row mb-3">
-    <div class="col">
-        <form class="ui reply" action="/product/{{name}}/?image={{img_id}}" method="post">
-            {% csrf_token %}
-                <div class="md-form mb-4 pink-textarea active-pink-textarea">
-                  <i class="fas fa-angle-double-right prefix"></i>
-                  <textarea id="form21" name="comment" class="md-textarea form-control" rows="3"></textarea>
-                  <label for="form21">Оставьте ваш отзыв</label>
-                </div>
-                <button id="btn" type="submit" name="status" data-hover="&#x2764️"><div>Отправить</div></button>
-        </form>
-    </div>
-</div>
+
