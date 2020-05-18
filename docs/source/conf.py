@@ -22,7 +22,7 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = 'Prodoved'
+project = 'Prodoved_Web'
 copyright = '2020, BombIt Team'
 author = 'BombIt Team'
 
