@@ -81,8 +81,13 @@ class IndexPage(BaseTemplateView):
                 return redirect(to='/product/{}/?image={}'.format(response['good_name'],
                                                                   response['image_hash']))
             else:
-                return redirect(to='/add_product/?image={}'.format(response['image_hash']))
-
+                if not request.user.is_authenticated:
+                    reg_form = UserRegistrationForm()
+                    context['reg_form'] = reg_form
+                status_code, context['all_goods_names'] = get_all_goods_names()
+                context['error_need_to_open_modal'] = 'True'
+                context['hash'] = response['image_hash']
+                # return redirect(to='/add_product/?image={}'.format(response['image_hash']))
         return render(request, self.template_name, context)
 
 

@@ -63,6 +63,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if (result.redirected){
             window.location.href = result.url;
         }
+        else {
+            $("#staticBackdropForMainPhoto").modal('show');
+        }
     }
     window.addEventListener("resize", function() {func_element_hide();});
 });

@@ -137,4 +137,9 @@ $(document).ready(function() {
             animate_numbers();
     });
 
+    if(document.getElementById("staticBackdropForMainPhoto"))
+    {
+        $('#staticBackdropForMainPhoto').modal({show:true});
+    }
+
 });
