@@ -232,3 +232,20 @@ def get_admin_auth_token(username, password):
     payload = {'username': username, 'password': password}
     response = requests.request("POST", url, data=payload)
     return response.status_code, response.json()
+
+
+def add_picture_for_product(image, author, good_name):
+    """
+    Получение продукта по картинке с сервера API. Используется при загрузке фото пользователем \
+    для поиска товара по картинке
+
+    :param image: Файл с картинкой для поиска в базе данных
+    :param author: Автор запроса(пользователь, загрузивший фото)
+    :return: Статус запроса и данные(статус, название товара и способ распознования), переданные \
+    с запросом
+    """
+    url = 'http://api.scanner.savink.in/api/v1/picture/add-to-product/'
+    payload = {'platform': 'WEB', 'author': author, 'good': good_name}
+    response = requests.request("POST", url, headers=API_HEADERS, data=payload,
+                                files={'image': image})
+    return response.status_code, response.json()
