@@ -1252,7 +1252,6 @@ class AcceptPhotoPage(PermissionRequiredMixin, BaseView):
         """
         picture_id = request.POST.get('picture_id')
         action = request.POST.get('action')
-        print('=============')
         try:
             picture_object = PictureOnModeration.objects.get(id=picture_id)
             if action == 'deny':
@@ -1264,10 +1263,6 @@ class AcceptPhotoPage(PermissionRequiredMixin, BaseView):
                 status_code, response = add_picture_for_product(picture_object.image,
                                                                 request.user.username,
                                                                 picture_object.target_good)
-                print(status_code)
-                print(response)
-                print(request.user.username)
-
         except Exception:
             return render(request, '500.html')
 
