@@ -1,0 +1,29 @@
+{% if error_need_to_open_modal %}
+
+<div class="modal fade" id="staticBackdropForMainPhoto" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Упс!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-wrap text-center">Мы не смогли определить товар на фотографии! <br> <br> Если проблема повториться, сообщите нам!</p>
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-secondary" href="/add_product/?image={{hash}}">Сообщить</a>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Повторить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<script type="text/javascript">-->
+<!--    $(window).on('load',function(){-->
+<!--        $('#staticBackdropForMainPhoto').modal({show:true});-->
+<!--    });-->
+<!--</script>-->
+
+{% endif %}
