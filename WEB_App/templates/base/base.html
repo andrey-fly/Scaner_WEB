@@ -11,12 +11,12 @@
     {% block title %}
     <title>Главная</title>
     {% endblock %}
-
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
 {% include 'components/base/base/preloader.html' %}
+{% include 'components/base/base/user_documentation.html' %}
 
 <header>
     {% include 'base/menu.html' %}
